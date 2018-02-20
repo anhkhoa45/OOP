@@ -1,0 +1,36 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:2.0.0'
+    }
+}
+
+project.webAppDirName = 'WebContent'
+
+project.sourceSets.main {
+    java {
+        srcDirs = ['src']
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.7'
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.25.1'
+}
+
+gretty {
+    contextPath = '/'
+    servletContainer = 'jetty9'
+}
