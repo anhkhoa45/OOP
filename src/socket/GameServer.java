@@ -1,5 +1,6 @@
 package socket;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import model.Game;
 import model.Player;
@@ -19,7 +20,7 @@ public class GameServer {
     private static final int ACTION_CREATE_GAME = 0;
     private static final int ACTION_JOIN_GAME = 1;
     private static final int ACTION_ANSWER = 2;
-    private static final int ACTION_GET = 2;
+    private static final int ACTION_GET_LIST_GAMES = 3;
 
     private static HashMap<String, Player> players = new HashMap<String, Player>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
@@ -51,7 +52,11 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
+        Game game = player.getPlayingGame();
         player.leaveGame();
+        if(game.isEmpty()){
+            games.remove(game.getId());
+        }
         players.remove(userSession.getId());
     }
 
@@ -65,34 +70,80 @@ public class GameServer {
      */
     @OnMessage
     public void onMessage(Message message, Session userSession) {
-        Player player = players.get(userSession.getId());
+
         Message response = new Message();
-        JsonObject content = new JsonObject();
 
         switch (message.getAction()){
             case ACTION_CREATE_GAME:
-                Game game = player.createGame();
-                GameServer.games.put(game.getId(), game);
-                content.addProperty("game_id", game.getId());
-                response.setAction(ACTION_CREATE_GAME);
-                response.setStatus(200);
-                response.setContent(content);
-                System.out.println("Game created");
+                response = this.onCreateGame(message, userSession);
+                System.out.println("ACTION_CREATE_GAME");
                 break;
             case ACTION_JOIN_GAME:
+                System.out.println("ACTION_JOIN_GAME");
                 break;
             case ACTION_ANSWER:
-                String answer = message.getContent().get("answer").getAsString();
-                int score = player.answerQuestion(answer);
-                content.addProperty("score", score);
-                response.setAction(ACTION_ANSWER);
-                response.setStatus(200);
-                response.setContent(content);
+                response = this.onAnswer(message, userSession);
+                System.out.println("ACTION_ANSWER");
+                break;
+            case ACTION_GET_LIST_GAMES:
+                response = onGetListGame(message, userSession);
+                System.out.println("ACTION_GET_LIST_GAMES");
                 break;
             default:
 
         }
-//        System.out.println(response.getAction());
         userSession.getAsyncRemote().sendObject(response);
+    }
+
+    private Message onCreateGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        Game game = player.createGame();
+        GameServer.games.put(game.getId(), game);
+        content.addProperty("game_id", game.getId());
+        response.setAction(ACTION_CREATE_GAME);
+        response.setStatus(200);
+        response.setContent(content);
+
+        return response;
+    }
+
+    private Message onAnswer(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        String answer = message.getContent().get("answer").getAsString();
+        int score = player.answerQuestion(answer);
+
+        content.addProperty("score", score);
+        response.setAction(ACTION_ANSWER);
+        response.setStatus(200);
+        response.setContent(content);
+
+        return response;
+    }
+
+    private Message onGetListGame(Message message, Session userSession) {
+        Message response = new Message();
+        Gson gson = new Gson();
+        JsonObject content = new JsonObject();
+
+        response.setAction(ACTION_GET_LIST_GAMES);
+
+        try {
+            content = gson.toJsonTree(games).getAsJsonObject();
+            response.setContent(content);
+            response.setStatus(200);
+            return response;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+            return response;
+        }
     }
 }

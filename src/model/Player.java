@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Player {
     private int id;
-    private Game playingGame;
+    private transient Game playingGame;
     private ArrayList<String> answers = new ArrayList<String>();
-    private Session session;
+    private transient Session session;
 
     public Player() {
 
@@ -45,6 +45,7 @@ public class Player {
     public Game createGame(){
         Game game = new Game();
         game.addPlayer(this);
+        this.playingGame = game;
         return game;
     }
 
