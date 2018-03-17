@@ -2,7 +2,7 @@ let endPointURL = "ws://" + window.location.host + "/game-server/1";
 
 let chatClient = null;
 
-function connect() {
+function connectSocket() {
     chatClient = new WebSocket(endPointURL);
     chatClient.onmessage = onMessage;
 

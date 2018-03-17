@@ -42,6 +42,7 @@ public class Authentication {
 
     @POST
     @Path("register")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response register(@FormParam("email") String email, @FormParam("password") String password) {
         User user = new User(email, password);
         try {
