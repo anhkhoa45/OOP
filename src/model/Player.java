@@ -9,9 +9,7 @@ public class Player {
     private ArrayList<String> answers = new ArrayList<String>();
     private transient Session session;
 
-    public Player() {
-
-    }
+    public Player() {}
 
     public Player(int id, Session session) {
         this.id = id;
@@ -43,22 +41,16 @@ public class Player {
     }
 
     public Game createGame(){
-        Game game = new Game();
-        game.addPlayer(this);
-        this.playingGame = game;
+        Game game = new Game(this);
         return game;
     }
 
     public void leaveGame(){
-        if(this.playingGame != null){
-            this.playingGame.removePlayer(this);
-            this.answers.clear();
-            this.playingGame = null;
-        }
+        Game game = this.playingGame;
+
     }
 
     public int answerQuestion(String answer){
-        this.answers.add(answer);
-        return (int)(Math.random() * 5 + 1);
+        return 1;
     }
 }

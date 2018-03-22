@@ -8,13 +8,16 @@ public class Game {
     public static int gameCount = 0;
 
     private int id;
-    private Player[] players;
-    private int playerCount;
+    private Player master;
+    private Player guest;
 
     public Game(){
         this.id = gameCount++;
-        this.players = null;
-        this.playerCount = 0;
+    }
+
+    public Game(Player player){
+        this.id = gameCount++;
+        this.master = player;
     }
 
     public int getId() {
@@ -26,50 +29,31 @@ public class Game {
     }
 
     public Player[] getPlayers() {
+        Player[] players = {this.master, this.guest};
         return players;
     }
 
-    public void setPlayers(Player[] players) {
-        this.players = players;
-    }
-
     public boolean isEmpty(){
-        return this.playerCount == 0;
+        return this.master == null && this.guest == null;
     }
 
     public boolean isWaiting(){
-        return this.playerCount == 1;
+        return this.guest == null;
     }
 
     public boolean isFull(){
-        return this.playerCount == 2;
+        return this.guest != null;
     }
 
-    public void addPlayer(Player player){
-        if(this.isFull()) return;
+    public void addGuest(Player player){
 
-        if(this.isEmpty()){
-            this.players = new Player[2];
-            this.players[0] = player;
-        } else if(this.isWaiting()) {
-            if(this.players[1] == null) {
-                this.players[1] = player;
-            } else {
-                this.players[0] = player;
-            }
-        }
-
-        this.playerCount++;
     }
 
-    public void removePlayer(Player player){
-        if(this.players == null) return;
+    public void removeGuest(Player player){
 
-        if(this.players[0].equals(player)) {
-            this.players[0] = null;
-        } else if(this.players[1].equals(player)) {
-            this.players[1] = null;
-        }
-        this.playerCount--;
+    }
+
+    public void destroy(){
+
     }
 }
