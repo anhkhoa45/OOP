@@ -4,3 +4,5 @@ build/
 .idea
 lib/
 /.nb-gradle/
+logs/
+

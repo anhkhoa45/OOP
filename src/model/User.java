@@ -11,7 +11,6 @@ public class User {
     private int id;
 
     @Column(name = "email")
-
     private String email;
 
     @Column(name = "password")

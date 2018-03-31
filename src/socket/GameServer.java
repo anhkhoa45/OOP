@@ -52,11 +52,7 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
-        Game game = player.getPlayingGame();
         player.leaveGame();
-        if(game.isEmpty()){
-            games.remove(game.getId());
-        }
         players.remove(userSession.getId());
     }
 
@@ -100,7 +96,7 @@ public class GameServer {
         JsonObject content = new JsonObject();
         Message response = new Message();
 
-        Game game = player.createGame();
+        Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
         content.addProperty("game_id", game.getId());
         response.setAction(ACTION_CREATE_GAME);
