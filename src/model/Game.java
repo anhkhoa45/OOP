@@ -10,7 +10,7 @@ public class Game {
     private int id;
     private Player master;
     private Player guest;
-    private Question question;
+    //private Question question;
 
     public Game(){
         this.id = gameCount++;
@@ -61,7 +61,7 @@ public class Game {
     }
 
     public void start() {
-        this.question = "This is a question";
+        //this.question = "This is a question";
         //return question.getListAnswer;
     }
 
