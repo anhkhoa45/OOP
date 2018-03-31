@@ -1,12 +1,23 @@
 package model;
 
 public abstract class AttackPlayer extends Player {
-    private int heath;
-    private int attack;
-    private int isStuned;
-    private int isPowered;
+    protected int heath;
+    protected int attack;
+    protected boolean isStuned;
+    protected boolean isPowered;
+    protected boolean isBlack;
+    protected int numBeingAttacked;
 
-    abstract public void attack(AttackPlayer attackPlayer);
-    abstract public void guard(AttackPlayer attackPlayer);
-    abstract public void power();
+    abstract public void attacking(AttackPlayer guardPlayer);
+
+    abstract public boolean guarding(AttackPlayer attackPlayer);
+
+    abstract public void powering(AttackPlayer guardPlayer);
+
+    public boolean isDead() {
+        if (this.heath <= 0) {
+            return true;
+        }
+        return false;
+    }
 }
