@@ -4,23 +4,15 @@ import javax.websocket.Session;
 import java.util.ArrayList;
 
 public class Player {
-    private int id;
     private ArrayList<String> answers = new ArrayList<String>();
     private transient Session session;
+    private int score;
 
     public Player() {}
 
-    public Player(int id, Session session) {
-        this.id = id;
+    public Player(Session session) {
         this.session = session;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.score = 0;
     }
 
     public Session getSession() {
@@ -29,9 +21,6 @@ public class Player {
 
     public void setSession(Session session) {
         this.session = session;
-    }
-
-    public void leaveGame(){
     }
 
     public int answerQuestion(String answer){
