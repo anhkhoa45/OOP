@@ -1,5 +1,7 @@
 package resources.filter;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import resources.auth.util.KeyGenerator;
 import resources.auth.util.SimpleKeyGenerator;
@@ -43,7 +45,8 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         try {
             // Validate the token
             Key key = keyGenerator.generateKey();
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            requestContext.setProperty("user", claims.getBody().getId());
         } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
