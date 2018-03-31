@@ -3,12 +3,13 @@ package model;
 public class KnightPlayer extends AttackPlayer {
 
     public KnightPlayer() {
-        this.heath = 120;
+        this.health = 120;
         this.attack = 12;
         this.isStuned = false;
         this.isPowered = false;
     }
 
+    @Override
     public void attacking(AttackPlayer guardPlayer) {
         if (this.isDead() || this.isStuned) {
             return;
@@ -16,7 +17,7 @@ public class KnightPlayer extends AttackPlayer {
         if (isPowered) {
             this.powering(guardPlayer);
         } else {
-            guardPlayer.heath -= this.attack;
+            guardPlayer.health -= this.attack;
             guardPlayer.guarding(this);
         }
     }
@@ -41,9 +42,6 @@ public class KnightPlayer extends AttackPlayer {
     
     public boolean opponentHasCorrectAnswer(AttackPlayer guardPlayer) {
         Answer answer = guardPlayer.answers.get(guardPlayer.answers.size()-1);
-        if (this.answers.contains(answer)) {
-            return true;
-        }
-        return false;
+        return this.answers.contains(answer);
     }
 }
