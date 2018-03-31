@@ -61,7 +61,7 @@ public class Game {
     }
 
     public void start() {
-        this.question = "This is a question";
+        //this.question = "This is a question";
         //return question.getListAnswer;
     }
 
