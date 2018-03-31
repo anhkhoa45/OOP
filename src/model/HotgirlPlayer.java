@@ -11,17 +11,17 @@ package model;
  */
 public class HotgirlPlayer extends AttackPlayer{
     @Override
-    public void attack(AttackPlayer attackPlayer) {
+    public void attacking(AttackPlayer attackPlayer) {
 
     }
 
     @Override
-    public void guard(AttackPlayer attackPlayer) {
-        
+    public boolean guarding(AttackPlayer attackPlayer) {
+        return true;
     }
 
     @Override
-    public void power(AttackPlayer attackPlayer) {
+    public void powering(AttackPlayer attackPlayer) {
         if(attackPlayer.answers.size()==5){
         final long timeInterval = 5000;
           Runnable runnable = new Runnable() {

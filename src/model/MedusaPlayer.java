@@ -20,21 +20,23 @@ public class MedusaPlayer extends AttackPlayer {
     }
     
     @Override
-    public void attack(AttackPlayer attackPlayer) {
+    public void attacking(AttackPlayer attackPlayer) {
         
     }
 
     @Override
-    public void guard(AttackPlayer attackPlayer) {
+    public boolean guarding(AttackPlayer attackPlayer) {
         Answer a=attackPlayer.answers.get(attackPlayer.answers.size()-1);
         if (this.answers.contains(a)) {
             //attackPlayer.isStuned=true;
             freeze(5000, attackPlayer);
+            return true;
             }
+        return true;
     }
 
     @Override
-    public void power(AttackPlayer attackPlayer) {
+    public void powering(AttackPlayer attackPlayer) {
         if(attackPlayer.answers.size()==5){
             freeze(10000, attackPlayer);
         }
