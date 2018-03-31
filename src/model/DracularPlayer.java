@@ -6,8 +6,8 @@ public class DracularPlayer extends AttackPlayer {
 
     private int luckyNumber;
 
-    DracularPlayer() {
-        this.heath = 100;
+    public DracularPlayer() {
+        this.health = 100;
         this.attack = 6;
         this.isStuned = false;
         this.isPowered = false;
@@ -17,22 +17,22 @@ public class DracularPlayer extends AttackPlayer {
     }
 
     @Override
-    public void attacking(AttackPlayer guardPlayer) {
+    public void attack(AttackPlayer guardPlayer) {
         if (this.isDead() || this.isStuned) {
             return;
         }
         if (isPowered) {
-            this.powering(guardPlayer);
+            this.power(guardPlayer);
         } else {
-            if (guardPlayer.guarding(this) == false) {
-                this.heath += this.attack / 2;
-                guardPlayer.heath -= this.attack;
+            if (!guardPlayer.guard(this)) {
+                this.health += this.attack / 2;
+                guardPlayer.health -= this.attack;
             }
         }
     }
 
     @Override
-    public boolean guarding(AttackPlayer attackPlayer) {
+    public boolean guard(AttackPlayer attackPlayer) {
         Random random = new Random();
         int anyNumber = random.nextInt(10) + 1;
         if (this.luckyNumber == anyNumber) {
@@ -42,11 +42,10 @@ public class DracularPlayer extends AttackPlayer {
     }
 
     @Override
-    public void powering(AttackPlayer guardPlayer) {
-        if (this.isPowered == false) {
+    public void power(AttackPlayer guardPlayer) {
+        if (!this.isPowered) {
             this.isPowered = true;
-        }
-        if (this.isPowered==true) {
+        } else {
             guardPlayer.isBlack = true;
             //chuyen man hinh thanh mau den trong 10s
         }

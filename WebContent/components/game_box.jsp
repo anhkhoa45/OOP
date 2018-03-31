@@ -1,10 +1,31 @@
 <section id="gameBox">
-    <h1>Game box</h1>
-    <p id="question"></p>
-    <textarea id="answers" class="panel message-area" disabled="true"></textarea>
-    <div class="panel input-area">
-        <input id="messageInput" class="text-field" type="text" placeholder="Your answer"
-               onkeydown="if (event.keyCode === 13) sendMessage();" />
-        <input class="button" type="submit" value="Send" onclick="sendMessage();" />
+    <div class="row align-content-start">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="${pageContext.request.contextPath}/assets/img/300x500.svg" alt="">
+                            <%--<h5 class="card-title">Master</h5>--%>
+                            <%--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>--%>
+                            <%--<a href="#" class="btn btn-primary">Go somewhere</a>--%>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="${pageContext.request.contextPath}/assets/img/300x500.svg" alt="">
+                            <%--<h5 class="card-title">Guest</h5>--%>
+                            <%--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>--%>
+                            <%--<a href="#" class="btn btn-primary">Go somewhere</a>--%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Game setting</h3>
+        </div>
     </div>
 </section>

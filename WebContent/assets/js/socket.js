@@ -36,9 +36,9 @@ function onMessage(event) {
     if(jsonObj.status === 200){
         switch (jsonObj.action) {
             case 0: // Game created
-                messagesArea.value += "Connected";
-                document.getElementById('welcomeScreen').classList.remove('active');
-                document.getElementById('gameBox').classList.add('active');
+                // messagesArea.value += "Connected";
+                section.welcome.hide(500);
+                section.gameBox.show(500);
                 break;
             case 1: // Game joined
                 break;
@@ -46,13 +46,13 @@ function onMessage(event) {
                 messagesArea.value += `${jsonObj.content.answer} - Score: ${jsonObj.content.score} \n`;
                 break;
             case 3:
-                let listGame = document.getElementById('listGame');
+                // let listGame = document.getElementById('listGame');
                 let games = jsonObj.content;
                 let el;
                 Object.values(games).forEach(game => {
                     el = document.createElement('li');
                     el.innerHTML = `${game.id} - ${game.playerCount}/2`;
-                    listGame.appendChild(el);
+                    // listGame.appendChild(el);
                 });
                 break;
         }

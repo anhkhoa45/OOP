@@ -3,31 +3,31 @@ package model;
 public class KnightPlayer extends AttackPlayer {
 
     public KnightPlayer() {
-        this.heath = 120;
+        this.health = 120;
         this.attack = 12;
         this.isStuned = false;
         this.isPowered = false;
     }
 
-    public void attacking(AttackPlayer guardPlayer) {
+    public void attack(AttackPlayer guardPlayer) {
         if (this.isDead() || this.isStuned) {
             return;
         }
         if (isPowered) {
-            this.powering(guardPlayer);
+            this.power(guardPlayer);
         } else {
-            guardPlayer.heath -= this.attack;
-            guardPlayer.guarding(this);
+            guardPlayer.health -= this.attack;
+            guardPlayer.guard(this);
         }
     }
 
     @Override
-    public boolean guarding(AttackPlayer attackPlayer) {
+    public boolean guard(AttackPlayer attackPlayer) {
         return true;
     }
 
     @Override
-    public void powering(AttackPlayer guardPlayer) {
+    public void power(AttackPlayer guardPlayer) {
         if (this.isPowered == false) {
             this.isPowered = true;
         }

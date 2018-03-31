@@ -11,17 +11,17 @@ package model;
  */
 public class HotgirlPlayer extends AttackPlayer{
     @Override
-    public void attacking(AttackPlayer attackPlayer) {
+    public void attack(AttackPlayer attackPlayer) {
 
     }
 
     @Override
-    public boolean guarding(AttackPlayer attackPlayer) {
+    public boolean guard(AttackPlayer attackPlayer) {
         return true;
     }
 
     @Override
-    public void powering(AttackPlayer attackPlayer) {
+    public void power(AttackPlayer attackPlayer) {
         if(attackPlayer.answers.size()==5){
         final long timeInterval = 5000;
           Runnable runnable = new Runnable() {
@@ -29,7 +29,7 @@ public class HotgirlPlayer extends AttackPlayer{
           public void run() {
             while (true) {
               // ------- code for task to run
-              attackPlayer.heath-=10;
+              attackPlayer.health -=10;
               // ------- ends here
               try {
                Thread.sleep(timeInterval);

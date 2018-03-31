@@ -14,8 +14,8 @@ function login(){
     })
         .then(({data}) => {
             localStorage.setItem('token', data.token);
-            document.getElementById('login').classList.remove('active');
-            document.getElementById('welcomeScreen').classList.add('active');
+            section.login.hide(500);
+            section.welcome.show(500);
             connectSocket();
         })
         .catch(() => {
