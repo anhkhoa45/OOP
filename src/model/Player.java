@@ -5,14 +5,16 @@ import java.util.ArrayList;
 
 public class Player {
     private int id;
-    private ArrayList<String> answers = new ArrayList<String>();
+    protected ArrayList<Answer> answers = new ArrayList<Answer>();
     private transient Session session;
+    private int score;
 
     public Player() {}
 
     public Player(int id, Session session) {
         this.id = id;
         this.session = session;
+        this.score = 0;
     }
 
     public int getId() {

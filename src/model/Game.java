@@ -10,6 +10,7 @@ public class Game {
     private int id;
     private Player master;
     private Player guest;
+    //private Question question;
 
     public Game(){
         this.id = gameCount++;
@@ -18,6 +19,12 @@ public class Game {
     public Game(Player player){
         this.id = gameCount++;
         this.master = player;
+    }
+
+    public Game(Player master, Player guest) {
+        this.id = gameCount++;
+        this.master = master;
+        this.guest = guest;
     }
 
     public int getId() {
@@ -46,14 +53,23 @@ public class Game {
     }
 
     public void addGuest(Player player){
-
+        this.guest = player;
     }
 
     public void removeGuest(Player player){
+        this.guest = null;
+    }
 
+    public void start() {
+        //this.question = "This is a question";
+        //return question.getListAnswer;
     }
 
     public void destroy(){
+
+    }
+
+    public void doAttack(Player player1, Player player2) {
 
     }
 }

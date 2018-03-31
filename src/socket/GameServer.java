@@ -36,8 +36,8 @@ public class GameServer {
     @OnOpen
     public void onOpen(Session userSession, @PathParam("user_id") int userId ) {
         System.out.println("New request received. Id: " + userSession.getId());
-        Player player = new Player(userId, userSession);
-        players.put(userSession.getId(), player);
+        //Player player = new Player(userId, userSession);
+        //players.put(userSession.getId(), player);
     }
 
     /**
@@ -52,7 +52,7 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
-        player.leaveGame();
+        //player.leaveGame();
         players.remove(userSession.getId());
     }
 

@@ -3,5 +3,6 @@ build/
 .gradle
 .idea
 lib/
-logs/
 /.nb-gradle/
+logs/
+persistence.xml
