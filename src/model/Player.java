@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Player {
     private int id;
-    private ArrayList<Answer> answers = new ArrayList<Answer>();
+    protected ArrayList<Answer> answers = new ArrayList<Answer>();
     private transient Session session;
     private int score;
 
