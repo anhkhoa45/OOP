@@ -9,11 +9,11 @@ public class KnightPlayer extends AttackPlayer {
 
     @Override
     public void guard(AttackPlayer attackPlayer) {
-
+        
     }
 
     @Override
-    public void power() {
+    public void power(AttackPlayer attackPlayer) {
 
     }
 }
