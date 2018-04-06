@@ -1,7 +1,7 @@
 package model;
 
 public abstract class AttackPlayer extends Player {
-    protected int heath;
+    protected int health;
     protected int attack;
     protected boolean isStuned;
     protected boolean isPowered;
@@ -15,9 +15,6 @@ public abstract class AttackPlayer extends Player {
     abstract public void powering(AttackPlayer guardPlayer);
 
     public boolean isDead() {
-        if (this.heath <= 0) {
-            return true;
-        }
-        return false;
+        return this.health <= 0;
     }
 }

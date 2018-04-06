@@ -7,7 +7,7 @@ public class DracularPlayer extends AttackPlayer {
     private int luckyNumber;
 
     DracularPlayer() {
-        this.heath = 100;
+        this.health = 100;
         this.attack = 6;
         this.isStuned = false;
         this.isPowered = false;
@@ -25,8 +25,8 @@ public class DracularPlayer extends AttackPlayer {
             this.powering(guardPlayer);
         } else {
             if (guardPlayer.guarding(this) == false) {
-                this.heath += this.attack / 2;
-                guardPlayer.heath -= this.attack;
+                this.health += this.attack / 2;
+                guardPlayer.health -= this.attack;
             }
         }
     }
@@ -35,10 +35,7 @@ public class DracularPlayer extends AttackPlayer {
     public boolean guarding(AttackPlayer attackPlayer) {
         Random random = new Random();
         int anyNumber = random.nextInt(10) + 1;
-        if (this.luckyNumber == anyNumber) {
-            return true;
-        }
-        return false;
+        return this.luckyNumber == anyNumber;
     }
 
     @Override

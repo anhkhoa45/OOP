@@ -26,10 +26,11 @@ public class HotgirlPlayer extends AttackPlayer{
         final long timeInterval = 5000;
           Runnable runnable = new Runnable() {
 
+          @Override
           public void run() {
             while (true) {
               // ------- code for task to run
-              attackPlayer.heath-=10;
+              attackPlayer.health-=10;
               // ------- ends here
               try {
                Thread.sleep(timeInterval);

@@ -15,7 +15,7 @@ import java.lang.*;
 public class MedusaPlayer extends AttackPlayer {
     private int stunTime;
     public MedusaPlayer() {
-        this.heath=80;
+        this.health=80;
         this.attack=10;
     }
     

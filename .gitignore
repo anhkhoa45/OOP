@@ -6,4 +6,3 @@ lib/
 /.nb-gradle/
 logs/
 persistence.xml
-
