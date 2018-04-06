@@ -2,6 +2,7 @@ package socket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import model.Game;
 import model.Player;
 
@@ -17,11 +18,6 @@ import java.util.HashMap;
 @ServerEndpoint(value="/game-server/{user_id}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
 public class GameServer {
-    private static final int ACTION_CREATE_GAME = 0;
-    private static final int ACTION_JOIN_GAME = 1;
-    private static final int ACTION_ANSWER = 2;
-    private static final int ACTION_GET_LIST_GAMES = 3;
-
     private static HashMap<String, Player> players = new HashMap<String, Player>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
 
@@ -66,24 +62,27 @@ public class GameServer {
      */
     @OnMessage
     public void onMessage(Message message, Session userSession) {
-
         Message response = new Message();
 
         switch (message.getAction()){
-            case ACTION_CREATE_GAME:
+            case CREATE_GAME:
                 response = this.onCreateGame(message, userSession);
                 System.out.println("ACTION_CREATE_GAME");
                 break;
-            case ACTION_JOIN_GAME:
+            case JOIN_GAME:
                 System.out.println("ACTION_JOIN_GAME");
                 break;
-            case ACTION_ANSWER:
+            case ANSWER_QUESTION:
                 response = this.onAnswer(message, userSession);
                 System.out.println("ACTION_ANSWER");
                 break;
-            case ACTION_GET_LIST_GAMES:
+            case GET_LIST_GAMES:
                 response = onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
+                break;
+            case SET_GAME_MODE:
+                response = onSetGameMode(message, userSession);
+                System.out.println("ACTION_SET_GAME_MODE");
                 break;
             default:
 
@@ -99,7 +98,7 @@ public class GameServer {
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
         content.addProperty("game_id", game.getId());
-        response.setAction(ACTION_CREATE_GAME);
+        response.setAction(GameAction.CREATE_GAME);
         response.setStatus(200);
         response.setContent(content);
 
@@ -115,7 +114,7 @@ public class GameServer {
         int score = player.answerQuestion(answer);
 
         content.addProperty("score", score);
-        response.setAction(ACTION_ANSWER);
+        response.setAction(GameAction.ANSWER_QUESTION);
         response.setStatus(200);
         response.setContent(content);
 
@@ -127,7 +126,7 @@ public class GameServer {
         Gson gson = new Gson();
         JsonObject content = new JsonObject();
 
-        response.setAction(ACTION_GET_LIST_GAMES);
+        response.setAction(GameAction.GET_LIST_GAMES);
 
         try {
             content = gson.toJsonTree(games).getAsJsonObject();
@@ -135,7 +134,31 @@ public class GameServer {
             response.setStatus(200);
             return response;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+            return response;
+        }
+    }
+
+    private Message onSetGameMode(Message message, Session userSession) {
+        Gson gson = new Gson();
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+
+        response.setAction(GameAction.SET_GAME_MODE);
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            int mode = message.getContent().get("mode").getAsInt();
+            Game game = games.get(gameId);
+            game.setMode(mode);
+
+            content.add("game", gson.toJsonTree(game));
+            response.setContent(content);
+            response.setStatus(200);
+            return response;
+        } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);

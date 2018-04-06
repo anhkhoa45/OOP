@@ -16,7 +16,6 @@ import java.util.Date;
 
 @Path("authentication")
 public class Authentication {
-
     private UserRepository userRepository = new UserRepository();
 
     @POST

@@ -14,7 +14,7 @@ public class User {
     private String email;
 
     @Column(name = "password")
-    private String password;
+    private transient String password;
 
     @Column(name = "name")
     private String name;

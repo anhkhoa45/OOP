@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 public class Message {
     private int status;
-    private int action;
+    private GameAction action;
     private JsonObject content;
 
     public int getStatus() {
@@ -15,11 +15,11 @@ public class Message {
         this.status = status;
     }
 
-    public int getAction() {
+    public GameAction getAction() {
         return action;
     }
 
-    public void setAction(int action) {
+    public void setAction(GameAction action) {
         this.action = action;
     }
 
