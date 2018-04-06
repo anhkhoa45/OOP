@@ -35,10 +35,7 @@ public class DracularPlayer extends AttackPlayer {
     public boolean guard(AttackPlayer attackPlayer) {
         Random random = new Random();
         int anyNumber = random.nextInt(10) + 1;
-        if (this.luckyNumber == anyNumber) {
-            return true;
-        }
-        return false;
+        return this.luckyNumber == anyNumber;
     }
 
     @Override

@@ -14,8 +14,8 @@ public class MedusaPlayer extends AttackPlayer {
     private int stunTime;
 
     public MedusaPlayer() {
-        this.health = 80;
-        this.attack = 10;
+        this.health=80;
+        this.attack=10;
     }
 
     @Override

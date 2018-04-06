@@ -41,9 +41,6 @@ public class KnightPlayer extends AttackPlayer {
     
     public boolean opponentHasCorrectAnswer(AttackPlayer guardPlayer) {
         Answer answer = guardPlayer.answers.get(guardPlayer.answers.size()-1);
-        if (this.answers.contains(answer)) {
-            return true;
-        }
-        return false;
+        return this.answers.contains(answer);
     }
 }
