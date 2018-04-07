@@ -13,7 +13,7 @@
           <label for="passwordInp">Password</label>
           <input id="passwordInp" type="password" name="password" class="form-control">
         </div>
-        <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+        <button type="button" class="btn btn-primary" @click="login">Login</button>
       </form>
     </div>
   </div>
@@ -28,8 +28,8 @@
         let form = document.forms["loginForm"];
         post('/api/authentication/login', {'email': form.email.value, 'password': form.password.value})
           .then(({data}) => {
-            localStorage.setItem('token', data.token);
-            alert('login success');
+            this.$store.commit('saveToken', data.token);
+            this.$router.push({name: 'welcomeScreen'});
           })
           .catch(() => {
             document.getElementById('error').classList.add('active');
