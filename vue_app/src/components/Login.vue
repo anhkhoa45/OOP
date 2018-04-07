@@ -13,7 +13,7 @@
           <label for="passwordInp">Password</label>
           <input id="passwordInp" type="password" name="password" class="form-control">
         </div>
-        <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+        <button type="button" class="btn btn-primary" @click="login">Login</button>
       </form>
     </div>
   </div>
