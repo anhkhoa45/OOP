@@ -55,12 +55,8 @@
       })
     },
     methods: {
-      start(){
-
-      },
-      ready(){
-
-      }
+      start(){},
+      ready(){}
     }
   }
 </script>

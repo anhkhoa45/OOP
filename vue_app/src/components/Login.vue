@@ -28,8 +28,8 @@
         let form = document.forms["loginForm"];
         post('/api/authentication/login', {'email': form.email.value, 'password': form.password.value})
           .then(({data}) => {
-            localStorage.setItem('token', data.token);
-            alert('login success');
+            this.$store.commit('saveToken', data.token);
+            this.$router.push({name: 'welcomeScreen'});
           })
           .catch(() => {
             document.getElementById('error').classList.add('active');

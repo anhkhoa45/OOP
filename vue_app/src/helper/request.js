@@ -18,7 +18,6 @@ export function post(url, data){
   for(let field in data) {
     if(data.hasOwnProperty(field)){
       params.append(field, data[field]);
-      params.append(field, data[field]);
     }
   }
 

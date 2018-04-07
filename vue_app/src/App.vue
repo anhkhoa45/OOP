@@ -7,7 +7,6 @@
 </template>
 
 <script>
-
   export default {
     beforeDestroy() {
       this.$store.state.socketClient.close();
