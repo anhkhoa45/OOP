@@ -1,16 +1,16 @@
 package model;
 
 public class Game {
-    public static final int STATUS_EMPTY = 0;
-    public static final int STATUS_WAITING = 1;
-    public static final int STATUS_FULL = 2;
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_ATTACK = 1;
 
     public static int gameCount = 0;
 
     private int id;
+    private int mode;
     private Player master;
     private Player guest;
-    //private Question question;
+    private Question question;
 
     public Game(){
         this.id = gameCount++;
@@ -35,9 +35,16 @@ public class Game {
         this.id = id;
     }
 
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
     public Player[] getPlayers() {
-        Player[] players = {this.master, this.guest};
-        return players;
+        return new Player[]{this.master, this.guest};
     }
 
     public boolean isEmpty(){
@@ -66,10 +73,6 @@ public class Game {
     }
 
     public void destroy(){
-
-    }
-
-    public void doAttack(Player player1, Player player2) {
 
     }
 }

@@ -3,6 +3,8 @@ package resources.filter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import model.User;
+import repository.UserRepository;
 import resources.auth.util.KeyGenerator;
 import resources.auth.util.SimpleKeyGenerator;
 
@@ -27,6 +29,7 @@ import java.security.Key;
 @Priority(Priorities.AUTHENTICATION)
 public class JWTTokenNeededFilter implements ContainerRequestFilter {
     private KeyGenerator keyGenerator = new SimpleKeyGenerator();
+    private UserRepository userRepository = new UserRepository();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -46,8 +49,12 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             // Validate the token
             Key key = keyGenerator.generateKey();
             Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-            requestContext.setProperty("user", claims.getBody().getId());
+            String userEmail = claims.getBody().getId();
+            User user = userRepository.findByEmail(userEmail);
+
+            requestContext.setProperty("user", user);
         } catch (Exception e) {
+            e.printStackTrace();
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }

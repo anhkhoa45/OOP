@@ -8,11 +8,17 @@ public abstract class AttackPlayer extends Player {
     protected boolean isBlack;
     protected int numBeingAttacked;
 
-    abstract public void attacking(AttackPlayer guardPlayer);
+    void AttackPlayer(){
+        this.isStuned = false;
+        this.isPowered = false;
+        this.isBlack = false;
+    }
 
-    abstract public boolean guarding(AttackPlayer attackPlayer);
+    abstract public void attack(AttackPlayer guardPlayer);
 
-    abstract public void powering(AttackPlayer guardPlayer);
+    abstract public boolean guard(AttackPlayer attackPlayer);
+
+    abstract public void power(AttackPlayer guardPlayer);
 
     public boolean isDead() {
         return this.health <= 0;
