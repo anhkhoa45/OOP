@@ -6,12 +6,6 @@
         <option :value="gameModes.NORMAL">Normal</option>
         <option :value="gameModes.ATTACK">Attack</option>
       </select>
-      <label for="categoryOpt">Category</label>
-      <select id="categoryOpt" class="form-control" v-model="category">
-        <option value="0">Animal</option>
-        <option value="1">Social</option>
-        <option value="2">...</option>
-      </select>
       <button type="button" class="btn btn-primary" @click.prevent="done">
         Done
       </button>

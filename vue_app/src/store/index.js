@@ -61,6 +61,12 @@ const store = new Vuex.Store({
     setPlayingGameMode(state, mode){
       state.playingGame.mode = mode;
     },
+    setGameCharacter(state, character){
+      state.playingGame.me = character;
+    },
+    setRivalCharacter(state, character){
+      state.playingGame.rival = character;
+    },
     setPlayingGame(state, game){
       state.playingGame = game;
     }

@@ -3,8 +3,7 @@ package socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import model.Game;
-import model.Player;
+import model.*;
 
 import javax.inject.Singleton;
 import javax.websocket.OnClose;
@@ -32,8 +31,8 @@ public class GameServer {
     @OnOpen
     public void onOpen(Session userSession, @PathParam("user_id") int userId ) {
         System.out.println("New request received. Id: " + userSession.getId());
-        //Player player = new Player(userId, userSession);
-        //players.put(userSession.getId(), player);
+        Player player = new Player(userId, userSession);
+        players.put(userSession.getId(), player);
     }
 
     /**
@@ -48,7 +47,6 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
-        //player.leaveGame();
         players.remove(userSession.getId());
     }
 
@@ -83,6 +81,10 @@ public class GameServer {
             case SET_GAME_MODE:
                 response = onSetGameMode(message, userSession);
                 System.out.println("ACTION_SET_GAME_MODE");
+                break;
+            case SET_GAME_CHARACTER:
+                response = onSetGameCharacter(message, userSession);
+                System.out.println("ACTION_SET_GAME_CHARACTER");
                 break;
             default:
 
@@ -122,8 +124,8 @@ public class GameServer {
     }
 
     private Message onGetListGame(Message message, Session userSession) {
-        Message response = new Message();
         Gson gson = new Gson();
+        Message response = new Message();
         JsonObject content = new JsonObject();
 
         response.setAction(GameAction.GET_LIST_GAMES);
@@ -159,6 +161,57 @@ public class GameServer {
             response.setStatus(200);
             return response;
         } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+            return response;
+        }
+    }
+
+    private Message onSetGameCharacter(Message message, Session userSession) {
+        Gson gson = new Gson();
+        Player player = players.get(userSession.getId());
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+
+        response.setAction(GameAction.SET_GAME_CHARACTER);
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            int characterType = message.getContent().get("character").getAsInt();
+            Game game = games.get(gameId);
+            AttackPlayer attackPlayer;
+
+            switch (characterType) {
+                case GameCharacter.KNIGHT:
+                    attackPlayer = new KnightPlayer(player);
+                    break;
+                case GameCharacter.MEDUSA:
+                    attackPlayer = new MedusaPlayer(player);
+                    break;
+                case GameCharacter.HOT_GIRL:
+                    attackPlayer = new HotgirlPlayer(player);
+                    break;
+                case GameCharacter.DRACULA:
+                    attackPlayer = new DracularPlayer(player);
+                    break;
+                default:
+                    throw new Exception("Character type not found");
+            }
+
+            if(game.checkMaster(player)){
+                game.setMaster(attackPlayer);
+            } else {
+                game.setGuest(attackPlayer);
+            }
+
+            content.addProperty("character_type", characterType);
+            content.add("character", gson.toJsonTree(attackPlayer));
+            response.setContent(content);
+            response.setStatus(200);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);

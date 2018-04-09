@@ -18,6 +18,12 @@ public class MedusaPlayer extends AttackPlayer {
         this.attack=10;
     }
 
+    public MedusaPlayer(Player player) {
+        super(player);
+        this.health=80;
+        this.attack=10;
+    }
+
     @Override
     public void attack(AttackPlayer attackPlayer) {
 

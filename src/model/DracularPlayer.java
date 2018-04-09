@@ -1,5 +1,6 @@
 package model;
 
+import javax.websocket.Session;
 import java.util.Random;
 
 public class DracularPlayer extends AttackPlayer {
@@ -9,9 +10,14 @@ public class DracularPlayer extends AttackPlayer {
     public DracularPlayer() {
         this.health = 100;
         this.attack = 6;
-        this.isStuned = false;
-        this.isPowered = false;
-        this.isBlack = false;
+        Random random = new Random();
+        this.luckyNumber = random.nextInt(10) + 1;
+    }
+
+    public DracularPlayer(Player player) {
+        super(player);
+        this.health = 100;
+        this.attack = 6;
         Random random = new Random();
         this.luckyNumber = random.nextInt(10) + 1;
     }

@@ -5,8 +5,12 @@ public class KnightPlayer extends AttackPlayer {
     public KnightPlayer() {
         this.health = 120;
         this.attack = 12;
-        this.isStuned = false;
-        this.isPowered = false;
+    }
+
+    public KnightPlayer(Player player) {
+        super(player);
+        this.health = 120;
+        this.attack = 12;
     }
 
     public void attack(AttackPlayer guardPlayer) {

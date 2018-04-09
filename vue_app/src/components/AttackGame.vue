@@ -40,6 +40,7 @@
 <script>
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
+  import Action from '../helper/game_actions'
 
   export default {
     data(){
@@ -55,7 +56,15 @@
       })
     },
     methods: {
-      start(){},
+      start(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.SET_GAME_CHARACTER,
+          content: {
+            game_id: this.playingGame.id,
+            character: this.character
+          }
+        }))
+      },
       ready(){}
     }
   }

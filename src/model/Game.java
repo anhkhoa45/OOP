@@ -43,8 +43,28 @@ public class Game {
         this.mode = mode;
     }
 
+    public Player getMaster() {
+        return master;
+    }
+
+    public void setMaster(Player master) {
+        this.master = master;
+    }
+
+    public Player getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Player guest) {
+        this.guest = guest;
+    }
+
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
+    }
+
+    public boolean checkMaster(Player player){
+        return this.master.equals(player);
     }
 
     public boolean isEmpty(){
