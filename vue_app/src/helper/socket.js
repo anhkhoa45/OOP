@@ -18,10 +18,12 @@ export function onMessage(event) {
         onCreateGame(content);
         break;
       case Action.JOIN_GAME:
+        onJoinGame(content);
         break;
       case Action.ANSWER_QUESTION:
         break;
       case Action.GET_LIST_GAME:
+        onGetListGame(content);
         break;
       case Action.SET_GAME_MODE:
         onSetGameMode(content);
@@ -50,6 +52,26 @@ function onCreateGame(data){
     isMaster: true
   });
   router.push({name: 'chooseMode'});
+}
+
+function onGetListGame(data){
+  store.commit('setListGame', data);
+}
+
+function onJoinGame(data){
+  store.commit('setPlayingGame', {
+    id: data.game.id,
+    mode: data.game.mode,
+    me: data.game.guest,
+    rival: data.game.master,
+    isMaster: false
+  });
+
+  if(data.game.mode === Mode.ATTACK){
+    router.push({name: 'attackGame'});
+  } else {
+    router.push({name: 'normalGame'});
+  }
 }
 
 function onSetGameMode(data){

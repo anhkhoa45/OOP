@@ -48,6 +48,15 @@ public class GameServer {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
         players.remove(userSession.getId());
+
+        for (Game g : games.values())
+        {
+            if(g.checkMaster(player)) {
+                games.remove(g.getId());
+            } else if(g.checkGuest(player)){
+                g.removeGuest();
+            }
+        }
     }
 
     /**
@@ -60,70 +69,96 @@ public class GameServer {
      */
     @OnMessage
     public void onMessage(Message message, Session userSession) {
-        Message response = new Message();
-
         switch (message.getAction()){
             case CREATE_GAME:
-                response = this.onCreateGame(message, userSession);
+                onCreateGame(message, userSession);
                 System.out.println("ACTION_CREATE_GAME");
                 break;
             case JOIN_GAME:
+                onJoinGame(message, userSession);
                 System.out.println("ACTION_JOIN_GAME");
                 break;
             case ANSWER_QUESTION:
-                response = this.onAnswer(message, userSession);
+                onAnswer(message, userSession);
                 System.out.println("ACTION_ANSWER");
                 break;
             case GET_LIST_GAMES:
-                response = onGetListGame(message, userSession);
+                onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
                 break;
             case SET_GAME_MODE:
-                response = onSetGameMode(message, userSession);
+                onSetGameMode(message, userSession);
                 System.out.println("ACTION_SET_GAME_MODE");
                 break;
             case SET_GAME_CHARACTER:
-                response = onSetGameCharacter(message, userSession);
+                onSetGameCharacter(message, userSession);
                 System.out.println("ACTION_SET_GAME_CHARACTER");
                 break;
             default:
 
         }
+    }
+
+    private void onJoinGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        Gson gson = new Gson();
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        response.setAction(GameAction.JOIN_GAME);
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            game.setGuest(player);
+
+            content.add("game", gson.toJsonTree(game));
+            response.setStatus(200);
+            response.setContent(content);
+        } catch (Exception e){
+            e.printStackTrace();
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private Message onCreateGame(Message message, Session userSession) {
+    private void onCreateGame(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         JsonObject content = new JsonObject();
         Message response = new Message();
+
+        response.setAction(GameAction.CREATE_GAME);
 
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
         content.addProperty("game_id", game.getId());
-        response.setAction(GameAction.CREATE_GAME);
         response.setStatus(200);
         response.setContent(content);
 
-        return response;
+        userSession.getAsyncRemote().sendObject(response);
     }
 
-    private Message onAnswer(Message message, Session userSession) {
+    private void onAnswer(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         JsonObject content = new JsonObject();
         Message response = new Message();
+
+        response.setAction(GameAction.ANSWER_QUESTION);
 
         String answer = message.getContent().get("answer").getAsString();
         int score = player.answerQuestion(answer);
 
         content.addProperty("score", score);
-        response.setAction(GameAction.ANSWER_QUESTION);
         response.setStatus(200);
         response.setContent(content);
 
-        return response;
+        userSession.getAsyncRemote().sendObject(response);
     }
 
-    private Message onGetListGame(Message message, Session userSession) {
+    private void onGetListGame(Message message, Session userSession) {
         Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
@@ -134,16 +169,16 @@ public class GameServer {
             content = gson.toJsonTree(games).getAsJsonObject();
             response.setContent(content);
             response.setStatus(200);
-            return response;
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
-            return response;
         }
+
+        userSession.getAsyncRemote().sendObject(response);
     }
 
-    private Message onSetGameMode(Message message, Session userSession) {
+    private void onSetGameMode(Message message, Session userSession) {
         Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
@@ -159,22 +194,24 @@ public class GameServer {
             content.add("game", gson.toJsonTree(game));
             response.setContent(content);
             response.setStatus(200);
-            return response;
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
-            return response;
         }
+        userSession.getAsyncRemote().sendObject(response);
     }
 
-    private Message onSetGameCharacter(Message message, Session userSession) {
+    private void onSetGameCharacter(Message message, Session userSession) {
         Gson gson = new Gson();
         Player player = players.get(userSession.getId());
         Message response = new Message();
+        Message rivalMessage = new Message();
         JsonObject content = new JsonObject();
+        JsonObject rivalMessageContent = new JsonObject();
 
         response.setAction(GameAction.SET_GAME_CHARACTER);
+        rivalMessage.setAction(GameAction.SET_RIVAL_CHARACTER);
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
@@ -199,23 +236,31 @@ public class GameServer {
                     throw new Exception("Character type not found");
             }
 
-            if(game.checkMaster(player)){
-                game.setMaster(attackPlayer);
-            } else {
-                game.setGuest(attackPlayer);
-            }
-
             content.addProperty("character_type", characterType);
             content.add("character", gson.toJsonTree(attackPlayer));
             response.setContent(content);
             response.setStatus(200);
-            return response;
+
+            rivalMessageContent.addProperty("character_type", characterType);
+            rivalMessageContent.add("character", gson.toJsonTree(attackPlayer));
+            rivalMessage.setContent(content);
+            rivalMessage.setStatus(200);
+
+            if(game.checkMaster(player)){
+                game.setMaster(attackPlayer);
+                game.getGuest().getSession().getAsyncRemote().sendObject(rivalMessage);
+            } else {
+                game.setGuest(attackPlayer);
+                game.getMaster().getSession().getAsyncRemote().sendObject(rivalMessage);
+            }
+
+
         } catch (Exception e) {
-            e.printStackTrace();
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
-            return response;
         }
+
+        userSession.getAsyncRemote().sendObject(response);
     }
 }

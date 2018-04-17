@@ -11,6 +11,8 @@ public class Game {
     private Player master;
     private Player guest;
     private Question question;
+    private boolean guestReady = false;
+    private boolean started = false;
 
     public Game(){
         this.id = gameCount++;
@@ -66,6 +68,9 @@ public class Game {
     public boolean checkMaster(Player player){
         return this.master.equals(player);
     }
+    public boolean checkGuest(Player player){
+        return this.guest.equals(player);
+    }
 
     public boolean isEmpty(){
         return this.master == null && this.guest == null;
@@ -83,13 +88,18 @@ public class Game {
         this.guest = player;
     }
 
-    public void removeGuest(Player player){
+    public void removeGuest(){
         this.guest = null;
     }
 
-    public void start() {
-        //this.question = "This is a question";
-        //return question.getListAnswer;
+    public boolean start() {
+        if(this.isFull() && this.guestReady) {
+            this.question = new Question(1, 1, "This is a question");
+            this.started = true;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void destroy(){
