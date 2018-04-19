@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 import {get} from '../helper/request'
 import {onMessage} from '../helper/socket'
+import Action from '../helper/game_actions'
 
 const store = new Vuex.Store({
   state: {
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
       me: {},
       rival: {},
       isMaster: false
-    }
+    },
+    games: []
   },
   mutations: {
     saveToken(state, token) {
@@ -61,8 +63,17 @@ const store = new Vuex.Store({
     setPlayingGameMode(state, mode){
       state.playingGame.mode = mode;
     },
+    setGameCharacter(state, character){
+      state.playingGame.me = character;
+    },
+    setRivalCharacter(state, character){
+      state.playingGame.rival = character;
+    },
     setPlayingGame(state, game){
       state.playingGame = game;
+    },
+    setListGame(state, games){
+      state.games = games;
     }
   },
   actions: {
@@ -78,17 +89,21 @@ const store = new Vuex.Store({
           })
       })
     },
-    connectSocket({ state, commit }){
+    connectSocket({ state, commit }, onOpen){
       let endPointURL = `ws://${window.location.host}/game-server/${state.user.id}`;
       let socketClient = new WebSocket(endPointURL);
       socketClient.onopen = function(){
         socketClient.onmessage = onMessage;
+        onOpen();
       };
       socketClient.onerror = function(){
         socketClient.close();
       };
 
       commit('setSocketClient', socketClient);
+    },
+    fetchListGame({ state }){
+      state.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
     }
   }
 });

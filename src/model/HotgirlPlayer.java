@@ -10,6 +10,17 @@ package model;
  * @author Ngoc
  */
 public class HotgirlPlayer extends AttackPlayer{
+    public HotgirlPlayer(){
+        this.health = 100;
+        this.attack = 6;
+    }
+
+    public HotgirlPlayer(Player player){
+        super(player);
+        this.health = 100;
+        this.attack = 6;
+    }
+
     @Override
     public void attack(AttackPlayer attackPlayer) {
 

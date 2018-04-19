@@ -13,18 +13,24 @@ import java.util.ArrayList;
  */
 public class Question {
     private int id;
-    private String categoryType;
+    private int categoryType;
+    private String value;
+
+    public Question(int id, int categoryType, String value) {
+        this.id = id;
+        this.categoryType = categoryType;
+        this.value = value;
+    }
+
     public ArrayList<String> getAnswerList(){   //get correct answer in db
         ArrayList<String> list= new ArrayList<String>();
         list.add("Cat");
         list.add("Dog");
         return list;
     }
+
     public boolean checkAnswer(Answer answer){
-        String s= new String("Cat");
-        if(answer.getAnswer().equals("Cat")){
-            return true;
-        }
-        return false;
+        String s = "Cat";
+        return answer.getAnswer().equals("Cat");
     }
 }

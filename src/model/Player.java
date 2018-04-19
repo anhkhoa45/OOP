@@ -39,4 +39,12 @@ public class Player {
     public int answerQuestion(String answer){
         return 1;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Player){
+            return this.id == ((Player) obj).getId();
+        }
+        return false;
+    }
 }
