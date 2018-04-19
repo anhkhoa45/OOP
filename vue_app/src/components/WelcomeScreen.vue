@@ -14,9 +14,17 @@
           </button>
         </div>
         <div class="col-md-4">
-          <button type="button" class="btn btn-info btn-lg btn-block" :disabled="socketClient === null">
+          <button type="button" class="btn btn-info btn-lg btn-block" :disabled="socketClient === null"
+                  @click="showListGame = !showListGame">
             List games
           </button>
+          <ul v-show="showListGame">
+            <li v-for="game in games">
+              <a href="#" @click.prevent="joinGame(game.id)">
+              {{ game.id }} - {{ game.guest ? '2/2' : '1/2' }}
+              </a>
+            </li>
+          </ul>
         </div>
         <div class="col-md-4">
           <button type="button" class="btn btn-danger btn-lg btn-block" :disabled="socketClient === null">
@@ -38,18 +46,35 @@
   import Action from '../helper/game_actions'
 
   export default {
+    data(){
+      return {
+        showListGame: false
+      }
+    },
     computed: {
       ...mapState({
-        socketClient: state => state.socketClient
+        socketClient: state => state.socketClient,
+        games: state => state.games
       })
     },
     methods: {
       createNewGame() {
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
+      },
+      getListGame(){
+        this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
+      },
+      joinGame(gameId){
+        this.socketClient.send(JSON.stringify({
+          action: Action.JOIN_GAME,
+          content: {
+            game_id: gameId
+          }
+        }));
       }
     },
     created() {
-      this.$store.dispatch('connectSocket');
+      this.$store.dispatch('connectSocket', this.getListGame);
     }
   }
 </script>

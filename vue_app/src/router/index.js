@@ -14,9 +14,9 @@ Vue.use(VueRouter);
 let routes = [
   {path: '/', name: 'login', component: Login, beforeEnter: Middleware.redirectIfAuthenticated},
   {path: '/welcome', name: 'welcomeScreen', component: WelcomeScreen, beforeEnter: Middleware.requireLogin},
-  {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, /*beforeEnter: Middleware.joinedGame*/},
-  {path: '/game-box/attack', name: 'attackGame', component: AttackGame/*, beforeEnter: Middleware.joinedGame*/},
-  {path: '/game-box/normal', name: 'normalGame', component: NormalGame/*, beforeEnter: Middleware.joinedGame*/},
+  {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
+  {path: '/game-box/attack', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
+  {path: '/game-box/normal', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
 ];
 
 const router = new VueRouter({

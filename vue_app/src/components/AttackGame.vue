@@ -4,10 +4,9 @@
       <div class="col-sm-3">
         <div class="card">
           <div class="card-body">
+            <h5>Master</h5>
+            <p>{{ playingGame.isMaster ? playingGame.me.name : playingGame.rival.name }}</p>
             <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
-            <!--<h5 class="card-title">Master</h5>-->
-            <!--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
           </div>
         </div>
       </div>
@@ -26,10 +25,9 @@
       <div class="col-sm-3">
         <div class="card">
           <div class="card-body">
+            <h5>Guest</h5>
+            <p>{{ playingGame.isMaster ? playingGame.rival.name : playingGame.me.name }}</p>
             <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
-            <!--<h5 class="card-title">Master</h5>-->
-            <!--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-            <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
           </div>
         </div>
       </div>
@@ -40,6 +38,7 @@
 <script>
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
+  import Action from '../helper/game_actions'
 
   export default {
     data(){
@@ -55,8 +54,24 @@
       })
     },
     methods: {
-      start(){},
-      ready(){}
+      start(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.SET_GAME_CHARACTER,
+          content: {
+            game_id: this.playingGame.id,
+            character: this.character
+          }
+        }));
+      },
+      ready(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.SET_GAME_CHARACTER,
+          content: {
+            game_id: this.playingGame.id,
+            character: this.character
+          }
+        }));
+      }
     }
   }
 </script>
