@@ -94,6 +94,10 @@ public class GameServer {
                 onSetGameCharacter(message, userSession);
                 System.out.println("ACTION_SET_GAME_CHARACTER");
                 break;
+            case START_GAME:
+                onStartGame(message, userSession);
+                System.out.println("ACTION_START_GAME");
+                break;
             default:
 
         }
@@ -262,5 +266,21 @@ public class GameServer {
         }
 
         userSession.getAsyncRemote().sendObject(response);
+    }
+
+
+    private void onStartGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+        } catch (Exception e){
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
     }
 }

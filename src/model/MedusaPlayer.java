@@ -5,6 +5,9 @@
  */
 package model;
 
+import com.google.gson.JsonObject;
+import socket.GameCharacter;
+
 import java.lang.*;
 
 /**
@@ -14,14 +17,14 @@ public class MedusaPlayer extends AttackPlayer {
     private int stunTime;
 
     public MedusaPlayer() {
-        this.health=80;
-        this.attack=10;
+        this.health = 80;
+        this.attack = 10;
     }
 
     public MedusaPlayer(Player player) {
         super(player);
-        this.health=80;
-        this.attack=10;
+        this.health = 80;
+        this.attack = 10;
     }
 
     @Override
@@ -41,17 +44,17 @@ public class MedusaPlayer extends AttackPlayer {
     }
 
     @Override
-    public void power(AttackPlayer attackPlayer) {
-        if (attackPlayer.answers.size() == 5) {
-            freeze(10000, attackPlayer);
+    public void power(AttackPlayer guardPlayer) {
+        if (this.answers.size() == 5) {
+            freeze(10000, guardPlayer);
         }
     }
 
-    public void freeze(int time, AttackPlayer attackPlayer) {
+    public void freeze(int time, AttackPlayer guardPlayer) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                attackPlayer.isStuned = true;
+                guardPlayer.isStunned = true;
 
                 try {
                     Thread.sleep(time);
@@ -59,8 +62,15 @@ public class MedusaPlayer extends AttackPlayer {
                     Thread.currentThread().interrupt();
                 }
 
-                attackPlayer.isStuned = false;
+                guardPlayer.isStunned = false;
             }
         }).start();
+    }
+
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("character_type", GameCharacter.MEDUSA);
+        return json;
     }
 }

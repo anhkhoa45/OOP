@@ -1,21 +1,28 @@
 package model;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 public abstract class AttackPlayer extends Player {
     protected int health;
     protected int attack;
-    protected boolean isStuned;
+    protected boolean isStunned;
     protected boolean isPowered;
-    protected boolean isBlack;
+    protected boolean isBlackout;
     protected int numBeingAttacked;
 
     public AttackPlayer(){
-        this.isStuned = false;
+        this.isStunned = false;
         this.isPowered = false;
-        this.isBlack = false;
+        this.isBlackout = false;
     }
 
     public AttackPlayer(Player player) {
         super(player.getId(), player.getSession());
+        this.isStunned = false;
+        this.isPowered = false;
+        this.isBlackout = false;
+        this.numBeingAttacked = 0;
     }
 
     abstract public void attack(AttackPlayer guardPlayer);
@@ -26,5 +33,15 @@ public abstract class AttackPlayer extends Player {
 
     public boolean isDead() {
         return this.health <= 0;
+    }
+
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("health", this.health);
+        json.addProperty("attack", this.attack);
+        json.addProperty("isStunned", this.isStunned);
+        json.addProperty("isPowered", this.isPowered);
+        return json;
     }
 }
