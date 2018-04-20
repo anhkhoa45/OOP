@@ -84,6 +84,14 @@ public class Game {
         return this.guest != null;
     }
 
+    public boolean isGuestReady() {
+        return guestReady;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
     public void addGuest(Player player){
         this.guest = player;
     }
@@ -102,7 +110,16 @@ public class Game {
         }
     }
 
-    public void destroy(){
+    public boolean destroy() {
+        return (master==null && guest==null);
+    }
 
+    public boolean gameOver() {
+        if (this.mode == MODE_ATTACK) {
+            return (((AttackPlayer)master).isDead() || ((AttackPlayer)guest).isDead());
+        } else {
+            // out of time
+            return true;
+        }
     }
 }

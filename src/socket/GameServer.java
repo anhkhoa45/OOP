@@ -48,15 +48,6 @@ public class GameServer {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
         players.remove(userSession.getId());
-
-        for (Game g : games.values())
-        {
-            if(g.checkMaster(player)) {
-                games.remove(g.getId());
-            } else if(g.checkGuest(player)){
-                g.removeGuest();
-            }
-        }
     }
 
     /**
@@ -94,6 +85,13 @@ public class GameServer {
                 onSetGameCharacter(message, userSession);
                 System.out.println("ACTION_SET_GAME_CHARACTER");
                 break;
+            case LEAVE_GAME:
+                onLeaveGame(message, userSession);
+                System.out.println("ACTION_LEAVE_GAME");
+                break;
+            case GAME_OVER:
+                onGameOver(message, userSession);
+                System.out.println("ACTION_GAME_OVER");
             default:
 
         }
@@ -260,6 +258,54 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(500);
         }
+
+        userSession.getAsyncRemote().sendObject(response);
+    }
+
+    private void onLeaveGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        response.setAction(GameAction.LEAVE_GAME);
+
+        players.remove(userSession.getId());
+        int gameId = message.getContent().get("game_id").getAsInt();
+
+        for (Game g : games.values()) {
+            if (g.checkMaster(player)) {
+                if (!g.start()) {
+                    games.remove(g.getId());
+                    players.remove(g.getGuest());
+                }
+                break;
+            }
+        }
+        content.addProperty("game_id", gameId);
+        content.addProperty("player_id", player.getId());
+        response.setStatus(200);
+        response.setContent(content);
+
+        userSession.getAsyncRemote().sendObject(response);
+    }
+
+    private void onGameOver(Message message, Session userSession) {
+        //neu da start thanh cong nhung 2 nguoi k choi hoac bang diem nhau qua lau thi sau 3p server phai tu goi ham nay
+
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        response.setAction(GameAction.GAME_OVER);
+
+        int gameId = message.getContent().get("game_id").getAsInt();
+        Game game = games.get(gameId);
+        games.remove(gameId);
+        players.remove(game.getMaster());
+        players.remove(game.getGuest());
+
+        content.addProperty("game_id", gameId);
+        response.setStatus(200);
+        response.setContent(content);
 
         userSession.getAsyncRemote().sendObject(response);
     }
