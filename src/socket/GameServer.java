@@ -91,7 +91,7 @@ public class GameServer {
                 onStartGame(message, userSession);
                 System.out.println("ACTION_START_GAME");
                 break;
-            case READY:
+            case GUEST_READY:
                 onReady(message, userSession);
                 System.out.println("ACTION_READY");
                 break;
@@ -311,6 +311,8 @@ public class GameServer {
         Message response = new Message();
         JsonObject content = new JsonObject();
 
+        response.setAction(GameAction.START_GAME);
+
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
@@ -334,6 +336,8 @@ public class GameServer {
         Player player = players.get(userSession.getId());
         Message response = new Message();
         JsonObject content = new JsonObject();
+
+        response.setAction(GameAction.GUEST_READY);
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();

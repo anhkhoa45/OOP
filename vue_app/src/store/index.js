@@ -22,7 +22,8 @@ const store = new Vuex.Store({
       mode: null,
       me: {},
       rival: {},
-      isMaster: false
+      isMaster: false,
+      status: -1
     },
     games: []
   },
@@ -68,6 +69,9 @@ const store = new Vuex.Store({
     },
     setRivalCharacter(state, character){
       state.playingGame.rival = character;
+    },
+    setGameStatus(state, status){
+      state.playingGame.status = status;
     },
     setPlayingGame(state, game){
       state.playingGame = game;

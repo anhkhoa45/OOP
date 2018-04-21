@@ -21,8 +21,8 @@
           </option>
         </select>
 
-        <button type="button" @click="start" v-if="playingGame.isMaster">Start</button>
-        <button type="button" @click="ready" v-else>Ready</button>
+        <button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>
+        <button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>
       </div>
       <div class="col-sm-3">
         <div class="card">
@@ -42,6 +42,7 @@
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
+  import GameStatus from '../helper/game_status'
   import KnightPlayer from "../classes/player/KnightPlayer";
   import MedusaPlayer from "../classes/player/MedusaPlayer";
   import DraculaPlayer from "../classes/player/DraculaPlayer";
@@ -75,6 +76,9 @@
       },
       guestCharacterType() {
         return this.getCharacterName(this.guest);
+      },
+      guestIsReady(){
+        return this.playingGame.status === GameStatus.GUEST_READY;
       }
     },
     methods: {
@@ -96,8 +100,18 @@
           }
         }));
       },
-      start(){},
-      ready(){}
+      start(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.START_GAME,
+          content: { game_id: this.playingGame.id }
+        }))
+      },
+      ready(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.GUEST_READY,
+          content: { game_id: this.playingGame.id }
+        }))
+      }
     }
   }
 </script>

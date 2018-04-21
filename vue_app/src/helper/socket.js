@@ -1,4 +1,5 @@
 import Action from '../helper/game_actions'
+import GameStatus from '../helper/game_status'
 import Mode from '../helper/game_modes'
 import Character from '../helper/game_characters'
 import store from '../store'
@@ -34,11 +35,17 @@ export function onMessage(event) {
       case Action.SET_RIVAL_CHARACTER:
         onSetRivalCharacter(content);
         break;
+      case Action.GUEST_READY:
+        onGuestReady(content);
+        break;
+      case Action.START_GAME:
+        onStartGame(content);
+        break;
     }
   }
 }
 
-function setLeavingAlert(){
+function setLeavingAlert() {
   let leavingAlert = function () {
     return "Leave current game ?";
   };
@@ -46,42 +53,44 @@ function setLeavingAlert(){
   window.onblur = leavingAlert;
 }
 
-function onCreateGame(data){
+function onCreateGame(data) {
   setLeavingAlert();
   store.commit('setPlayingGame', {
     id: data.game.id,
     mode: data.game.mode,
     me: data.game.master,
     rival: {},
-    isMaster: true
+    isMaster: true,
+    status: GameStatus.INITIAL
   });
   router.push({name: 'chooseMode'});
 }
 
-function onGetListGame(data){
+function onGetListGame(data) {
   store.commit('setListGame', data);
 }
 
-function onJoinGame(data){
+function onJoinGame(data) {
   setLeavingAlert();
   store.commit('setPlayingGame', {
     id: data.game.id,
     mode: data.game.mode,
     me: data.game.guest,
     rival: data.game.master,
-    isMaster: false
+    isMaster: false,
+    status: GameStatus.INITIAL
   });
 
-  if(data.game.mode === Mode.ATTACK){
+  if (data.game.mode === Mode.ATTACK) {
     router.push({name: 'attackGame'});
   } else {
     router.push({name: 'normalGame'});
   }
 }
 
-function onSetGameMode(data){
+function onSetGameMode(data) {
   store.commit('setPlayingGameMode', data.game.mode);
-  switch (data.game.mode){
+  switch (data.game.mode) {
     case Mode.ATTACK:
       router.push({name: 'attackGame'});
       break;
@@ -91,7 +100,7 @@ function onSetGameMode(data){
   }
 }
 
-function createPlayer(data){
+function createPlayer(data) {
   let id = data.character.id;
   let name = data.character.name;
   let health = data.character.health;
@@ -110,12 +119,21 @@ function createPlayer(data){
   }
 }
 
-function onSetGameCharacter(data){
+function onSetGameCharacter(data) {
   let character = createPlayer(data);
   store.commit('setGameCharacter', character);
 }
 
-function onSetRivalCharacter(data){
+function onSetRivalCharacter(data) {
   let character = createPlayer(data);
   store.commit('setRivalCharacter', character);
+}
+
+function onGuestReady(data) {
+  store.commit('setGameStatus', GameStatus.GUEST_READY);
+}
+
+function onStartGame(data) {
+  store.commit('setGameStatus', GameStatus.STARTED);
+  router.push({name: 'attackGameFight'});
 }

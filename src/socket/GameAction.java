@@ -9,6 +9,6 @@ public enum GameAction {
     SET_GAME_CHARACTER,
     SET_RIVAL_CHARACTER,
     START_GAME,
-    READY,
+    GUEST_READY,
     LEAVE_GAME
 }
