@@ -48,15 +48,6 @@ public class GameServer {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
         players.remove(userSession.getId());
-
-        for (Game g : games.values())
-        {
-            if(g.checkMaster(player)) {
-                games.remove(g.getId());
-            } else if(g.checkGuest(player)){
-                g.removeGuest();
-            }
-        }
     }
 
     /**
@@ -101,6 +92,9 @@ public class GameServer {
             case READY:
                 onReady(message, userSession);
                 System.out.println("ACTION_READY");
+            case LEAVE_GAME:
+                onLeaveGame(message, userSession);
+                System.out.println("ACTION_LEAVE_GAME");
                 break;
             default:
 
@@ -142,12 +136,14 @@ public class GameServer {
 
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
+
         try {
             content.add("game", game.getStateAsJson());
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e){
             e.printStackTrace();
+            GameServer.games.remove(game.getId());
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
@@ -279,7 +275,6 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-
     private void onStartGame(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         Message response = new Message();
@@ -310,5 +305,36 @@ public class GameServer {
 //            response.setStatus(500);
 //        }
 //
+    }
+    private void onLeaveGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        response.setAction(GameAction.LEAVE_GAME);
+
+        try {
+            players.remove(userSession.getId());
+            int gameId = message.getContent().get("game_id").getAsInt();
+
+            for (Game g : games.values()) {
+                if (g.checkMaster(player)) {
+                    if (!g.start()) {
+                        games.remove(g.getId());
+                        players.remove(g.getGuest());
+                    }
+                    break;
+                }
+            }
+            content.addProperty("game_id", gameId);
+            content.addProperty("player_id", player.getId());
+            response.setStatus(200);
+            response.setContent(content);
+        } catch (Exception e){
+            content.addProperty("message", e.getMessage());
+            response.setStatus(500);
+        }
+
+        userSession.getAsyncRemote().sendObject(response);
     }
 }
