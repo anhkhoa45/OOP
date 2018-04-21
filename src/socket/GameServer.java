@@ -10,9 +10,10 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
+import repository.UserRepository;
 
 @ServerEndpoint(value="/game-server/{user_id}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
@@ -98,7 +99,7 @@ public class GameServer {
 
         }
     }
-
+    
     private void onJoinGame(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         Gson gson = new Gson();
@@ -135,6 +136,7 @@ public class GameServer {
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
         content.addProperty("game_id", game.getId());
+        content.addProperty("user_id", userSession.getId());
         response.setStatus(200);
         response.setContent(content);
 
@@ -188,6 +190,8 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             int mode = message.getContent().get("mode").getAsInt();
+            int userId=message.getContent().get("user_id").getAsInt();
+            
             Game game = games.get(gameId);
             game.setMode(mode);
 

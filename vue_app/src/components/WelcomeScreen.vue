@@ -44,7 +44,7 @@
 <script>
   import {mapState} from 'vuex'
   import Action from '../helper/game_actions'
-
+  var interval_obj;
   export default {
     data(){
       return {
@@ -61,8 +61,10 @@
       createNewGame() {
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
       },
-      getListGame(){
-        this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
+      getListGame(){        
+        interval_obj = setInterval(() => {
+    		this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));		
+    		}, 3000);
       },
       joinGame(gameId){
         this.socketClient.send(JSON.stringify({
@@ -75,6 +77,9 @@
     },
     created() {
       this.$store.dispatch('connectSocket', this.getListGame);
+    },
+    beforeDestroy(){
+    	clearInterval(interval_obj);
     }
   }
 </script>

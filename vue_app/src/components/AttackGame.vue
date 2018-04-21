@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-body">
             <h5>Master</h5>
-            <p>{{ playingGame.isMaster ? playingGame.me.name : playingGame.rival.name }}</p>
+            <p>{{ playingGame.isMaster ? user.name : playingGame.rival.name }}</p>
             <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
           </div>
         </div>
@@ -51,6 +51,7 @@
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
+        user: state => state.user,
       })
     },
     methods: {
@@ -59,7 +60,8 @@
           action: Action.SET_GAME_CHARACTER,
           content: {
             game_id: this.playingGame.id,
-            character: this.character
+            character: this.character,
+            user_id: this.user.id,
           }
         }));
       },

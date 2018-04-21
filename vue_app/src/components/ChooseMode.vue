@@ -30,6 +30,7 @@
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
+        user: state => state.user,
       })
     },
     methods: {
@@ -38,6 +39,7 @@
           action: Action.SET_GAME_MODE,
           content: {
             game_id: this.playingGame.id,
+            user_id: this.user.id,
             mode: this.mode
           }
         }));
