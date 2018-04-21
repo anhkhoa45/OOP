@@ -89,9 +89,6 @@ public class GameServer {
                 onLeaveGame(message, userSession);
                 System.out.println("ACTION_LEAVE_GAME");
                 break;
-            case GAME_OVER:
-                onGameOver(message, userSession);
-                System.out.println("ACTION_GAME_OVER");
             default:
 
         }
@@ -132,6 +129,7 @@ public class GameServer {
 
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
+        game.setTimeStarted(System.nanoTime());
         content.addProperty("game_id", game.getId());
         response.setStatus(200);
         response.setContent(content);
@@ -269,44 +267,37 @@ public class GameServer {
 
         response.setAction(GameAction.LEAVE_GAME);
 
-        players.remove(userSession.getId());
-        int gameId = message.getContent().get("game_id").getAsInt();
+        try {
+            players.remove(userSession.getId());
+            int gameId = message.getContent().get("game_id").getAsInt();
 
-        for (Game g : games.values()) {
-            if (g.checkMaster(player)) {
-                if (!g.start()) {
-                    games.remove(g.getId());
-                    players.remove(g.getGuest());
+            for (Game g : games.values()) {
+                if (g.checkMaster(player)) {
+                    if (!g.start()) {
+                        games.remove(g.getId());
+                        players.remove(g.getGuest());
+                    }
+                    break;
                 }
-                break;
             }
+            content.addProperty("game_id", gameId);
+            content.addProperty("player_id", player.getId());
+            response.setStatus(200);
+            response.setContent(content);
+        } catch (Exception e){
+            content.addProperty("message", e.getMessage());
+            response.setStatus(500);
         }
-        content.addProperty("game_id", gameId);
-        content.addProperty("player_id", player.getId());
-        response.setStatus(200);
-        response.setContent(content);
 
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private void onGameOver(Message message, Session userSession) {
+    private boolean isGameOver(Message message) {
         //neu da start thanh cong nhung 2 nguoi k choi hoac bang diem nhau qua lau thi sau 3p server phai tu goi ham nay
-
-        JsonObject content = new JsonObject();
-        Message response = new Message();
-
-        response.setAction(GameAction.GAME_OVER);
 
         int gameId = message.getContent().get("game_id").getAsInt();
         Game game = games.get(gameId);
-        games.remove(gameId);
-        players.remove(game.getMaster());
-        players.remove(game.getGuest());
-
-        content.addProperty("game_id", gameId);
-        response.setStatus(200);
-        response.setContent(content);
-
-        userSession.getAsyncRemote().sendObject(response);
+        return game.isGameOver();
     }
+
 }

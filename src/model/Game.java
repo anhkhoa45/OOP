@@ -3,6 +3,9 @@ package model;
 public class Game {
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ATTACK = 1;
+    public static final int GUEST_READY = 0;
+    public static final int STARTED = 1;
+    public static final int GAME_OVER = 2;
 
     public static int gameCount = 0;
 
@@ -11,8 +14,8 @@ public class Game {
     private Player master;
     private Player guest;
     private Question question;
-    private boolean guestReady = false;
-    private boolean started = false;
+    private int status;
+    private long timeStarted;
 
     public Game(){
         this.id = gameCount++;
@@ -85,11 +88,15 @@ public class Game {
     }
 
     public boolean isGuestReady() {
-        return guestReady;
+        return (status == GUEST_READY);
     }
 
     public boolean isStarted() {
-        return started;
+        return (status == STARTED);
+    }
+
+    public boolean isGameOver() {
+        return (status == GAME_OVER);
     }
 
     public void addGuest(Player player){
@@ -101,9 +108,9 @@ public class Game {
     }
 
     public boolean start() {
-        if(this.isFull() && this.guestReady) {
+        if(this.isFull() && this.isGuestReady()) {
             this.question = new Question(1, 1, "This is a question");
-            this.started = true;
+            this.status = STARTED;
             return true;
         } else {
             return false;
@@ -114,12 +121,9 @@ public class Game {
         return (master==null && guest==null);
     }
 
-    public boolean gameOver() {
-        if (this.mode == MODE_ATTACK) {
-            return (((AttackPlayer)master).isDead() || ((AttackPlayer)guest).isDead());
-        } else {
-            // out of time
-            return true;
-        }
+
+    public long getRemainTime() {
+        long currentTime = System.nanoTime();
+        return (currentTime - this.timeStarted);
     }
 }

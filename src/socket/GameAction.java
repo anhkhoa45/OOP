@@ -8,6 +8,5 @@ public enum GameAction {
     SET_GAME_MODE,
     SET_GAME_CHARACTER,
     SET_RIVAL_CHARACTER,
-    LEAVE_GAME,
-    GAME_OVER
+    LEAVE_GAME
 }
