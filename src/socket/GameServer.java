@@ -50,6 +50,10 @@ public class GameServer {
         System.out.println("Connection closed. Id: " + userSession.getId());
         Player player = players.get(userSession.getId());
         players.remove(userSession.getId());
+        for (Game g : games.values()) {
+            if (g.checkMaster(player))
+                games.remove(g.getId());
+        }
     }
 
     /**
@@ -314,20 +318,18 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            game.setStatus(Game.STARTED);
-            game.setTimeStarted(System.nanoTime());
-
+            game.start();
             content.addProperty("status", STARTED);
             response.setContent(content);
             response.setStatus(200);
 
-            userSession.getAsyncRemote().sendObject(response);
             game.getGuest().getSession().getAsyncRemote().sendObject(response);
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
         }
+        userSession.getAsyncRemote().sendObject(response);
     }
 
     private void onReady(Message message, Session userSession) {
@@ -345,13 +347,13 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(200);
 
-            userSession.getAsyncRemote().sendObject(response);
             game.getMaster().getSession().getAsyncRemote().sendObject(response);
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
         }
+        userSession.getAsyncRemote().sendObject(response);
     }
 
     private void onLeaveGame(Message message, Session userSession) {
@@ -362,22 +364,16 @@ public class GameServer {
         response.setAction(GameAction.LEAVE_GAME);
 
         try {
-            players.remove(userSession.getId());
-            int gameId = message.getContent().get("game_id").getAsInt();
-
-            for (Game g : games.values()) {
-                if (g.checkMaster(player)) {
-                    if (!g.start()) {
-                        games.remove(g.getId());
-                        players.remove(g.getGuest());
-                    }
-                    break;
-                }
-            }
-            content.addProperty("game_id", gameId);
-            content.addProperty("player_id", player.getId());
             response.setStatus(200);
             response.setContent(content);
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            if (game.checkGuest(player)) {
+                game.getMaster().getSession().getAsyncRemote().sendObject(response);
+            } else {
+                games.remove(gameId);
+                game.getGuest().getSession().getAsyncRemote().sendObject(response);
+            }
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setStatus(500);
