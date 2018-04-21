@@ -5,9 +5,10 @@ import com.google.gson.JsonObject;
 public class Game {
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ATTACK = 1;
-    public static final int GUEST_READY = 0;
-    public static final int STARTED = 1;
-    public static final int GAME_OVER = 2;
+    public static final int INITIAL = 0;
+    public static final int GUEST_READY = 1;
+    public static final int STARTED = 2;
+    public static final int GAME_OVER = 3;
 
     public static int gameCount = 0;
 
@@ -26,6 +27,7 @@ public class Game {
     public Game(Player player){
         this.id = gameCount++;
         this.master = player;
+        this.status = INITIAL;
     }
 
     public Game(Player master, Player guest) {
@@ -74,6 +76,8 @@ public class Game {
         this.timeStarted = timeStarted;
     }
 
+    public int getStatus() { return status; }
+
     public void setStatus(int status) { this.status = status; }
 
     public Player[] getPlayers() {
@@ -121,9 +125,10 @@ public class Game {
     }
 
     public boolean start() {
-        if(this.isFull() && this.isGuestReady()) {
-            this.question = new Question(1, 1, "This is a question");
+        if (this.isFull() && this.isGuestReady()) {
             this.status = STARTED;
+            this.timeStarted = System.nanoTime();
+            this.question = new Question(1, 1, "This is a question");
             return true;
         } else {
             return false;
