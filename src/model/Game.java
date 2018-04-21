@@ -74,6 +74,8 @@ public class Game {
         this.timeStarted = timeStarted;
     }
 
+    public void setStatus(int status) { this.status = status; }
+
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
     }
@@ -81,6 +83,7 @@ public class Game {
     public boolean checkMaster(Player player){
         return this.master.equals(player);
     }
+
     public boolean checkGuest(Player player){
         return this.guest.equals(player);
     }
