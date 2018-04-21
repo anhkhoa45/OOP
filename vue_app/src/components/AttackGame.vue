@@ -5,7 +5,8 @@
         <div class="card">
           <div class="card-body">
             <h5>Master</h5>
-            <p>{{ playingGame.isMaster ? playingGame.me.name : playingGame.rival.name }}</p>
+            <p>{{ master ? master.id : "" }}</p>
+            <p>{{ masterCharacterType }}</p>
             <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
           </div>
         </div>
@@ -13,6 +14,7 @@
       <div class="col-sm-6">
         <label for="slcCharacter">Choose your character</label>
         <select v-model="character" id="slcCharacter">
+          <option value="-1">Character</option>
           <option v-for="character in characters"
                   :value="character.id">
             {{ character.name }}
@@ -26,7 +28,8 @@
         <div class="card">
           <div class="card-body">
             <h5>Guest</h5>
-            <p>{{ playingGame.isMaster ? playingGame.rival.name : playingGame.me.name }}</p>
+            <p>{{ guest ? guest.id : "" }}</p>
+            <p>{{ guestCharacterType }}</p>
             <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
           </div>
         </div>
@@ -39,22 +42,52 @@
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
+  import KnightPlayer from "../classes/player/KnightPlayer";
+  import MedusaPlayer from "../classes/player/MedusaPlayer";
+  import DraculaPlayer from "../classes/player/DraculaPlayer";
+  import HotGirlPlayer from "../classes/player/HotGirlPlayer";
 
   export default {
-    data(){
+    data() {
       return {
-        character: 0,
+        character: -1,
         characters: Characters
+      }
+    },
+    watch: {
+      character(){
+        this.changeCharacter();
       }
     },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
-      })
+      }),
+      master() {
+        return this.playingGame.isMaster ? this.playingGame.me : this.playingGame.rival
+      },
+      guest() {
+        return this.playingGame.isMaster ? this.playingGame.rival : this.playingGame.me
+      },
+      masterCharacterType() {
+        return this.getCharacterName(this.master);
+      },
+      guestCharacterType() {
+        return this.getCharacterName(this.guest);
+      }
     },
     methods: {
-      start(){
+      getCharacterName(player){
+        if (player) {
+          if (player instanceof KnightPlayer) return Characters.KNIGHT.name;
+          if (player instanceof MedusaPlayer) return Characters.MEDUSA.name;
+          if (player instanceof DraculaPlayer) return Characters.DRACULA.name;
+          if (player instanceof HotGirlPlayer) return Characters.HOT_GIRL.name;
+        }
+        return "";
+      },
+      changeCharacter() {
         this.socketClient.send(JSON.stringify({
           action: Action.SET_GAME_CHARACTER,
           content: {
@@ -63,15 +96,8 @@
           }
         }));
       },
-      ready(){
-        this.socketClient.send(JSON.stringify({
-          action: Action.SET_GAME_CHARACTER,
-          content: {
-            game_id: this.playingGame.id,
-            character: this.character
-          }
-        }));
-      }
+      start(){},
+      ready(){}
     }
   }
 </script>

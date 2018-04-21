@@ -3,10 +3,10 @@ import Mode from '../helper/game_modes'
 import Character from '../helper/game_characters'
 import store from '../store'
 import router from '../router'
-import KnightPlayer from "../classes/KnightPlayer";
-import MedusaPlayer from "../classes/MedusaPlayer";
-import HotGirlPlayer from "../classes/HotGirlPlayer";
-import DraculaPlayer from "../classes/DraculaPlayer";
+import KnightPlayer from "../classes/player/KnightPlayer";
+import MedusaPlayer from "../classes/player/MedusaPlayer";
+import HotGirlPlayer from "../classes/player/HotGirlPlayer";
+import DraculaPlayer from "../classes/player/DraculaPlayer";
 
 export function onMessage(event) {
   let jsonObj = JSON.parse(event.data);
@@ -38,16 +38,20 @@ export function onMessage(event) {
   }
 }
 
-function onCreateGame(data){
+function setLeavingAlert(){
   let leavingAlert = function () {
     return "Leave current game ?";
   };
   window.onbeforeunload = leavingAlert;
   window.onblur = leavingAlert;
+}
+
+function onCreateGame(data){
+  setLeavingAlert();
   store.commit('setPlayingGame', {
-    id: data.game_id,
-    mode: null,
-    me: {},
+    id: data.game.id,
+    mode: data.game.mode,
+    me: data.game.master,
     rival: {},
     isMaster: true
   });
@@ -59,6 +63,7 @@ function onGetListGame(data){
 }
 
 function onJoinGame(data){
+  setLeavingAlert();
   store.commit('setPlayingGame', {
     id: data.game.id,
     mode: data.game.mode,
@@ -86,51 +91,31 @@ function onSetGameMode(data){
   }
 }
 
-function onSetGameCharacter(data){
-  let character;
+function createPlayer(data){
+  let id = data.character.id;
+  let name = data.character.name;
   let health = data.character.health;
   let attack = data.character.attack;
+  let characterType = data.character_type;
 
-  switch (data.character_type) {
+  switch (characterType) {
     case Character.KNIGHT.id:
-      character = new KnightPlayer(health, attack);
-      break;
+      return new KnightPlayer(id, name, health, attack);
     case Character.MEDUSA.id:
-      character = new MedusaPlayer(health, attack);
-      break;
+      return new MedusaPlayer(id, name, health, attack);
     case Character.HOT_GIRL.id:
-      character = new HotGirlPlayer(health, attack);
-      break;
+      return new HotGirlPlayer(id, name, health, attack);
     case Character.DRACULA.id:
-      character = new DraculaPlayer(health, attack);
-      break;
-    default:
-      console.log('NOT OK');
-      break;
+      return new DraculaPlayer(id, name, health, attack);
   }
+}
 
+function onSetGameCharacter(data){
+  let character = createPlayer(data);
   store.commit('setGameCharacter', character);
 }
 
 function onSetRivalCharacter(data){
-  let character;
-  let health = data.character.health;
-  let attack = data.character.attack;
-
-  switch (data.character_type) {
-    case Character.KNIGHT:
-      character = new KnightPlayer(health, attack);
-      break;
-    case Character.MEDUSA:
-      character = new MedusaPlayer(health, attack);
-      break;
-    case Character.HOT_GIRL:
-      character = new HotGirlPlayer(health, attack);
-      break;
-    case Character.DRACULA:
-      character = new DraculaPlayer(health, attack);
-      break;
-  }
-
-  store.commit('setGameCharacter', character);
+  let character = createPlayer(data);
+  store.commit('setRivalCharacter', character);
 }

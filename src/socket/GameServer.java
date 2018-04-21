@@ -98,6 +98,10 @@ public class GameServer {
                 onStartGame(message, userSession);
                 System.out.println("ACTION_START_GAME");
                 break;
+            case READY:
+                onReady(message, userSession);
+                System.out.println("ACTION_READY");
+                break;
             default:
 
         }
@@ -138,9 +142,16 @@ public class GameServer {
 
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
-        content.addProperty("game_id", game.getId());
-        response.setStatus(200);
-        response.setContent(content);
+        try {
+            content.add("game", game.getStateAsJson());
+            response.setStatus(200);
+            response.setContent(content);
+        } catch (Exception e){
+            e.printStackTrace();
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
 
         userSession.getAsyncRemote().sendObject(response);
     }
@@ -282,5 +293,22 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(500);
         }
+    }
+
+    private void onReady(Message message, Session userSession) {
+//        Player player = players.get(userSession.getId());
+//        Message response = new Message();
+//        JsonObject content = new JsonObject();
+//
+//        try {
+//            int gameId = message.getContent().get("game_id").getAsInt();
+//            Game game = games.get(gameId);
+//
+//        } catch (Exception e){
+//            content.addProperty("message", e.getMessage());
+//            response.setContent(content);
+//            response.setStatus(500);
+//        }
+//
     }
 }

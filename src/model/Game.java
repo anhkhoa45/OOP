@@ -1,8 +1,6 @@
 package model;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import socket.GameCharacter;
 
 public class Game {
     public static final int MODE_NORMAL = 0;
@@ -111,11 +109,13 @@ public class Game {
 
         json.addProperty("id", this.id);
         json.addProperty("mode", this.mode);
-        json.add("master", this.master.getStateAsJson());
-        json.add("guest", this.guest.getStateAsJson());
-        json.addProperty("question", this.question.getValue());
+        json.addProperty("question", this.question != null ? this.question.getValue() : "");
         json.addProperty("guest_ready", this.guestReady);
         json.addProperty("started", this.started);
+        json.add("master", this.master.getStateAsJson());
+        if(this.guest != null) {
+            json.add("guest", this.guest.getStateAsJson());
+        }
 
         return json;
     }

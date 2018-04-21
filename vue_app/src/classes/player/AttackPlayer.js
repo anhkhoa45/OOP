@@ -1,5 +1,7 @@
 class AttackPlayer {
-  constructor(health, attack){
+  constructor(id, name, health, attack){
+    this.id = id;
+    this.name = name;
     this.health = health;
     this.attack = attack;
     this.isStuned = false;
