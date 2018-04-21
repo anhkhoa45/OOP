@@ -1,3 +1,17 @@
+.welcome-screen {
+  min-height: 600px;
+  background: #ffffff url("../img/welcome-background.jpg") no-repeat center center;
+
+  h1, button {
+    color: white;
+  }
+}
+
+.btn-game-mode {
+  height: 100px;
+  width: 100px;
+}
+
 .slide-fade-enter-active {
   transition: all .3s ease;
 }

@@ -1,8 +1,8 @@
 import AttackPlayer from './AttackPlayer';
 
 class MedusaPlayer extends AttackPlayer {
-  constructor(health, attack){
-    super(health, attack);
+  constructor(id, name, health, attack){
+    super(id, name, health, attack);
   }
 }
 
