@@ -64,6 +64,14 @@ public class Game {
         this.guest = guest;
     }
 
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    public void setTimeStarted(long timeStarted) {
+        this.timeStarted = timeStarted;
+    }
+
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
     }
@@ -121,9 +129,9 @@ public class Game {
         return (master==null && guest==null);
     }
 
-
     public long getRemainTime() {
         long currentTime = System.nanoTime();
         return (currentTime - this.timeStarted);
     }
+
 }

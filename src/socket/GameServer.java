@@ -292,12 +292,4 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private boolean isGameOver(Message message) {
-        //neu da start thanh cong nhung 2 nguoi k choi hoac bang diem nhau qua lau thi sau 3p server phai tu goi ham nay
-
-        int gameId = message.getContent().get("game_id").getAsInt();
-        Game game = games.get(gameId);
-        return game.isGameOver();
-    }
-
 }
