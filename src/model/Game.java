@@ -3,6 +3,9 @@ package model;
 public class Game {
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ATTACK = 1;
+    public static final int GUEST_READY = 0;
+    public static final int STARTED = 1;
+    public static final int GAME_OVER = 2;
 
     public static int gameCount = 0;
 
@@ -11,8 +14,8 @@ public class Game {
     private Player master;
     private Player guest;
     private Question question;
-    private boolean guestReady = false;
-    private boolean started = false;
+    private int status;
+    private long timeStarted;
 
     public Game(){
         this.id = gameCount++;
@@ -61,6 +64,14 @@ public class Game {
         this.guest = guest;
     }
 
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    public void setTimeStarted(long timeStarted) {
+        this.timeStarted = timeStarted;
+    }
+
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
     }
@@ -84,6 +95,18 @@ public class Game {
         return this.guest != null;
     }
 
+    public boolean isGuestReady() {
+        return (status == GUEST_READY);
+    }
+
+    public boolean isStarted() {
+        return (status == STARTED);
+    }
+
+    public boolean isGameOver() {
+        return (status == GAME_OVER);
+    }
+
     public void addGuest(Player player){
         this.guest = player;
     }
@@ -93,16 +116,22 @@ public class Game {
     }
 
     public boolean start() {
-        if(this.isFull() && this.guestReady) {
+        if(this.isFull() && this.isGuestReady()) {
             this.question = new Question(1, 1, "This is a question");
-            this.started = true;
+            this.status = STARTED;
             return true;
         } else {
             return false;
         }
     }
 
-    public void destroy(){
-
+    public boolean destroy() {
+        return (master==null && guest==null);
     }
+
+    public long getRemainTime() {
+        long currentTime = System.nanoTime();
+        return (currentTime - this.timeStarted);
+    }
+
 }
