@@ -83,6 +83,7 @@ public class Game {
     public boolean checkMaster(Player player){
         return this.master.equals(player);
     }
+
     public boolean checkGuest(Player player){
         return this.guest.equals(player);
     }

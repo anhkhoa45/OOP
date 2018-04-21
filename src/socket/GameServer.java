@@ -14,8 +14,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 
-import static model.Game.GUEST_READY;
-import static model.Game.STARTED;
+import static model.Game.*;
 
 @ServerEndpoint(value="/game-server/{user_id}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
@@ -164,14 +163,41 @@ public class GameServer {
 
         response.setAction(GameAction.ANSWER_QUESTION);
 
-        String answer = message.getContent().get("answer").getAsString();
-        int score = player.answerQuestion(answer);
+        try {
+            String answer = message.getContent().get("answer").getAsString();
+            int score = player.answerQuestion(answer);
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            int mode = game.getMode();
+            if (mode == MODE_NORMAL) {
+                content.addProperty("score", score);
+                response.setStatus(200);
+                response.setContent(content);
+                userSession.getAsyncRemote().sendObject(response);
+            } else if (mode == MODE_ATTACK) {
+                AttackPlayer opponent;
+                if (game.getMaster() == player)
+                    opponent = (AttackPlayer)game.getGuest();
+                else opponent = (AttackPlayer)game.getMaster();
+                ((AttackPlayer)player).attack(opponent);
+                opponent.guard((AttackPlayer)player);
 
-        content.addProperty("score", score);
-        response.setStatus(200);
-        response.setContent(content);
+                if (((AttackPlayer) player).isDead() || opponent.isDead()) {
+                    game.setStatus(GAME_OVER);
+                    content.addProperty("status", GAME_OVER);
+                }
 
-        userSession.getAsyncRemote().sendObject(response);
+                content.addProperty("score", score);
+                response.setStatus(200);
+                response.setContent(content);
+                userSession.getAsyncRemote().sendObject(response);
+                opponent.getSession().getAsyncRemote().sendObject(response);
+            }
+        } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
     }
 
     private void onGetListGame(Message message, Session userSession) {
@@ -283,9 +309,7 @@ public class GameServer {
     private void onStartGame(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         Message response = new Message();
-        Message rivalMessage = new Message();
         JsonObject content = new JsonObject();
-        JsonObject rivalMessageContent = new JsonObject();
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
@@ -297,12 +321,8 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(200);
 
-            rivalMessageContent.addProperty("status", STARTED);
-            rivalMessage.setContent(content);
-            rivalMessage.setStatus(200);
-
             userSession.getAsyncRemote().sendObject(response);
-            game.getGuest().getSession().getAsyncRemote().sendObject(rivalMessage);
+            game.getGuest().getSession().getAsyncRemote().sendObject(response);
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setContent(content);
@@ -313,9 +333,7 @@ public class GameServer {
     private void onReady(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         Message response = new Message();
-        Message rivalMessage = new Message();
         JsonObject content = new JsonObject();
-        JsonObject rivalMessageContent = new JsonObject();
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
@@ -327,12 +345,8 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(200);
 
-            rivalMessageContent.addProperty("status", GUEST_READY);
-            rivalMessage.setContent(content);
-            rivalMessage.setStatus(200);
-
             userSession.getAsyncRemote().sendObject(response);
-            game.getMaster().getSession().getAsyncRemote().sendObject(rivalMessage);
+            game.getMaster().getSession().getAsyncRemote().sendObject(response);
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setContent(content);
