@@ -51,8 +51,10 @@ public class GameServer {
         Player player = players.get(userSession.getId());
         players.remove(userSession.getId());
         for (Game g : games.values()) {
-            if (g.checkMaster(player))
-                games.remove(g.getId());
+            if (g.checkMaster(player) || g.checkGuest(player)) {
+                leaveGame(g.getId(), userSession);
+                break;
+            }
         }
     }
 
@@ -356,24 +358,29 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private void onLeaveGame(Message message, Session userSession) {
+    private void leaveGame(int gameId, Session userSession) {
+        Message response = new Message();
         Player player = players.get(userSession.getId());
+
+        Game game = games.get(gameId);
+        response.setStatus(200);
+        if (game.checkGuest(player)) {
+            game.getMaster().getSession().getAsyncRemote().sendObject(response);
+        } else {
+            games.remove(gameId);
+            game.getGuest().getSession().getAsyncRemote().sendObject(response);
+        }
+    }
+
+    private void onLeaveGame(Message message, Session userSession) {
         JsonObject content = new JsonObject();
         Message response = new Message();
 
         response.setAction(GameAction.LEAVE_GAME);
 
         try {
-            response.setStatus(200);
-            response.setContent(content);
             int gameId = message.getContent().get("game_id").getAsInt();
-            Game game = games.get(gameId);
-            if (game.checkGuest(player)) {
-                game.getMaster().getSession().getAsyncRemote().sendObject(response);
-            } else {
-                games.remove(gameId);
-                game.getGuest().getSession().getAsyncRemote().sendObject(response);
-            }
+            leaveGame(gameId, userSession);
         } catch (Exception e){
             content.addProperty("message", e.getMessage());
             response.setStatus(500);
