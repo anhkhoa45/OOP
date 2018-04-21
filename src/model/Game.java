@@ -74,6 +74,8 @@ public class Game {
         this.timeStarted = timeStarted;
     }
 
+    public void setStatus(int status) { this.status = status; }
+
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
     }
