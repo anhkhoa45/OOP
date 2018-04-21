@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.JsonObject;
+
 public class Game {
     public static final int MODE_NORMAL = 0;
     public static final int MODE_ATTACK = 1;
@@ -134,4 +136,18 @@ public class Game {
         return (currentTime - this.timeStarted);
     }
 
+    public JsonObject getStateAsJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("id", this.id);
+        json.addProperty("mode", this.mode);
+        json.addProperty("question", this.question != null ? this.question.getValue() : "");
+        json.addProperty("status", this.status);
+        json.add("master", this.master.getStateAsJson());
+        if (this.guest != null) {
+            json.add("guest", this.guest.getStateAsJson());
+        }
+
+        return json;
+    }
 }

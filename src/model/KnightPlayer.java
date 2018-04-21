@@ -1,5 +1,8 @@
 package model;
 
+import com.google.gson.JsonObject;
+import socket.GameCharacter;
+
 public class KnightPlayer extends AttackPlayer {
 
     public KnightPlayer() {
@@ -14,7 +17,7 @@ public class KnightPlayer extends AttackPlayer {
     }
 
     public void attack(AttackPlayer guardPlayer) {
-        if (this.isDead() || this.isStuned) {
+        if (this.isDead() || this.isStunned) {
             return;
         }
         if (isPowered) {
@@ -46,5 +49,12 @@ public class KnightPlayer extends AttackPlayer {
     public boolean opponentHasCorrectAnswer(AttackPlayer guardPlayer) {
         Answer answer = guardPlayer.answers.get(guardPlayer.answers.size()-1);
         return this.answers.contains(answer);
+    }
+
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("character_type", GameCharacter.KNIGHT);
+        return json;
     }
 }

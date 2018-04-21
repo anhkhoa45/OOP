@@ -85,6 +85,13 @@ public class GameServer {
                 onSetGameCharacter(message, userSession);
                 System.out.println("ACTION_SET_GAME_CHARACTER");
                 break;
+            case START_GAME:
+                onStartGame(message, userSession);
+                System.out.println("ACTION_START_GAME");
+                break;
+            case READY:
+                onReady(message, userSession);
+                System.out.println("ACTION_READY");
             case LEAVE_GAME:
                 onLeaveGame(message, userSession);
                 System.out.println("ACTION_LEAVE_GAME");
@@ -129,10 +136,18 @@ public class GameServer {
 
         Game game = new Game(player);
         GameServer.games.put(game.getId(), game);
-        game.setTimeStarted(System.nanoTime());
-        content.addProperty("game_id", game.getId());
-        response.setStatus(200);
-        response.setContent(content);
+
+        try {
+            content.add("game", game.getStateAsJson());
+            response.setStatus(200);
+            response.setContent(content);
+        } catch (Exception e){
+            e.printStackTrace();
+            GameServer.games.remove(game.getId());
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
 
         userSession.getAsyncRemote().sendObject(response);
     }
@@ -260,6 +275,37 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
+    private void onStartGame(Message message, Session userSession) {
+        Player player = players.get(userSession.getId());
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+        } catch (Exception e){
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+    }
+
+    private void onReady(Message message, Session userSession) {
+//        Player player = players.get(userSession.getId());
+//        Message response = new Message();
+//        JsonObject content = new JsonObject();
+//
+//        try {
+//            int gameId = message.getContent().get("game_id").getAsInt();
+//            Game game = games.get(gameId);
+//
+//        } catch (Exception e){
+//            content.addProperty("message", e.getMessage());
+//            response.setContent(content);
+//            response.setStatus(500);
+//        }
+//
+    }
     private void onLeaveGame(Message message, Session userSession) {
         Player player = players.get(userSession.getId());
         JsonObject content = new JsonObject();
@@ -291,5 +337,4 @@ public class GameServer {
 
         userSession.getAsyncRemote().sendObject(response);
     }
-
 }

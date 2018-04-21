@@ -1,5 +1,8 @@
 package model;
 
+import com.google.gson.JsonObject;
+import socket.GameCharacter;
+
 import javax.websocket.Session;
 import java.util.Random;
 
@@ -24,7 +27,7 @@ public class DracularPlayer extends AttackPlayer {
 
     @Override
     public void attack(AttackPlayer guardPlayer) {
-        if (this.isDead() || this.isStuned) {
+        if (this.isDead() || this.isStunned) {
             return;
         }
         if (isPowered) {
@@ -49,8 +52,16 @@ public class DracularPlayer extends AttackPlayer {
         if (!this.isPowered) {
             this.isPowered = true;
         } else {
-            guardPlayer.isBlack = true;
+            guardPlayer.isBlackout = true;
             //chuyen man hinh thanh mau den trong 10s
         }
+    }
+
+
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("character_type", GameCharacter.DRACULA);
+        return json;
     }
 }

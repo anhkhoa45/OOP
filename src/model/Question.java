@@ -22,6 +22,10 @@ public class Question {
         this.value = value;
     }
 
+    public String getValue(){
+        return this.value;
+    }
+
     public ArrayList<String> getAnswerList(){   //get correct answer in db
         ArrayList<String> list= new ArrayList<String>();
         list.add("Cat");

@@ -1,5 +1,10 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
 import javax.websocket.Session;
 import java.util.ArrayList;
 
@@ -46,5 +51,21 @@ public class Player {
             return this.id == ((Player) obj).getId();
         }
         return false;
+    }
+
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = new JsonObject();
+        Gson gson = new Gson();
+        JsonElement answers = gson.toJsonTree(this.answers, new TypeToken<ArrayList<Answer>>() {}.getType());
+
+        if (!answers.isJsonArray()) {
+            throw new RuntimeException("Get player state failed");
+        }
+
+        json.addProperty("id", this.id);
+        json.add("answers", answers.getAsJsonArray());
+        json.addProperty("score", this.score);
+
+        return json;
     }
 }
