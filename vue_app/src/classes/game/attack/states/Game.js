@@ -1,7 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-import Mushroom from '../sprites/Mushroom'
-import { fetchWeather } from '../../api'
+import Mushroom from '../sprites/Knight'
 
 export default class extends Phaser.State {
   init() {

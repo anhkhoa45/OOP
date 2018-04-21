@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "phaser": "^2.6.2",
+    "phaser": "^3.6.0",
+    "raw-loader": "^0.5.1",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

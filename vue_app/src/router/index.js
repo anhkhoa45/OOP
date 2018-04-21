@@ -9,6 +9,7 @@ import GameLobby from '../components/GameLobby'
 import ChooseMode from '../components/ChooseMode'
 import AttackGame from '../components/AttackGame'
 import NormalGame from '../components/NormalGame'
+import AttackGameFight from '../components/AttackGameFight'
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,7 @@ let routes = [
   {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
   {path: '/game-box/attack', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
   {path: '/game-box/normal', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
+  {path: '/playing/attack', name: 'attackGameFight', component: AttackGameFight},
 ];
 
 const router = new VueRouter({
