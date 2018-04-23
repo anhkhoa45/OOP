@@ -7,6 +7,14 @@ public class Message {
     private GameAction action;
     private JsonObject content;
 
+    public Message() {}
+
+    public Message(int status, GameAction action, JsonObject content) {
+        this.status = status;
+        this.action = action;
+        this.content = content;
+    }
+
     public int getStatus() {
         return status;
     }

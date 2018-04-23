@@ -1,25 +1,25 @@
 package model;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import javax.websocket.Session;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private int id;
     protected ArrayList<Answer> answers = new ArrayList<Answer>();
     private transient Session session;
-    private int score;
 
     public Player() {}
 
     public Player(int id, Session session) {
         this.id = id;
         this.session = session;
-        this.score = 0;
     }
 
     public int getId() {
@@ -41,8 +41,8 @@ public class Player {
     public void leaveGame(){
     }
 
-    public int answerQuestion(String answer){
-        return 1;
+    public void addAnswer(Answer answer){
+        this.answers.add(answer);
     }
 
     @Override
@@ -56,15 +56,15 @@ public class Player {
     public JsonObject getStateAsJson() throws RuntimeException {
         JsonObject json = new JsonObject();
         Gson gson = new Gson();
-        JsonElement answers = gson.toJsonTree(this.answers, new TypeToken<ArrayList<Answer>>() {}.getType());
+        List<Answer> e = this.answers;
+        JsonElement a = gson.toJsonTree(e, new TypeToken<List<Answer>>() {}.getType());
 
-        if (!answers.isJsonArray()) {
+        if (!a.isJsonArray()) {
             throw new RuntimeException("Get player state failed");
         }
 
         json.addProperty("id", this.id);
-        json.add("answers", answers.getAsJsonArray());
-        json.addProperty("score", this.score);
+        json.add("answers", a.getAsJsonArray());
 
         return json;
     }

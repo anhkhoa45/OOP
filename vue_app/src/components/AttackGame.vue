@@ -5,15 +5,15 @@
         <div class="card">
           <div class="card-body">
             <h5>Master</h5>
+            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
             <p>{{ master ? master.id : "" }}</p>
             <p>{{ masterCharacterType }}</p>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
           </div>
         </div>
       </div>
       <div class="col-sm-6">
         <label for="slcCharacter">Choose your character</label>
-        <select v-model="character" id="slcCharacter">
+        <select v-model="character" id="slcCharacter" :disabled="!guest.id">
           <option value="-1">Character</option>
           <option v-for="character in characters"
                   :value="character.id">
@@ -28,9 +28,10 @@
         <div class="card">
           <div class="card-body">
             <h5>Guest</h5>
+            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
             <p>{{ guest ? guest.id : "" }}</p>
             <p>{{ guestCharacterType }}</p>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
+            <p v-show="guestIsReady">Ready!</p>
           </div>
         </div>
       </div>
@@ -58,6 +59,11 @@
     watch: {
       character(){
         this.changeCharacter();
+      },
+      guest(){
+        if(!this.guest) {
+          this.character = -1;
+        }
       }
     },
     computed: {

@@ -12,6 +12,14 @@
   width: 100px;
 }
 
+.answer-box {
+  min-height: 500px;
+
+  &.left-box {
+    border-right: grey solid 1px;
+  }
+}
+
 .slide-fade-enter-active {
   transition: all .3s ease;
 }

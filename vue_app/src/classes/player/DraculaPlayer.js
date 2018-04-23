@@ -1,7 +1,7 @@
 import AttackPlayer from './AttackPlayer';
 
 class DraculaPlayer extends AttackPlayer {
-  constructor(id, name, health, attack){
+  constructor(id, name, avatar, health, attack){
     super(id, name, health, attack);
   }
 }

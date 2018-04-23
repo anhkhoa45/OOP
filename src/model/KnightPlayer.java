@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import socket.GameCharacter;
 
 public class KnightPlayer extends AttackPlayer {
-
     public KnightPlayer() {
+        super();
         this.health = 120;
         this.attack = 12;
     }
@@ -16,39 +16,34 @@ public class KnightPlayer extends AttackPlayer {
         this.attack = 12;
     }
 
+    @Override
     public void attack(AttackPlayer guardPlayer) {
         if (this.isDead() || this.isStunned) {
             return;
         }
-        if (isPowered) {
-            this.power(guardPlayer);
-        } else {
-            guardPlayer.health -= this.attack;
-            guardPlayer.guard(this);
+
+        if(!guardPlayer.guard(this)){
+            guardPlayer.takeDamage(this.attack);
+            if (isPowered) this.attack += 2;
         }
     }
 
     @Override
     public boolean guard(AttackPlayer attackPlayer) {
-        return true;
+        return false;
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+
+        if(this.isPowered) this.attack = 12;
     }
 
     @Override
     public void power(AttackPlayer guardPlayer) {
-        if (this.isPowered == false) {
-            this.isPowered = true;
-        }
-        if (numBeingAttacked>5 && this.isPowered==true) {
-            this.attack += (numBeingAttacked-5)*2;
-        }
-        if (opponentHasCorrectAnswer(guardPlayer)) {
-            this.attack = 12;
-        }
-    }
-    
-    public boolean opponentHasCorrectAnswer(AttackPlayer guardPlayer) {
-        Answer answer = guardPlayer.answers.get(guardPlayer.answers.size()-1);
-        return this.answers.contains(answer);
+        if (numBeingAttacked < 5) return;
+        if(!this.isPowered) this.isPowered = true;
     }
 
     @Override

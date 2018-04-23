@@ -3,7 +3,6 @@ package model;
 import com.google.gson.JsonObject;
 import socket.GameCharacter;
 
-import javax.websocket.Session;
 import java.util.Random;
 
 public class DracularPlayer extends AttackPlayer {
@@ -11,6 +10,7 @@ public class DracularPlayer extends AttackPlayer {
     private int luckyNumber;
 
     public DracularPlayer() {
+        super();
         this.health = 100;
         this.attack = 6;
         Random random = new Random();
@@ -30,13 +30,10 @@ public class DracularPlayer extends AttackPlayer {
         if (this.isDead() || this.isStunned) {
             return;
         }
-        if (isPowered) {
-            this.power(guardPlayer);
-        } else {
-            if (!guardPlayer.guard(this)) {
-                this.health += this.attack / 2;
-                guardPlayer.health -= this.attack;
-            }
+
+        if (!guardPlayer.guard(this)) {
+            this.health += this.attack / 2;
+            guardPlayer.takeDamage(attack);
         }
     }
 
@@ -49,14 +46,10 @@ public class DracularPlayer extends AttackPlayer {
 
     @Override
     public void power(AttackPlayer guardPlayer) {
-        if (!this.isPowered) {
-            this.isPowered = true;
-        } else {
-            guardPlayer.isBlackout = true;
-            //chuyen man hinh thanh mau den trong 10s
-        }
+        if (numBeingAttacked < 5) return;
+        if(!this.isPowered) this.isPowered = true;
+        guardPlayer.isBlackout = true;
     }
-
 
     @Override
     public JsonObject getStateAsJson() throws RuntimeException {

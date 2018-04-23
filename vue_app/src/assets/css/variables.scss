@@ -5,3 +5,23 @@
 .margin-top-10 {
   margin-top: 10px;
 }
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.positive-state {
+  color: lawngreen;
+}
+
+.negative-state {
+  color: tomato;
+}
+
+.attack-game-box {
+  .blacked-out {
+    z-index: 1;
+    background: black;
+    height: 600px;
+  }
+}

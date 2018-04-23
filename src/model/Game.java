@@ -20,11 +20,11 @@ public class Game {
     private int status;
     private long timeStarted;
 
-    public Game(){
+    public Game() {
         this.id = gameCount++;
     }
 
-    public Game(Player player){
+    public Game(Player player) {
         this.id = gameCount++;
         this.master = player;
         this.status = INITIAL;
@@ -76,31 +76,35 @@ public class Game {
         this.timeStarted = timeStarted;
     }
 
-    public int getStatus() { return status; }
+    public int getStatus() {
+        return status;
+    }
 
-    public void setStatus(int status) { this.status = status; }
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Player[] getPlayers() {
         return new Player[]{this.master, this.guest};
     }
 
-    public boolean checkMaster(Player player){
+    public boolean checkMaster(Player player) {
         return this.master.equals(player);
     }
 
-    public boolean checkGuest(Player player){
+    public boolean checkGuest(Player player) {
         return this.guest.equals(player);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.master == null && this.guest == null;
     }
 
-    public boolean isWaiting(){
+    public boolean isWaiting() {
         return this.guest == null;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return this.guest != null;
     }
 
@@ -116,11 +120,11 @@ public class Game {
         return (status == GAME_OVER);
     }
 
-    public void addGuest(Player player){
-        this.guest = player;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void removeGuest(){
+    public void removeGuest() {
         this.guest = null;
     }
 
@@ -136,7 +140,7 @@ public class Game {
     }
 
     public boolean destroy() {
-        return (master==null && guest==null);
+        return (master == null && guest == null);
     }
 
     public long getRemainTime() {

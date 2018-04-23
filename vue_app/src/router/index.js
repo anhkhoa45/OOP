@@ -10,6 +10,7 @@ import ChooseMode from '../components/ChooseMode'
 import AttackGame from '../components/AttackGame'
 import NormalGame from '../components/NormalGame'
 import AttackGameFight from '../components/AttackGameFight'
+import AttackGameResult from '../components/AttackGameResult'
 
 Vue.use(VueRouter);
 
@@ -18,9 +19,10 @@ let routes = [
   {path: '/welcome', name: 'welcomeScreen', component: WelcomeScreen, beforeEnter: Middleware.requireLogin},
   {path: '/game-lobby', name: 'gameLobby', component: GameLobby, beforeEnter: Middleware.requireLogin},
   {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
-  {path: '/game-box/attack', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
-  {path: '/game-box/normal', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
-  {path: '/playing/attack', name: 'attackGameFight', component: AttackGameFight},
+  {path: '/attack-game', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
+  {path: '/normal-game', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
+  {path: '/attack-game/play', name: 'attackGameFight', component: AttackGameFight, beforeEnter: Middleware.joinedGame},
+  {path: '/attack-game/result', name: 'attackGameResult', component: AttackGameResult, beforeEnter: Middleware.joinedGame},
 ];
 
 const router = new VueRouter({
