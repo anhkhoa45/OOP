@@ -45,6 +45,7 @@ public class MedusaPlayer extends AttackPlayer {
 
         if (this.checkDuplicateAnswer(a)) {
             freeze(5000, attackPlayer);
+            return true;
         }
         return false;
     }
