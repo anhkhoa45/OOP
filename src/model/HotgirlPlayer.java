@@ -13,6 +13,7 @@ import socket.GameCharacter;
  */
 public class HotgirlPlayer extends AttackPlayer {
     public HotgirlPlayer() {
+        super();
         this.health = 100;
         this.attack = 6;
     }
@@ -24,13 +25,20 @@ public class HotgirlPlayer extends AttackPlayer {
     }
 
     @Override
-    public void attack(AttackPlayer attackPlayer) {
+    public void attack(AttackPlayer guardPlayer) {
+        if (this.isDead() || this.isStunned) {
+            return;
+        }
 
+        if (!guardPlayer.guard(this)) {
+            guardPlayer.takeDamage(attack);
+        }
     }
 
     @Override
     public boolean guard(AttackPlayer attackPlayer) {
-        return true;
+        this.attack += 2;
+        return false;
     }
 
     @Override

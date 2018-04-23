@@ -28,13 +28,19 @@ public class Question {
 
     public ArrayList<String> getAnswerList(){   //get correct answer in db
         ArrayList<String> list= new ArrayList<String>();
-        list.add("Cat");
-        list.add("Dog");
+        list.add("cat");
+        list.add("dog");
+        list.add("rat");
+        list.add("house");
+        list.add("bird");
         return list;
     }
 
-    public boolean checkAnswer(Answer answer){
-        String s = "Cat";
-        return answer.getAnswer().equals("Cat");
+    public int checkAnswer(Answer answer){
+        if(this.getAnswerList().contains(answer.getAnswer().toLowerCase())){
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

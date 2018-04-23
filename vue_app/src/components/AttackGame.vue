@@ -5,15 +5,15 @@
         <div class="card">
           <div class="card-body">
             <h5>Master</h5>
+            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
             <p>{{ master ? master.id : "" }}</p>
             <p>{{ masterCharacterType }}</p>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
           </div>
         </div>
       </div>
       <div class="col-sm-6">
         <label for="slcCharacter">Choose your character</label>
-        <select v-model="character" id="slcCharacter">
+        <select v-model="character" id="slcCharacter" :disabled="!guest.id">
           <option value="-1">Character</option>
           <option v-for="character in characters"
                   :value="character.id">
@@ -21,16 +21,17 @@
           </option>
         </select>
 
-        <button type="button" @click="start" v-if="playingGame.isMaster">Start</button>
-        <button type="button" @click="ready" v-else>Ready</button>
+        <button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>
+        <button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>
       </div>
       <div class="col-sm-3">
         <div class="card">
           <div class="card-body">
             <h5>Guest</h5>
+            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
             <p>{{ guest ? guest.id : "" }}</p>
             <p>{{ guestCharacterType }}</p>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
+            <p v-show="guestIsReady">Ready!</p>
           </div>
         </div>
       </div>
@@ -42,6 +43,7 @@
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
+  import GameStatus from '../helper/game_status'
   import KnightPlayer from "../classes/player/KnightPlayer";
   import MedusaPlayer from "../classes/player/MedusaPlayer";
   import DraculaPlayer from "../classes/player/DraculaPlayer";
@@ -57,6 +59,11 @@
     watch: {
       character(){
         this.changeCharacter();
+      },
+      guest(){
+        if(!this.guest) {
+          this.character = -1;
+        }
       }
     },
     computed: {
@@ -75,6 +82,9 @@
       },
       guestCharacterType() {
         return this.getCharacterName(this.guest);
+      },
+      guestIsReady(){
+        return this.playingGame.status === GameStatus.GUEST_READY;
       }
     },
     methods: {
@@ -96,8 +106,18 @@
           }
         }));
       },
-      start(){},
-      ready(){}
+      start(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.START_GAME,
+          content: { game_id: this.playingGame.id }
+        }))
+      },
+      ready(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.GUEST_READY,
+          content: { game_id: this.playingGame.id }
+        }))
+      }
     }
   }
 </script>

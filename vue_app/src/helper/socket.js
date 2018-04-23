@@ -1,4 +1,5 @@
 import Action from '../helper/game_actions'
+import GameStatus from '../helper/game_status'
 import Mode from '../helper/game_modes'
 import Character from '../helper/game_characters'
 import store from '../store'
@@ -34,54 +35,63 @@ export function onMessage(event) {
       case Action.SET_RIVAL_CHARACTER:
         onSetRivalCharacter(content);
         break;
+      case Action.GUEST_READY:
+        onGuestReady(content);
+        break;
+      case Action.START_GAME:
+        onStartGame(content);
+        break;
+      case Action.GET_GAME_STATE:
+        onGetGameState(content);
+        break;
     }
   }
 }
 
-function setLeavingAlert(){
-  let leavingAlert = function () {
+function setLeavingAlert() {
+  window.onbeforeunload = function () {
     return "Leave current game ?";
   };
-  window.onbeforeunload = leavingAlert;
-  window.onblur = leavingAlert;
 }
 
-function onCreateGame(data){
+function onCreateGame(data) {
   setLeavingAlert();
   store.commit('setPlayingGame', {
     id: data.game.id,
     mode: data.game.mode,
     me: data.game.master,
     rival: {},
-    isMaster: true
+    isMaster: true,
+    status: GameStatus.INITIAL
   });
   router.push({name: 'chooseMode'});
 }
 
-function onGetListGame(data){
+function onGetListGame(data) {
   store.commit('setListGame', data);
 }
 
-function onJoinGame(data){
+function onJoinGame(data) {
   setLeavingAlert();
   store.commit('setPlayingGame', {
     id: data.game.id,
     mode: data.game.mode,
     me: data.game.guest,
     rival: data.game.master,
-    isMaster: false
+    isMaster: false,
+    status: GameStatus.INITIAL
   });
 
-  if(data.game.mode === Mode.ATTACK){
+  if (data.game.mode === Mode.ATTACK) {
     router.push({name: 'attackGame'});
   } else {
     router.push({name: 'normalGame'});
   }
 }
 
-function onSetGameMode(data){
+function onSetGameMode(data) {
   store.commit('setPlayingGameMode', data.game.mode);
-  switch (data.game.mode){
+  switch (data.game.mode) {
     case Mode.ATTACK:
       router.push({name: 'attackGame'});
       break;
@@ -91,31 +101,66 @@ function onSetGameMode(data){
   }
 }
 
-function createPlayer(data){
+function createPlayer(data) {
   let id = data.character.id;
   let name = data.character.name;
+  let avatar = data.character.avatar;
   let health = data.character.health;
   let attack = data.character.attack;
   let characterType = data.character_type;
 
   switch (characterType) {
     case Character.KNIGHT.id:
-      return new KnightPlayer(id, name, health, attack);
+      return new KnightPlayer(id, name, avatar, health, attack);
     case Character.MEDUSA.id:
-      return new MedusaPlayer(id, name, health, attack);
+      return new MedusaPlayer(id, name, avatar, health, attack);
     case Character.HOT_GIRL.id:
-      return new HotGirlPlayer(id, name, health, attack);
+      return new HotGirlPlayer(id, name, avatar, health, attack);
     case Character.DRACULA.id:
-      return new DraculaPlayer(id, name, health, attack);
+      return new DraculaPlayer(id, name, avatar, health, attack);
   }
 }
 
-function onSetGameCharacter(data){
+function onSetGameCharacter(data) {
   let character = createPlayer(data);
   store.commit('setGameCharacter', character);
 }
 
-function onSetRivalCharacter(data){
+function onSetRivalCharacter(data) {
   let character = createPlayer(data);
   store.commit('setRivalCharacter', character);
+}
+
+function onGuestReady(data) {
+  store.commit('setGameStatus', GameStatus.GUEST_READY);
+}
+
+function onStartGame(data) {
+  store.commit('setGameStatus', GameStatus.STARTED);
+  store.commit('setGameQuestion', data.game.question);
+
+  switch (data.game.mode) {
+    case Mode.ATTACK:
+      router.push({name: 'attackGameFight'});
+      break;
+    case Mode.NORMAL:
+      router.push({name: 'normalGame'});
+      break;
+  }
+}
+
+function onGetGameState(data){
+  store.commit('setGameStatus', data.game.status);
+
+  let me, rival;
+  if(store.state.playingGame.me.id === data.game.master.id){
+    me = data.game.master;
+    rival = data.game.guest;
+  } else {
+    rival = data.game.master;
+    me = data.game.guest;
+  }
+
+  store.commit('updateMyInfo', me);
+  store.commit('updateRivalInfo', rival);
 }

@@ -17,6 +17,7 @@ public class MedusaPlayer extends AttackPlayer {
     private int stunTime;
 
     public MedusaPlayer() {
+        super();
         this.health = 80;
         this.attack = 10;
     }
@@ -28,19 +29,25 @@ public class MedusaPlayer extends AttackPlayer {
     }
 
     @Override
-    public void attack(AttackPlayer attackPlayer) {
+    public void attack(AttackPlayer guardPlayer) {
+        if (this.isDead() || this.isStunned) {
+            return;
+        }
 
+        if(!guardPlayer.guard(this)){
+            guardPlayer.takeDamage(this.attack);
+        }
     }
 
     @Override
     public boolean guard(AttackPlayer attackPlayer) {
         Answer a = attackPlayer.answers.get(attackPlayer.answers.size() - 1);
-        if (this.answers.contains(a)) {
-            //attackPlayer.isStuned=true;
+
+        if (this.checkDuplicateAnswer(a)) {
             freeze(5000, attackPlayer);
             return true;
         }
-        return true;
+        return false;
     }
 
     @Override
