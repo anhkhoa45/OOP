@@ -23,14 +23,14 @@ public abstract class Character {
         this.numBeingAttacked = 0;
     }
 
-    public boolean checkDuplicateAnswer(Answer answer){
-        for(Answer a : this.answers) {
-            if(a.getAnswer().equals(answer.getAnswer())){
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean checkDuplicateAnswer(Answer answer){
+//        for(Answer a : this.answers) {
+//            if(a.getAnswer().equals(answer.getAnswer())){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
 
     public void takeDamage(int damage){
@@ -52,15 +52,14 @@ public abstract class Character {
         return this.health == 0;
     }
 
-//    @Override
-//    public JsonObject getStateAsJson() throws RuntimeException {
-//        JsonObject json = super.getStateAsJson();
-//        json.addProperty("health", this.health);
-//        json.addProperty("attack", this.attack);
-//        json.addProperty("isStunned", this.isStunned);
-//        json.addProperty("isPowered", this.isPowered);
-//        json.addProperty("isBlackout", this.isBlackout);
-//        json.addProperty("numBeingAttacked", this.numBeingAttacked);
-//        return json;
-//    }
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = new JsonObject();
+        json.addProperty("health", this.health);
+        json.addProperty("attack", this.attack);
+        json.addProperty("isStunned", this.isStunned);
+        json.addProperty("isPowered", this.isPowered);
+        json.addProperty("isBlackout", this.isBlackout);
+        json.addProperty("numBeingAttacked", this.numBeingAttacked);
+        return json;
+    }
 }

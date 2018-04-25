@@ -23,7 +23,7 @@
 //public class GameServer {
 //    private static HashMap<String, User> users = new HashMap<String, User>();
 //    private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
-//    private static List<Topic> topic = new ArrayList<>();
+//    private static List<Topic> topics = new ArrayList<>();
 //
 //    /**
 //     * Callback hook for Connection open events.
@@ -36,7 +36,7 @@
 //    @OnOpen
 //    public void onOpen(Session userSession, @PathParam("user_id") int userId) {
 //        System.out.println("New request received. Id: " + userSession.getId());
-//        User user = new User(user_id, userSession);
+//        User user = new User(userId, userSession);
 //        users.put(userSession.getId(), user);
 //    }
 //
@@ -128,7 +128,7 @@
 //        try {
 //            int gameId = message.getContent().get("game_id").getAsInt();
 //            Game game = games.get(gameId);
-//            game.setGuest(user);
+//            game.setUserGuest(user);
 //
 //            content.add("game", gson.toJsonTree(game));
 //            response.setStatus(200);
@@ -152,7 +152,7 @@
 //
 //        Game game = new Game(user);
 //        GameServer.games.put(game.getId(), game);
-//        game.setMaster(user);
+//        game.setUserMaster(user);
 //
 //        try {
 //            content.add("game", game.getStateAsJson());
@@ -165,7 +165,6 @@
 //            response.setContent(content);
 //            response.setStatus(500);
 //        }
-//
 //        userSession.getAsyncRemote().sendObject(response);
 //    }
 //
@@ -181,12 +180,13 @@
 //            int gameId = message.getContent().get("game_id").getAsInt();
 //            Game game = games.get(gameId);
 //            Answer a = new Answer(answer);
-//            int score = game.getQuestion().checkAnswer(a);
+//            int score = game.getTopic().getWordScore(a.getWord());
 //
 //            switch (game.getMode()) {
 //                case Game.MODE_NORMAL:
 //                    a.setScore(score);
-//                    user.addAnswer(a);
+//                    if (game.getUserMaster().equals(user))
+//                        game.getCharacterMaster().get(a);
 //                    break;
 //                case Game.MODE_ATTACK:
 //                    AttackUser p;

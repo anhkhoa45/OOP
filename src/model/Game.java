@@ -6,12 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_ATTACK = 1;
+
     public static int gameCount = 0;
 
     private int id;
-    private Character master;
-    private Character guest;
+    private User userMaster;
+    private User userGuest;
+    private Character characterMaster;
+    private Character characterGuest;
     private Topic topic;
+    private int mode;
     private GameStatus status;
     private long timeStarted;
 
@@ -20,16 +26,16 @@ public class Game {
         this.id = gameCount++;
     }
 
-    public Game(Character master) {
+    public Game(User userMaster) {
         this.id = gameCount++;
-        this.master = master;
+        this.userMaster = userMaster;
         this.status = GameStatus.INITIAL;
     }
 
-    public Game(Character master, Character guest) {
+    public Game(Character characterMaster, Character characterGuest) {
         this.id = gameCount++;
-        this.master = master;
-        this.guest = guest;
+        this.characterMaster = characterMaster;
+        this.characterGuest = characterGuest;
     }
 
     public int getId() {
@@ -40,20 +46,56 @@ public class Game {
         this.id = id;
     }
 
-    public Character getMaster() {
-        return master;
+    public User getUserMaster() {
+        return userMaster;
     }
 
-    public void setMaster(Character master) {
-        this.master = master;
+    public void setUserMaster(User userMaster) {
+        this.userMaster = userMaster;
     }
 
-    public Character getGuest() {
-        return guest;
+    public User getUserGuest() {
+        return userGuest;
     }
 
-    public void setGuest(Character guest) {
-        this.guest = guest;
+    public void setUserGuest(User userGuest) {
+        this.userGuest = userGuest;
+    }
+
+    public Character getCharacterMaster() {
+        return characterMaster;
+    }
+
+    public void setCharacterMaster(Character characterMaster) {
+        this.characterMaster = characterMaster;
+    }
+
+    public Character getCharacterGuest() {
+        return characterGuest;
+    }
+
+    public void setCharacterGuest(Character characterGuest) {
+        this.characterGuest = characterGuest;
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    public void setTimeStarted(long timeStarted) {
+        this.timeStarted = timeStarted;
     }
 
     public GameStatus getStatus() {
@@ -65,23 +107,23 @@ public class Game {
     }
 
     public boolean checkMaster(Character user) {
-        return this.master.equals(user);
+        return this.characterMaster.equals(user);
     }
 
     public boolean checkGuest(Character user) {
-        return this.guest.equals(user);
+        return this.characterGuest.equals(user);
     }
 
     public boolean isEmpty() {
-        return this.master == null && this.guest == null;
+        return this.characterMaster == null && this.characterGuest == null;
     }
 
     public boolean isWaiting() {
-        return this.guest == null;
+        return this.characterGuest == null;
     }
 
     public boolean isFull() {
-        return this.guest != null;
+        return this.characterGuest != null;
     }
 
     public boolean isGuestReady() {
@@ -101,7 +143,7 @@ public class Game {
     }
 
     public void removeGuest() {
-        this.guest = null;
+        this.characterGuest = null;
     }
 
     public boolean start() {
@@ -121,21 +163,20 @@ public class Game {
     }
 
     public boolean destroy() {
-        return (master == null && guest == null);
+        return (characterMaster == null && characterGuest == null);
     }
 
-//    public JsonObject getStateAsJson() {
-//        JsonObject json = new JsonObject();
-//
-//        json.addProperty("id", this.id);
-//        json.addProperty("mode", this.mode);
-//        json.addProperty("question", this.question != null ? this.question.getValue() : "");
-//        json.addProperty("status", this.status);
-//        json.add("master", this.master.getStateAsJson());
-//        if (this.guest != null) {
-//            json.add("guest", this.guest.getStateAsJson());
-//        }
-//
-//        return json;
-//    }
+    public JsonObject getStateAsJson() {
+        JsonObject json = new JsonObject();
+        json.addProperty("id", this.id);
+        json.addProperty("mode", this.mode);
+        json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
+        json.addProperty("status", this.status.toString());
+        json.add("characterMaster", this.characterMaster.getStateAsJson());
+        if (this.characterGuest != null) {
+            json.add("characterGuest", this.characterGuest.getStateAsJson());
+        }
+
+        return json;
+    }
 }
