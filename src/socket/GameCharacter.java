@@ -9,10 +9,10 @@ public class GameCharacter {
     public static final int DRACULA = 3;
 
     public static int getCharacterType(Player player){
-        if(player instanceof KnightPlayer) return KNIGHT;
-        if(player instanceof MedusaPlayer) return MEDUSA;
-        if(player instanceof HotgirlPlayer) return HOT_GIRL;
-        if(player instanceof DracularPlayer) return DRACULA;
+        if(player instanceof KnightCharacter) return KNIGHT;
+        if(player instanceof MedusaCharacter) return MEDUSA;
+        if(player instanceof HotgirlCharacter) return HOT_GIRL;
+        if(player instanceof DraculaCharacter) return DRACULA;
 
         return -1;
     }

@@ -2,35 +2,31 @@ package model;
 
 import com.google.gson.JsonObject;
 
-public class Game {
-    public static final int MODE_NORMAL = 0;
-    public static final int MODE_ATTACK = 1;
-    public static final int INITIAL = 0;
-    public static final int GUEST_READY = 1;
-    public static final int STARTED = 2;
-    public static final int GAME_OVER = 3;
+import java.util.ArrayList;
+import java.util.List;
 
+public class Game {
     public static int gameCount = 0;
 
     private int id;
-    private int mode;
-    private Player master;
-    private Player guest;
-    private Question question;
-    private int status;
+    private Character master;
+    private Character guest;
+    private Topic topic;
+    private GameStatus status;
     private long timeStarted;
+
 
     public Game() {
         this.id = gameCount++;
     }
 
-    public Game(Player player) {
+    public Game(Character master) {
         this.id = gameCount++;
-        this.master = player;
-        this.status = INITIAL;
+        this.master = master;
+        this.status = GameStatus.INITIAL;
     }
 
-    public Game(Player master, Player guest) {
+    public Game(Character master, Character guest) {
         this.id = gameCount++;
         this.master = master;
         this.guest = guest;
@@ -44,56 +40,36 @@ public class Game {
         this.id = id;
     }
 
-    public int getMode() {
-        return mode;
-    }
-
-    public void setMode(int mode) {
-        this.mode = mode;
-    }
-
-    public Player getMaster() {
+    public Character getMaster() {
         return master;
     }
 
-    public void setMaster(Player master) {
+    public void setMaster(Character master) {
         this.master = master;
     }
 
-    public Player getGuest() {
+    public Character getGuest() {
         return guest;
     }
 
-    public void setGuest(Player guest) {
+    public void setGuest(Character guest) {
         this.guest = guest;
     }
 
-    public long getTimeStarted() {
-        return timeStarted;
-    }
-
-    public void setTimeStarted(long timeStarted) {
-        this.timeStarted = timeStarted;
-    }
-
-    public int getStatus() {
+    public GameStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(GameStatus status) {
         this.status = status;
     }
 
-    public Player[] getPlayers() {
-        return new Player[]{this.master, this.guest};
+    public boolean checkMaster(Character user) {
+        return this.master.equals(user);
     }
 
-    public boolean checkMaster(Player player) {
-        return this.master.equals(player);
-    }
-
-    public boolean checkGuest(Player player) {
-        return this.guest.equals(player);
+    public boolean checkGuest(Character user) {
+        return this.guest.equals(user);
     }
 
     public boolean isEmpty() {
@@ -109,19 +85,19 @@ public class Game {
     }
 
     public boolean isGuestReady() {
-        return (status == GUEST_READY);
+        return (status == GameStatus.GUEST_READY);
     }
 
     public boolean isStarted() {
-        return (status == STARTED);
+        return (status == GameStatus.STARTED);
     }
 
     public boolean isGameOver() {
-        return (status == GAME_OVER);
+        return (status == GameStatus.GAME_OVER);
     }
 
-    public Question getQuestion() {
-        return question;
+    public Topic getTopic() {
+        return topic;
     }
 
     public void removeGuest() {
@@ -130,17 +106,13 @@ public class Game {
 
     public boolean start() {
         if (this.isFull() && this.isGuestReady()) {
-            this.status = STARTED;
+            this.status = GameStatus.STARTED;
             this.timeStarted = System.nanoTime();
-            this.question = new Question(1, 1, "This is a question");
+            this.topic = TopicFactory.getRandomTopic();
             return true;
         } else {
             return false;
         }
-    }
-
-    public boolean destroy() {
-        return (master == null && guest == null);
     }
 
     public long getRemainTime() {
@@ -148,18 +120,22 @@ public class Game {
         return (currentTime - this.timeStarted);
     }
 
-    public JsonObject getStateAsJson() {
-        JsonObject json = new JsonObject();
-
-        json.addProperty("id", this.id);
-        json.addProperty("mode", this.mode);
-        json.addProperty("question", this.question != null ? this.question.getValue() : "");
-        json.addProperty("status", this.status);
-        json.add("master", this.master.getStateAsJson());
-        if (this.guest != null) {
-            json.add("guest", this.guest.getStateAsJson());
-        }
-
-        return json;
+    public boolean destroy() {
+        return (master == null && guest == null);
     }
+
+//    public JsonObject getStateAsJson() {
+//        JsonObject json = new JsonObject();
+//
+//        json.addProperty("id", this.id);
+//        json.addProperty("mode", this.mode);
+//        json.addProperty("question", this.question != null ? this.question.getValue() : "");
+//        json.addProperty("status", this.status);
+//        json.add("master", this.master.getStateAsJson());
+//        if (this.guest != null) {
+//            json.add("guest", this.guest.getStateAsJson());
+//        }
+//
+//        return json;
+//    }
 }

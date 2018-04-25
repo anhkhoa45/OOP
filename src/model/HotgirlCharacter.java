@@ -11,21 +11,15 @@ import socket.GameCharacter;
 /**
  * @author Ngoc
  */
-public class HotgirlPlayer extends AttackPlayer {
-    public HotgirlPlayer() {
+public class HotgirlCharacter extends Character {
+    public HotgirlCharacter() {
         super();
         this.health = 100;
         this.attack = 6;
     }
 
-    public HotgirlPlayer(Player player) {
-        super(player);
-        this.health = 100;
-        this.attack = 6;
-    }
-
     @Override
-    public void attack(AttackPlayer guardPlayer) {
+    public void attack(Character guardPlayer) {
         if (this.isDead() || this.isStunned) {
             return;
         }
@@ -36,13 +30,13 @@ public class HotgirlPlayer extends AttackPlayer {
     }
 
     @Override
-    public boolean guard(AttackPlayer attackPlayer) {
+    public boolean guard(Character attackPlayer) {
         this.attack += 2;
         return false;
     }
 
     @Override
-    public void power(AttackPlayer attackPlayer) {
+    public void power(Character attackPlayer) {
         if (attackPlayer.answers.size() == 5) {
             final long timeInterval = 5000;
             Runnable runnable = new Runnable() {
@@ -67,10 +61,10 @@ public class HotgirlPlayer extends AttackPlayer {
         }
     }
 
-    @Override
-    public JsonObject getStateAsJson() throws RuntimeException {
-        JsonObject json = super.getStateAsJson();
-        json.addProperty("character_type", GameCharacter.HOT_GIRL);
-        return json;
-    }
+//    @Override
+//    public JsonObject getStateAsJson() throws RuntimeException {
+//        JsonObject json = super.getStateAsJson();
+//        json.addProperty("character_type", GameCharacter.HOT_GIRL);
+//        return json;
+//    }
 }

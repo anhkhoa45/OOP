@@ -5,25 +5,21 @@
  */
 package model;
 
-/**
- *
- * @author Ngoc
- */
 public class Answer {
-    private String answer;
+    private String word;
     private int score;
 
-    public Answer(String answer){
-        this.answer = answer;
+    public Answer(String word){
+        this.word = word;
     }
 
-    public Answer(String answer, int score){
-        this.answer = answer;
+    public Answer(String word, int score){
+        this.word = word;
         this.score = score;
     }
 
     public String getAnswer(){
-        return this.answer;
+        return this.word;
     }
 
     public int getScore(){

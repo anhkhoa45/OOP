@@ -13,23 +13,23 @@ import java.lang.*;
 /**
  * @author Ngoc
  */
-public class MedusaPlayer extends AttackPlayer {
+public class MedusaCharacter extends Character {
     private int stunTime;
 
-    public MedusaPlayer() {
+    public MedusaCharacter() {
         super();
         this.health = 80;
         this.attack = 10;
     }
 
-    public MedusaPlayer(Player player) {
-        super(player);
-        this.health = 80;
-        this.attack = 10;
-    }
+//    public MedusaPlayer(Player player) {
+//        super(player);
+//        this.health = 80;
+//        this.attack = 10;
+//    }
 
     @Override
-    public void attack(AttackPlayer guardPlayer) {
+    public void attack(Character guardPlayer) {
         if (this.isDead() || this.isStunned) {
             return;
         }
@@ -40,7 +40,7 @@ public class MedusaPlayer extends AttackPlayer {
     }
 
     @Override
-    public boolean guard(AttackPlayer attackPlayer) {
+    public boolean guard(Character attackPlayer) {
         Answer a = attackPlayer.answers.get(attackPlayer.answers.size() - 1);
 
         if (this.checkDuplicateAnswer(a)) {
@@ -51,13 +51,13 @@ public class MedusaPlayer extends AttackPlayer {
     }
 
     @Override
-    public void power(AttackPlayer guardPlayer) {
+    public void power(Character guardPlayer) {
         if (this.answers.size() == 5) {
             freeze(10000, guardPlayer);
         }
     }
 
-    public void freeze(int time, AttackPlayer guardPlayer) {
+    public void freeze(int time, Character guardPlayer) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,10 +74,10 @@ public class MedusaPlayer extends AttackPlayer {
         }).start();
     }
 
-    @Override
-    public JsonObject getStateAsJson() throws RuntimeException {
-        JsonObject json = super.getStateAsJson();
-        json.addProperty("character_type", GameCharacter.MEDUSA);
-        return json;
-    }
+//    @Override
+//    public JsonObject getStateAsJson() throws RuntimeException {
+//        JsonObject json = super.getStateAsJson();
+//        json.addProperty("character_type", GameCharacter.MEDUSA);
+//        return json;
+//    }
 }

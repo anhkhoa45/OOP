@@ -1,6 +1,9 @@
 package model;
 
 import javax.persistence.*;
+import javax.websocket.Session;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +24,9 @@ public class User {
 
     @Column(name = "avatar")
     private String avatar;
+
+    private transient Session session;
+    private transient List<Game> playedGames = new ArrayList<>();
 
     public User() {}
 
@@ -70,5 +76,13 @@ public class User {
     }
 
     public void save(){
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }
