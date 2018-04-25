@@ -3,7 +3,9 @@ package model;
 import javax.persistence.*;
 import javax.websocket.Session;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -26,13 +28,14 @@ public class User {
     private String avatar;
 
     private transient Session session;
-    private transient List<Game> playedGames = new ArrayList<>();
+    private transient Set<Game> playedGames = new HashSet<>();
+    private transient Game currentGame = new Game();
 
     public User() {}
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public User(int id, Session session) {
+        this.id = id;
+        this.session = session;
     }
 
     public int getId() {
@@ -84,5 +87,21 @@ public class User {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    public Set<Game> getPlayedGames() {
+        return playedGames;
+    }
+
+    public void setPlayedGames(Set<Game> playedGames) {
+        this.playedGames = playedGames;
+    }
+
+    public Game getPlayingGame() {
+        return currentGame;
+    }
+
+    public void setPlayingGame(Game currentGame) {
+        this.currentGame = currentGame;
     }
 }

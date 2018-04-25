@@ -18,7 +18,7 @@ public class Answer {
         this.score = score;
     }
 
-    public String getAnswer(){
+    public String getWord(){
         return this.word;
     }
 
