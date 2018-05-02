@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6 offset-md-3">
       <form id="loginForm">
-        <section id="error">
+        <section style="display: none" id="error">
           <p style="color: red">Login failed!</p>
         </section>
         <div class="form-group">

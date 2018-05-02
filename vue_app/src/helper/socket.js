@@ -4,10 +4,10 @@ import Mode from '../helper/game_modes'
 import Character from '../helper/game_characters'
 import store from '../store'
 import router from '../router'
-import KnightPlayer from "../classes/player/KnightPlayer";
-import MedusaPlayer from "../classes/player/MedusaPlayer";
-import HotGirlPlayer from "../classes/player/HotGirlPlayer";
-import DraculaPlayer from "../classes/player/DraculaPlayer";
+import KnightPlayer from "../classes/character/KnightCharacter";
+import MedusaPlayer from "../classes/character/MedusaCharacter";
+import HotGirlPlayer from "../classes/character/HotGirlCharacter";
+import DraculaPlayer from "../classes/character/DraculaCharacter";
 
 export function onMessage(event) {
   let jsonObj = JSON.parse(event.data);
