@@ -3,7 +3,7 @@ package model;
 import com.google.gson.JsonObject;
 import socket.GameCharacter;
 
-public class KnightCharacter extends Character {
+public class KnightCharacter extends AttackCharacter {
     public KnightCharacter() {
         super();
         this.health = 120;
@@ -11,19 +11,18 @@ public class KnightCharacter extends Character {
     }
 
     @Override
-    public void attack(Character guardPlayer) {
+    public void attack(AttackCharacter guardCharacter) {
         if (this.isDead() || this.isStunned) {
             return;
         }
-
-        if(!guardPlayer.guard(this)){
-            guardPlayer.takeDamage(this.attack);
+        if (!guardCharacter.guard(this)){
+            guardCharacter.takeDamage(this.attack);
             if (isPowered) this.attack += 2;
         }
     }
 
     @Override
-    public boolean guard(Character attackPlayer) {
+    public boolean guard(AttackCharacter attackCharacter) {
         return false;
     }
 
@@ -35,15 +34,15 @@ public class KnightCharacter extends Character {
     }
 
     @Override
-    public void power(Character guardPlayer) {
+    public void power(AttackCharacter guardCharacter) {
         if (numBeingAttacked < 5) return;
         if(!this.isPowered) this.isPowered = true;
     }
 
-//    @Override
-//    public JsonObject getStateAsJson() throws RuntimeException {
-//        JsonObject json = super.getStateAsJson();
-//        json.addProperty("character_type", GameCharacter.KNIGHT);
-//        return json;
-//    }
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("character_type", GameCharacter.KNIGHT);
+        return json;
+    }
 }

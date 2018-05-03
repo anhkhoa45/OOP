@@ -6,37 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    public static final int MODE_NORMAL = 0;
-    public static final int MODE_ATTACK = 1;
-
     public static int gameCount = 0;
 
     private int id;
-    private User userMaster;
-    private User userGuest;
-    private Character characterMaster;
-    private Character characterGuest;
+    private Character masterCharacter;
+    private Character guestCharacter;
     private Topic topic;
     private int mode;
     private GameStatus status;
     private long timeStarted;
-
+    private long timeEnd;
 
     public Game() {
         this.id = gameCount++;
-    }
-
-    public Game(User userMaster) {
-        this.id = gameCount++;
-        this.userMaster = userMaster;
         this.status = GameStatus.INITIAL;
     }
 
-    public Game(Character characterMaster, Character characterGuest) {
-        this.id = gameCount++;
-        this.characterMaster = characterMaster;
-        this.characterGuest = characterGuest;
-    }
+//    public Game(Character masterCharacter, Character guestCharacter) {
+//        this.id = gameCount++;
+//        this.masterCharacter = masterCharacter;
+//        this.guestCharacter = guestCharacter;
+//    }
 
     public int getId() {
         return id;
@@ -44,38 +34,6 @@ public class Game {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public User getUserMaster() {
-        return userMaster;
-    }
-
-    public void setUserMaster(User userMaster) {
-        this.userMaster = userMaster;
-    }
-
-    public User getUserGuest() {
-        return userGuest;
-    }
-
-    public void setUserGuest(User userGuest) {
-        this.userGuest = userGuest;
-    }
-
-    public Character getCharacterMaster() {
-        return characterMaster;
-    }
-
-    public void setCharacterMaster(Character characterMaster) {
-        this.characterMaster = characterMaster;
-    }
-
-    public Character getCharacterGuest() {
-        return characterGuest;
-    }
-
-    public void setCharacterGuest(Character characterGuest) {
-        this.characterGuest = characterGuest;
     }
 
     public int getMode() {
@@ -106,24 +64,40 @@ public class Game {
         this.status = status;
     }
 
-    public boolean checkMaster(Character user) {
-        return this.characterMaster.equals(user);
+    public Character getMasterCharacter() {
+        return masterCharacter;
     }
 
-    public boolean checkGuest(Character user) {
-        return this.characterGuest.equals(user);
+    public void setMasterCharacter(Character masterCharacter) {
+        this.masterCharacter = masterCharacter;
+    }
+
+    public Character getGuestCharacter() {
+        return guestCharacter;
+    }
+
+    public void setGuestCharacter(Character guestCharacter) {
+        this.guestCharacter = guestCharacter;
+    }
+
+    public boolean checkMaster(Character character) {
+        return this.masterCharacter.equals(character);
+    }
+
+    public boolean checkGuest(Character character) {
+        return this.guestCharacter.equals(character);
     }
 
     public boolean isEmpty() {
-        return this.characterMaster == null && this.characterGuest == null;
+        return this.masterCharacter == null && this.guestCharacter == null;
     }
 
     public boolean isWaiting() {
-        return this.characterGuest == null;
+        return this.guestCharacter == null;
     }
 
     public boolean isFull() {
-        return this.characterGuest != null;
+        return this.guestCharacter != null;
     }
 
     public boolean isGuestReady() {
@@ -143,7 +117,7 @@ public class Game {
     }
 
     public void removeGuest() {
-        this.characterGuest = null;
+        this.guestCharacter = null;
     }
 
     public boolean start() {
@@ -157,13 +131,13 @@ public class Game {
         }
     }
 
-    public long getRemainTime() {
+    public long getPlayedTime() {
         long currentTime = System.nanoTime();
         return (currentTime - this.timeStarted);
     }
 
     public boolean destroy() {
-        return (characterMaster == null && characterGuest == null);
+        return (masterCharacter == null && guestCharacter == null);
     }
 
     public JsonObject getStateAsJson() {
@@ -172,11 +146,10 @@ public class Game {
         json.addProperty("mode", this.mode);
         json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
         json.addProperty("status", this.status.toString());
-        json.add("characterMaster", this.characterMaster.getStateAsJson());
-        if (this.characterGuest != null) {
-            json.add("characterGuest", this.characterGuest.getStateAsJson());
-        }
-
+//        json.add("masterCharacter", this.masterCharacter.getStateAsJson());
+//        if (this.guestCharacter != null) {
+//            json.add("guestCharacter", this.guestCharacter.getStateAsJson());
+//        }
         return json;
     }
 }

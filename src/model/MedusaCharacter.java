@@ -10,10 +10,7 @@ import socket.GameCharacter;
 
 import java.lang.*;
 
-/**
- * @author Ngoc
- */
-public class MedusaCharacter extends Character {
+public class MedusaCharacter extends AttackCharacter {
     private int stunTime;
 
     public MedusaCharacter() {
@@ -22,46 +19,38 @@ public class MedusaCharacter extends Character {
         this.attack = 10;
     }
 
-//    public MedusaPlayer(Player player) {
-//        super(player);
-//        this.health = 80;
-//        this.attack = 10;
-//    }
-
     @Override
-    public void attack(Character guardPlayer) {
+    public void attack(AttackCharacter guardCharacter) {
         if (this.isDead() || this.isStunned) {
             return;
         }
-
-        if(!guardPlayer.guard(this)){
-            guardPlayer.takeDamage(this.attack);
+        if(!guardCharacter.guard(this)){
+            guardCharacter.takeDamage(this.attack);
         }
     }
 
     @Override
-    public boolean guard(Character attackPlayer) {
-        Answer a = attackPlayer.answers.get(attackPlayer.answers.size() - 1);
-
-        if (this.answers.contains(a)) {
-            freeze(5000, attackPlayer);
+    public boolean guard(AttackCharacter attackCharacter) {
+        Answer a = attackCharacter.getAnswers().get(attackCharacter.getAnswers().size() - 1);
+        if (this.checkDuplicateAnswer(a)) {
+            freeze(5000, attackCharacter);
             return true;
         }
         return false;
     }
 
     @Override
-    public void power(Character guardPlayer) {
-        if (this.answers.size() == 5) {
-            freeze(10000, guardPlayer);
+    public void power(AttackCharacter guardCharacter) {
+        if (this.getAnswers().size() == 5) {
+            freeze(10000, guardCharacter);
         }
     }
 
-    public void freeze(int time, Character guardPlayer) {
+    public void freeze(int time, AttackCharacter guardCharacter) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                guardPlayer.isStunned = true;
+                guardCharacter.isStunned = true;
 
                 try {
                     Thread.sleep(time);
@@ -69,15 +58,15 @@ public class MedusaCharacter extends Character {
                     Thread.currentThread().interrupt();
                 }
 
-                guardPlayer.isStunned = false;
+                guardCharacter.isStunned = false;
             }
         }).start();
     }
 
-//    @Override
-//    public JsonObject getStateAsJson() throws RuntimeException {
-//        JsonObject json = super.getStateAsJson();
-//        json.addProperty("character_type", GameCharacter.MEDUSA);
-//        return json;
-//    }
+    @Override
+    public JsonObject getStateAsJson() throws RuntimeException {
+        JsonObject json = super.getStateAsJson();
+        json.addProperty("character_type", GameCharacter.MEDUSA);
+        return json;
+    }
 }

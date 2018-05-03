@@ -7,59 +7,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "name")
+    private static int id = 0;
     private String name;
-
-    @Column(name = "avatar")
-    private String avatar;
-
-    private transient Session session;
-    private transient Set<Game> playedGames = new HashSet<>();
-    private transient Game currentGame = new Game();
+    private Session session;
+    private Set<Game> playedGames = new HashSet<>();
+    private Game currentGame = new Game();
+    private GameRole currentGameRole;
 
     public User() {}
 
-    public User(int id, Session session) {
-        this.id = id;
+    public User(Session session) {
+        this.id++;
         this.session = session;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -68,17 +32,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public void save(){
     }
 
     public Session getSession() {
@@ -104,4 +57,35 @@ public class User {
     public void setPlayingGame(Game currentGame) {
         this.currentGame = currentGame;
     }
+
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public GameRole getCurrentGameRole() {
+        return currentGameRole;
+    }
+
+    public void setCurrentGameRole(GameRole currentGameRole) {
+        this.currentGameRole = currentGameRole;
+    }
+
+    public void addPlayedGame(Game game) {
+        playedGames.add(game);
+    }
+
+    public Character getRivalCharacter() {
+        if (currentGameRole == GameRole.MASTER)
+            return currentGame.getGuestCharacter();
+        else return currentGame.getMasterCharacter();
+    }
+
+    public void doAnswer() {
+
+    }
+
 }

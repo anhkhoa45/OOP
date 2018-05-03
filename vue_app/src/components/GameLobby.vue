@@ -20,7 +20,7 @@
           </button>
           <ul v-show="showListGame">
             <li v-for="game in games">
-              <a href="#" @click.prevent="joinGame(game.id)">
+                <a href="#" @click="joinGame(game.id)">
               {{ game.id }} - {{ game.guest ? '2/2' : '1/2' }}
               </a>
             </li>
