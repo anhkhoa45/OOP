@@ -15,7 +15,6 @@ public class GameCharacter {
         if(attackCharacter instanceof MedusaCharacter) return MEDUSA;
         if(attackCharacter instanceof HotgirlCharacter) return HOT_GIRL;
         if(attackCharacter instanceof DraculaCharacter) return DRACULA;
-
         return -1;
     }
 }
