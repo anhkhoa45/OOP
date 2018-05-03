@@ -55,7 +55,7 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         User user = users.get(userSession.getId());
-        user.setSession();
+        user.setOfflineState();
 //        for (Game g : games.values()) {
 //            if (g.checkMaster(user) || g.checkGuest(user)) {
 //                leaveGame(g.getId(), userSession);
@@ -152,13 +152,11 @@ public class GameServer {
 
         response.setAction(GameAction.CREATE_GAME);
 
-        Game game = new Game();
+        Game game = new Game(user);
         GameServer.games.put(game.getId(), game);
-        user.setCurrentGame(game);
-        user.setCurrentGameRole(GameRole.MASTER);
 
         try {
-            content.add("game", game.getStateAsJson());
+            content.addProperty("game_id", game.getId());
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e) {

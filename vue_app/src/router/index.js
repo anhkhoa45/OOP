@@ -15,9 +15,9 @@ import AttackGameResult from '../components/AttackGameResult'
 Vue.use(VueRouter);
 
 let routes = [
-  {path: '/', name: 'login', component: Login, beforeEnter: Middleware.redirectIfAuthenticated},
-  {path: '/welcome', name: 'welcomeScreen', component: WelcomeScreen, beforeEnter: Middleware.requireLogin},
-  {path: '/game-lobby', name: 'gameLobby', component: GameLobby, beforeEnter: Middleware.requireLogin},
+  // {path: '/', name: 'login', component: Login, beforeEnter: Middleware.redirectIfAuthenticated},
+  {path: '/', name: 'welcomeScreen', component: WelcomeScreen},
+  {path: '/game-lobby', name: 'gameLobby', component: GameLobby},
   {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
   {path: '/attack-game', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
   {path: '/normal-game', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
