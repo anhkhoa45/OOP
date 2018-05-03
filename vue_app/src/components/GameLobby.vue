@@ -75,12 +75,18 @@
       })
     },
     methods: {
+      getListGame() {
+        this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
+      },
       createNewGame() {
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
       },
       joinGame() {
         this.$router.push({name: 'waitingGameList'})
       }
+    },
+    created() {
+      this.$store.dispatch('connectSocket', this.getListGame);
     }
   }
 </script>

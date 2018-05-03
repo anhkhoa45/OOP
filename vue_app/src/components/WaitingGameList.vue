@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <h1>List game</h1>
-    <ul>
+    <div v-if="isEmpty">Game List Empty</div>
+    <ul v-else>
       <li v-for="game in games">
-        <div>{{ game }}</div>
+        <div>{{ game.id }}</div>
         <button>
           <a href="#" @click.prevent="joinGame">JOIN</a>
         </button>
@@ -22,12 +23,14 @@
         ...mapState({
           socketClient: state => state.socketClient,
           games: state => state.games
-        })
+        }),
+        isEmpty() {
+          if (this.games.length == 0)
+            return true;
+          return false;
+        }
       },
       methods : {
-        getListGame() {
-          this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
-        },
         joinGame(gameId) {
           this.socketClient.send(JSON.stringify({
             action: Action.JOIN_GAME,
@@ -35,10 +38,8 @@
               game_id: gameId
             }
           }));
+          this.$router.push({name: 'attackGame'})
         }
-      },
-      created() {
-        this.$store.dispatch('connectSocket', this.getListGame);
       }
     }
 </script>
