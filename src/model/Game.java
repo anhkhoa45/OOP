@@ -11,6 +11,8 @@ public class Game {
     private int id;
     private Character masterCharacter;
     private Character guestCharacter;
+    private User masterUser;
+    private User guestUser;
     private Topic topic;
     private int mode;
     private GameStatus status;
@@ -42,10 +44,6 @@ public class Game {
 
     public void setMode(int mode) {
         this.mode = mode;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
     }
 
     public long getTimeStarted() {
@@ -114,6 +112,10 @@ public class Game {
 
     public Topic getTopic() {
         return topic;
+    }
+    
+    public void setTopic(Topic topic){
+        this.topic=topic;
     }
 
     public void removeGuest() {

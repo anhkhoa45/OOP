@@ -12,8 +12,6 @@ public class User {
     private String name;
     private Session session;
     private Set<Game> playedGames = new HashSet<>();
-    private Game currentGame = new Game();
-    private GameRole currentGameRole;
 
     public User() {}
 
@@ -48,40 +46,6 @@ public class User {
 
     public void setPlayedGames(Set<Game> playedGames) {
         this.playedGames = playedGames;
-    }
-
-    public Game getPlayingGame() {
-        return currentGame;
-    }
-
-    public void setPlayingGame(Game currentGame) {
-        this.currentGame = currentGame;
-    }
-
-    public Game getCurrentGame() {
-        return currentGame;
-    }
-
-    public void setCurrentGame(Game currentGame) {
-        this.currentGame = currentGame;
-    }
-
-    public GameRole getCurrentGameRole() {
-        return currentGameRole;
-    }
-
-    public void setCurrentGameRole(GameRole currentGameRole) {
-        this.currentGameRole = currentGameRole;
-    }
-
-    public void addPlayedGame(Game game) {
-        playedGames.add(game);
-    }
-
-    public Character getRivalCharacter() {
-        if (currentGameRole == GameRole.MASTER)
-            return currentGame.getGuestCharacter();
-        else return currentGame.getMasterCharacter();
     }
 
     public void doAnswer() {
