@@ -38,7 +38,9 @@ public class GameServer {
     public void onOpen(Session userSession) {
         System.out.println("New request received. Id: " + userSession.getId());
         User user = new User(userSession);
-        users.put(userSession.getId(), user);
+        if (users.containsValue(user)) {
+            users.get(userSession.getId()).setOnlineState();
+        } else users.put(userSession.getId(), user);
     }
 
     /**
@@ -53,8 +55,7 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         User user = users.get(userSession.getId());
-        user.addPlayedGame(user.getCurrentGame());
-        users.remove(userSession.getId());
+        user.setSession();
 //        for (Game g : games.values()) {
 //            if (g.checkMaster(user) || g.checkGuest(user)) {
 //                leaveGame(g.getId(), userSession);
@@ -82,10 +83,10 @@ public class GameServer {
                 onJoinGame(message, userSession);
                 System.out.println("ACTION_JOIN_GAME");
                 break;
-//            case ANSWER_QUESTION:
-//                onAnswer(message, userSession);
-//                System.out.println("ACTION_ANSWER");
-//                break;
+            case ANSWER_QUESTION:
+                onAnswer(message, userSession);
+                System.out.println("ACTION_ANSWER");
+                break;
             case GET_LIST_GAMES:
                 onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
@@ -130,8 +131,7 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            user.setCurrentGame(game);
-            user.setCurrentGameRole(GameRole.GUEST);
+            game.setGuestUser(user);
 
             content.add("game", gson.toJsonTree(game));
             response.setStatus(200);
@@ -185,23 +185,22 @@ public class GameServer {
             Answer a = new Answer(answer);
             int score = game.getTopic().getWordScore(a.getWord());
             a.setScore(score);
-            GameMode mode=game.getMode();
-            switch (mode) {
-                case NORMAL:
+            switch (game.getMode()) {
+                case Game.MODE_NORMAL:
                     a.setScore(score);
-                    if (game.getMasterUser().equals(user))
-                        game.getMasterCharacter().addAnswer(a);
-                    else game.getGuestCharacter().addAnswer(a);
+                    if (game.getUserMaster().equals(user))
+                        game.getCharacterMaster().addAnswer(a);
+                    else game.getCharacterGuest().addAnswer(a);
                     break;
-                case ATTACK:
+                case Game.MODE_ATTACK:
                     model.Character p;
                     model.Character opponent;
-                    if (game.getMasterCharacter().equals(user)) {
-                        opponent = game.getGuestCharacter();
-                        p = game.getMasterCharacter();
+                    if (game.getCharacterMaster().equals(user)) {
+                        opponent = game.getCharacterGuest();
+                        p = game.getCharacterMaster();
                     } else {
-                        p = game.getGuestCharacter();
-                        opponent = game.getMasterCharacter();
+                        opponent = game.getCharacterMaster();
+                        p = game.getCharacterGuest();
                     }
 
                     if (opponent.checkDuplicateAnswer(a) || p.checkDuplicateAnswer(a)) {
@@ -209,11 +208,10 @@ public class GameServer {
                     }
                     a.setScore(score);
                     p.addAnswer(a);
-                    if (score != 0 || game.getMasterCharacter()instanceof MedusaCharacter || game.getGuestCharacter()instanceof MedusaCharacter) {
-                        AttackCharacter tmp1=(AttackCharacter)p;
-                        AttackCharacter tmp2=(AttackCharacter)opponent;
-                        tmp1.attack(tmp2);
-                        if (tmp1.isDead() || tmp2.isDead()) {
+                    if (score != 0 || game.getCharacterMaster() instanceof MedusaCharacter || game.getCharacterGuest() instanceof MedusaCharacter) {
+                        p.attack(opponent);
+
+                        if (p.isDead() || opponent.isDead()) {
                             game.setStatus(GAME_OVER);
                         }
                     }
@@ -261,7 +259,11 @@ public class GameServer {
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
-            int mode = message.getContent().get("mode").getAsInt();
+            int modeTmp = message.getContent().get("mode").getAsInt();
+            GameMode mode;
+            if (modeTmp == 1) {
+                mode = GameMode.ATTACK;
+            } else mode = GameMode.NORMAL;
             Game game = games.get(gameId);
             game.setMode(mode);
 
@@ -275,16 +277,6 @@ public class GameServer {
         }
         userSession.getAsyncRemote().sendObject(response);
     }
-
-//    private User getRivalUser(Game game, GameRole gameRole) {
-//        for (User u : users.values()) {
-//            if (u.getCurrentGame().equals(game)) {
-//                if (u.getCurrentGameRole() != gameRole)
-//                    return u;
-//            }
-//        }
-//        return null;
-//    }
 
     private void onSetGameCharacter(Message message, Session userSession) {
         Gson gson = new Gson();
@@ -325,14 +317,13 @@ public class GameServer {
             response.setStatus(200);
             rivalMessage = response;
 
-            if (game.getMasterUser().equals(user)) {
+            if (user.getCurrentGameRole() == GameRole.MASTER) {
                 game.setMasterCharacter(attackCharacter);
-                game.getMasterUser().getSession().getAsyncRemote().sendObject(rivalMessage);
             } else {
                 game.setGuestCharacter(attackCharacter);
-                game.getGuestUser().getSession().getAsyncRemote().sendObject(rivalMessage);
             }
-            
+            getRivalUser(game, user.getCurrentGameRole()).getSession().getAsyncRemote().sendObject(rivalMessage);
+
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
@@ -360,7 +351,7 @@ public class GameServer {
             response.setStatus(200);
 
             rivalMessage = response;
-            game.getGuestUser().getSession().getAsyncRemote().sendObject(rivalMessage);
+            getRivalUser(game, user.getCurrentGameRole()).getSession().getAsyncRemote().sendObject(rivalMessage);
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
@@ -385,7 +376,7 @@ public class GameServer {
             response.setContent(content);
             response.setStatus(200);
 
-            game.getMasterUser().getSession().getAsyncRemote().sendObject(response);
+            getRivalUser(game, user.getCurrentGameRole()).getSession().getAsyncRemote().sendObject(response);
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
@@ -393,6 +384,7 @@ public class GameServer {
         }
         userSession.getAsyncRemote().sendObject(response);
     }
+
 
     private void leaveGame(int gameId, Session userSession) {
         Message response = new Message();
