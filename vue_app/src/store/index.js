@@ -104,8 +104,8 @@ const store = new Vuex.Store({
           })
       })
     },
-    connectSocket({ state, commit }, onOpen){
-      let endPointURL = `ws://${window.location.host}/game-server`;
+    connectSocket({ state, commit }, userName, onOpen){
+      let endPointURL = `ws://${window.location.host}/game-server/${userName}`;
       let socketClient = new WebSocket(endPointURL);
       socketClient.onopen = function(){
         socketClient.onmessage = onMessage;

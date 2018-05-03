@@ -23,6 +23,12 @@ public class User {
         this.session = session;
     }
 
+    public User(Session session, String name){
+        this.id++;
+        this.session=session;
+        this.name=name;
+    }
+    
     public int getId() {
         return id;
     }
