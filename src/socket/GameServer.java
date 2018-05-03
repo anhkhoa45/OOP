@@ -12,10 +12,12 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
 
-@ServerEndpoint(value = "/game-server", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "/game-server/{user_name}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
 public class GameServer {
     private static HashMap<String, User> users = new HashMap<String, User>();
@@ -31,10 +33,11 @@ public class GameServer {
      * @param userSession the userSession which is opened.
      */
       @OnOpen
-      public void onOpen(Session userSession) {
+      public void onOpen(Session userSession, @PathParam("user_name") String userName) {
           System.out.println("New request received. Id: " + userSession.getId());
           User user = new User(userSession);
-          if (users.containsValue(user)) {
+          
+          if (users.containsValue(user)||users.containsKey(userName)) {
               users.get(userSession.getId()).setOnlineState();
           } else {
               user.setOnlineState();
