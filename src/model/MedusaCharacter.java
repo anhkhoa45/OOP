@@ -43,7 +43,7 @@ public class MedusaCharacter extends Character {
     public boolean guard(Character attackPlayer) {
         Answer a = attackPlayer.answers.get(attackPlayer.answers.size() - 1);
 
-        if (this.checkDuplicateAnswer(a)) {
+        if (this.answers.contains(a)) {
             freeze(5000, attackPlayer);
             return true;
         }
