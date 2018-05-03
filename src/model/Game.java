@@ -11,22 +11,25 @@ public class Game {
     private int id;
     private Character masterCharacter;
     private Character guestCharacter;
+    private User masterUser;
+    private User guestUser;
     private Topic topic;
     private int mode;
     private GameStatus status;
     private long timeStarted;
     private long timeEnd;
 
-    public Game() {
+    public Game(User master) {
         this.id = gameCount++;
+        this.id = gameCount++;
+        this.masterUser = master;
         this.status = GameStatus.INITIAL;
     }
 
-//    public Game(Character masterCharacter, Character guestCharacter) {
-//        this.id = gameCount++;
-//        this.masterCharacter = masterCharacter;
-//        this.guestCharacter = guestCharacter;
-//    }
+    public Game(User master, User guest) {
+        this(master);
+        this.guestUser = guest;
+    }
 
     public int getId() {
         return id;
@@ -42,10 +45,6 @@ public class Game {
 
     public void setMode(int mode) {
         this.mode = mode;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
     }
 
     public long getTimeStarted() {
@@ -116,6 +115,10 @@ public class Game {
         return topic;
     }
 
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
     public void removeGuest() {
         this.guestCharacter = null;
     }
@@ -146,10 +149,6 @@ public class Game {
         json.addProperty("mode", this.mode);
         json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
         json.addProperty("status", this.status.toString());
-//        json.add("masterCharacter", this.masterCharacter.getStateAsJson());
-//        if (this.guestCharacter != null) {
-//            json.add("guestCharacter", this.guestCharacter.getStateAsJson());
-//        }
         return json;
     }
 }
