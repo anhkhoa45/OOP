@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.JsonObject;
+
 import javax.persistence.*;
 import javax.websocket.Session;
 import java.util.ArrayList;
@@ -72,6 +74,12 @@ public class User {
 
     public void doAnswer() {
 
+    }
+
+    public JsonObject getStateAsJson() {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", this.name);
+        return json;
     }
 
 }

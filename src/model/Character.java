@@ -1,6 +1,9 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import javafx.beans.value.ObservableBooleanValue;
 
 import java.util.ArrayList;
@@ -26,4 +29,18 @@ public class Character {
         return false;
     }
 
+    public JsonObject getStateAsJson() throws RuntimeException{
+        JsonObject json = new JsonObject();
+        Gson gson = new Gson();
+        List<Answer> e = this.answers;
+        JsonElement a = gson.toJsonTree(e, new TypeToken<List<Answer>>() {}.getType());
+
+        if (!a.isJsonArray()) {
+            throw new RuntimeException("Get player state failed");
+        }
+
+        json.add("answers", a.getAsJsonArray());
+
+        return json;
+    }
 }

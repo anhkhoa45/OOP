@@ -1,42 +1,64 @@
 <template>
-  <div class="row">
-    <div class="col-md-8">
+  <div>
+    <div class="blurbg"></div>
+    <h1 class="bordertext middle"><strong>Choose game &#33;</strong></h1>
+    <div class="container">
       <div class="row">
-        <div class="col-md-12">
-          <h1>Welcome screen</h1>
+        <div class="col-md-3">
+          <div>
+            <br>
+            <h2 class="whitetext">Friend list</h2>
+            <ul>
+              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                      class="action-button shadow animate green">Invite</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="push_button red" @click.prevent="createNewGame">CREATE GAME</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="push_button blue" @click.prevent="joinGame">JOIN GAME</a>
+        </div>
+        <div class="col-md-3">
+          <a href="#" class="push_button yellow" @click.prevent="joinGame">RANDOM GAME</a>
+
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4">
-          <button type="button" class="btn btn-primary btn-lg btn-block" :disabled="socketClient === null"
-                  @click="createNewGame">
-            New Game
-          </button>
-        </div>
-        <div class="col-md-4">
-          <button type="button" class="btn btn-info btn-lg btn-block" :disabled="socketClient === null"
-                  @click="showListGame = !showListGame">
-            List games
-          </button>
-          <ul v-show="showListGame">
-            <li v-for="game in games">
-                <a href="#" @click="joinGame(game.id)">
-              {{ game.id }} - {{ game.guest ? '2/2' : '1/2' }}
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <button type="button" class="btn btn-danger btn-lg btn-block" :disabled="socketClient === null">
-            Random game
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <h3>Online players</h3>
-      <ul id="listPlayers">
-      </ul>
     </div>
   </div>
 </template>
@@ -46,7 +68,7 @@
   import Action from '../helper/game_actions'
 
   export default {
-    data(){
+    data() {
       return {
         showListGame: false
       }
@@ -61,16 +83,16 @@
       createNewGame() {
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
       },
-      getListGame(){
+      getListGame() {
         this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
       },
-      joinGame(gameId){
-        this.socketClient.send(JSON.stringify({
-          action: Action.JOIN_GAME,
-          content: {
-            game_id: gameId
-          }
-        }));
+      joinGame(gameId) {
+        // this.socketClient.send(JSON.stringify({
+        //   action: Action.JOIN_GAME,
+        //   content: {
+        //     game_id: gameId
+        //   }
+        // }));
       }
     },
     created() {

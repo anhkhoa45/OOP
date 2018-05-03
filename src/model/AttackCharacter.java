@@ -50,7 +50,7 @@ public abstract class AttackCharacter extends Character {
     }
 
     public JsonObject getStateAsJson() throws RuntimeException {
-        JsonObject json = new JsonObject();
+        JsonObject json = super.getStateAsJson();
         json.addProperty("health", this.health);
         json.addProperty("attack", this.attack);
         json.addProperty("isStunned", this.isStunned);

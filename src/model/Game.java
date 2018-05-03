@@ -19,16 +19,17 @@ public class Game {
     private long timeStarted;
     private long timeEnd;
 
-    public Game() {
+    public Game(User master) {
         this.id = gameCount++;
+        this.id = gameCount++;
+        this.masterUser = master;
         this.status = GameStatus.INITIAL;
     }
 
-//    public Game(Character masterCharacter, Character guestCharacter) {
-//        this.id = gameCount++;
-//        this.masterCharacter = masterCharacter;
-//        this.guestCharacter = guestCharacter;
-//    }
+    public Game(User master, User guest) {
+        this(master);
+        this.guestUser = guest;
+    }
 
     public int getId() {
         return id;
@@ -129,9 +130,9 @@ public class Game {
     public Topic getTopic() {
         return topic;
     }
-    
-    public void setTopic(Topic topic){
-        this.topic=topic;
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public void removeGuest() {
@@ -164,10 +165,6 @@ public class Game {
         json.addProperty("mode", this.mode.toString());
         json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
         json.addProperty("status", this.status.toString());
-//        json.add("masterCharacter", this.masterCharacter.getStateAsJson());
-//        if (this.guestCharacter != null) {
-//            json.add("guestCharacter", this.guestCharacter.getStateAsJson());
-//        }
         return json;
     }
 }
