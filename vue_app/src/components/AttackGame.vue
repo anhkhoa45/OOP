@@ -1,42 +1,106 @@
 <template>
-  <div>
-    <div class="row align-content-start">
-      <div class="col-sm-3">
-        <div class="card">
-          <div class="card-body">
-            <h5>Master</h5>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
-            <p>{{ master ? master.id : "" }}</p>
-            <p>{{ masterCharacterType }}</p>
+  <div class="row">
+    <div class="blurbg"></div>
+    <div class="container">
+      <h1 class="bordertext middle"><strong>Choose your spokesman &#33;</strong></h1>
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="card">
+            <img src="../assets/img/knight.png" alt="knight" class="image knightbg">
+            <div class="overlay">
+              <div class="text">
+                <h3>Knight</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <label for="slcCharacter">Choose your character</label>
-        <select v-model="character" id="slcCharacter" :disabled="!guest.id">
-          <option value="-1">Character</option>
-          <option v-for="character in characters"
-                  :value="character.id">
-            {{ character.name }}
-          </option>
-        </select>
+        <br>
+        <div class="col-sm-3">
+          <div class="card">
+            <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
+            <div class="overlay">
+              <div class="text">Dm Khoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card">
+            <img src="../assets/img/knight.png" alt="girl"height="50px" class="image girlbg">
+            <div class="overlay">
+              <div class="text">
+                <div class="text">DM anh nay khong dung duoccccc</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="col-sm-3">
+          <div class="card">
+            <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
+            <div class="overlay">
+              <div class="text">Dm Khoa</div>
+            </div>
+          </div>
+        </div>
+      </div><br>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3">
+            <h2 class="bordertext">put name player 1</h2>
+          </div>
+          <div class="col-sm-6">
+            <div class="startbutton"><div class="outer"><div class="height"><div class="inner">START</div></div></div></div>
+          </div>
+          <div class="col-sm-3">
+            <h2 class="bordertext">put name player 2</h2>
 
-        <button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>
-        <button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>
-      </div>
-      <div class="col-sm-3">
-        <div class="card">
-          <div class="card-body">
-            <h5>Guest</h5>
-            <img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">
-            <p>{{ guest ? guest.id : "" }}</p>
-            <p>{{ guestCharacterType }}</p>
-            <p v-show="guestIsReady">Ready!</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!--<div>-->
+    <!--<div class="row align-content-start">-->
+      <!--<div class="col-sm-3">-->
+        <!--<div class="card">-->
+          <!--<div class="card-body">-->
+            <!--<h5>Master</h5>-->
+            <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
+            <!--<p>{{ master ? master.id : "" }}</p>-->
+            <!--<p>{{ masterCharacterType }}</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-sm-6">-->
+        <!--<label for="slcCharacter">Choose your character</label>-->
+        <!--<select v-model="character" id="slcCharacter" :disabled="!guest.id">-->
+          <!--<option value="-1">Character</option>-->
+          <!--<option v-for="character in characters"-->
+                  <!--:value="character.id">-->
+            <!--{{ character.name }}-->
+          <!--</option>-->
+        <!--</select>-->
+
+        <!--<button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>-->
+        <!--<button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>-->
+      <!--</div>-->
+      <!--<div class="col-sm-3">-->
+        <!--<div class="card">-->
+          <!--<div class="card-body">-->
+            <!--<h5>Guest</h5>-->
+            <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
+            <!--<p>{{ guest ? guest.id : "" }}</p>-->
+            <!--<p>{{ guestCharacterType }}</p>-->
+            <!--<p v-show="guestIsReady">Ready!</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 </template>
 
 <script>

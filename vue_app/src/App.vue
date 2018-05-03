@@ -1,8 +1,6 @@
 <template>
-  <div class="container margin-top-50">
-    <transition name="slide-fade">
+  <div class="container-fluid margin-top-50">
       <router-view></router-view>
-    </transition>
   </div>
 </template>
 
