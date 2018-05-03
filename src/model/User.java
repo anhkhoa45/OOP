@@ -16,10 +16,9 @@ public class User {
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
-    public User() {}
-
-    public User(Session session) {
-        this.session = session;
+    public User(Session session, String name){
+        this.session=session;
+        this.name=name;
     }
 
     public String getName() {

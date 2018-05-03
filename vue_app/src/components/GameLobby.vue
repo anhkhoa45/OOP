@@ -96,7 +96,7 @@
       }
     },
     created() {
-      this.$store.dispatch('connectSocket', this.getListGame);
+      // this.$store.dispatch('connectSocket', this.getListGame);
     }
   }
 </script>

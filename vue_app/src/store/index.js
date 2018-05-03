@@ -16,7 +16,7 @@ const store = new Vuex.Store({
       name: null,
       avatar: null
     },
-    socketClient: {},
+    socketClient: null,
     playingGame: {
       id: null,
       mode: null,
@@ -104,18 +104,21 @@ const store = new Vuex.Store({
           })
       })
     },
-    connectSocket({ state, commit }, onOpen){
-      let endPointURL = `ws://${window.location.host}/game-server`;
-      let socketClient = new WebSocket(endPointURL);
-      socketClient.onopen = function(){
-        socketClient.onmessage = onMessage;
-        onOpen();
-      };
-      socketClient.onerror = function(){
-        socketClient.close();
-      };
+    connectSocket({ commit }, userName){
+      return new Promise((res, rej) => {
+        let endPointURL = `ws://${window.location.host}/game-server/${userName}`;
+        let socketClient = new WebSocket(endPointURL);
+        socketClient.onopen = function(){
+          socketClient.onmessage = onMessage;
+          res();
+        };
+        socketClient.onerror = function(){
+          socketClient.close();
+          rej();
+        };
 
-      commit('setSocketClient', socketClient);
+        commit('setSocketClient', socketClient);
+      });
     },
     fetchListGame({ state }){
       state.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));

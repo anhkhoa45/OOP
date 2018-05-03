@@ -11,15 +11,16 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
 
-@ServerEndpoint(value = "/game-server", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "/game-server/{user_name}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
 public class GameServer {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
-    private static List<Topic> topics=TopicFactory.getTopics();
 
     /**
      * Callback hook for Connection open events.
@@ -30,12 +31,19 @@ public class GameServer {
      * @param userSession the userSession which is opened.
      */
       @OnOpen
-      public void onOpen(Session userSession) {
+      public void onOpen(Session userSession, @PathParam("user_name") String userName) {
           System.out.println("New request received. Id: " + userSession.getId());
-          User user = new User(userSession);
-          if (users.containsValue(user)) {
-              users.get(userSession.getId()).setOnlineState();
-          } else users.put(userSession.getId(), user);
+          User user = UserManager.getUserByUsername(userName);
+          
+          if (user != null) {
+              user.setOnlineState();
+              user.setSession(userSession);
+          } else {
+              user = new User(userSession, userName);
+              UserManager.addUser(user);
+          }
+
+          users.put(userSession.getId(), user);
       }
 
     /**
@@ -57,6 +65,7 @@ public class GameServer {
 //                break;
 //            }
 //        }
+        users.remove(userSession.getId());
     }
 
     /**
