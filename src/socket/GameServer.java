@@ -40,7 +40,10 @@ public class GameServer {
           User user = new User(userSession);
           if (users.containsValue(user)) {
               users.get(userSession.getId()).setOnlineState();
-          } else users.put(userSession.getId(), user);
+          } else {
+              user.setOnlineState();
+              users.put(userSession.getId(), user);
+          }
       }
 
     /**

@@ -1,0 +1,584 @@
+[33mcommit 100a4f6b551240fdf32b2412d2f73d83bbfc0b59[m
+Merge: d1c3f90 cfbdd2a
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu May 3 13:15:23 2018 +0700
+
+    Merge pull request #19 from anhkhoa45/trang
+    
+    Update GameServer 2
+
+[33mcommit cfbdd2aa7873f532f9372e70249b70e0d1daaad2[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Thu May 3 13:13:08 2018 +0700
+
+    Update GameServer 2
+
+[33mcommit d1c3f907f2d84cf16738d10f8820188bae3f4e84[m
+Merge: 1d03edf 220ecfd
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu May 3 13:03:00 2018 +0700
+
+    Merge pull request #18 from anhkhoa45/revert-15-trang
+    
+    Revert "Update GameServer"
+
+[33mcommit 220ecfd2728dd4d163d8d952036586b55c453154[m
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu May 3 13:02:51 2018 +0700
+
+    Revert "Update GameServer"
+
+[33mcommit 1d03edfca061b50f5805f472bdd9626a32c3168d[m
+Merge: c5d5960 1243e8e
+Author: phantrang <phantrang3006@gmail.com>
+Date:   Thu May 3 12:49:30 2018 +0700
+
+    Merge pull request #15 from anhkhoa45/trang
+    
+    Update GameServer
+
+[33mcommit 1243e8e2d6613b471e4b259238b661055f6df6b2[m
+Merge: b5532ab c5d5960
+Author: phantrang <phantrang3006@gmail.com>
+Date:   Thu May 3 12:49:12 2018 +0700
+
+    Merge branch 'master' into trang
+
+[33mcommit c5d596021ac0409f3b66a6eb67f8468afc5835cb[m
+Merge: f23fba9 26cdead
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu May 3 12:40:20 2018 +0700
+
+    Merge pull request #16 from anhkhoa45/newModel
+    
+    fix gameserver
+
+[33mcommit 26cdeadc23f0fc4fc483912c6d988c953a070fbd[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu May 3 12:37:23 2018 +0700
+
+    fix gameserver
+
+[33mcommit b5532abcec33088c719dbf06b64e47f81b8eea15[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Thu May 3 12:22:22 2018 +0700
+
+    Update GameServer
+
+[33mcommit f23fba9feae7bc2a7c10e0050ec68a17470f4eb4[m
+Merge: 3b91018 9164029
+Author: phantrang <phantrang3006@gmail.com>
+Date:   Thu May 3 11:28:58 2018 +0700
+
+    Merge pull request #14 from anhkhoa45/newModel
+    
+    New model
+
+[33mcommit 9164029ed5d617a08dc9f38f07e2c4bbc6a45148[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu May 3 11:22:57 2018 +0700
+
+    update model
+
+[33mcommit bd7e0f5545ef15a80f8c15e348dce81fe13f889e[m
+Merge: 2e5db36 3b91018
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu May 3 10:26:29 2018 +0700
+
+    fix conflict
+
+[33mcommit 2e5db36aedb254ed89b0149996ac06cd03ea4af2[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu May 3 10:23:55 2018 +0700
+
+    fix conflict
+
+[33mcommit 3b91018be21e466c4dd4fc977fbbebf877fdc17b[m
+Merge: b7b7a0c 4516f82
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu May 3 09:44:46 2018 +0700
+
+    Merge pull request #13 from anhkhoa45/trang
+    
+    Update all code
+
+[33mcommit 2dae586d8f9398b56516cd964a8a2fe26536510c[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu May 3 09:09:06 2018 +0700
+
+    update model
+
+[33mcommit 4516f82c999abc5386ca6065467051faae19a9b4[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Wed May 2 14:01:47 2018 +0700
+
+    Update all code
+
+[33mcommit b7b7a0c7da10e5d5c174d928cd23ec7467c4faaa[m
+Merge: e1c6150 0a65237
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Wed Apr 25 15:46:14 2018 +0700
+
+    Merge pull request #12 from anhkhoa45/trang
+    
+    Update model
+
+[33mcommit 0a65237fbcacd4eedbdac811f0238d37f422b130[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Wed Apr 25 15:42:01 2018 +0700
+
+    Update model
+
+[33mcommit e1c6150abc34cff439d5921efbf8f8fea8ec11e0[m
+Merge: e1f3a7b 1baa6f5
+Author: phantrang <phantrang3006@gmail.com>
+Date:   Wed Apr 25 13:20:07 2018 +0700
+
+    Merge pull request #11 from anhkhoa45/trang
+    
+    Refactor to character
+
+[33mcommit 1baa6f5f49a6f0ee5f4d18c12be62e500f53ff03[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Wed Apr 25 13:18:07 2018 +0700
+
+    Refactor to character
+
+[33mcommit e1f3a7b87f73f2ecd66ed9c137a1f581d9f045a8[m
+Merge: cc68290 91c9e6d
+Author: phantrang <phantrang3006@gmail.com>
+Date:   Mon Apr 23 16:21:31 2018 +0700
+
+    Merge pull request #10 from anhkhoa45/vue_app
+    
+    Vue app
+
+[33mcommit 91c9e6d3dfac27b821f826bdd48696b66712e160[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Mon Apr 23 14:35:14 2018 +0700
+
+    Fix medusa fight
+
+[33mcommit c1b144ee964d149448aa5bd005ad3be28b6fbbad[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Mon Apr 23 13:44:37 2018 +0700
+
+    Game fight
+
+[33mcommit 44efd6def4377639be8ddfce47e5b6ef20476b2d[m
+Merge: 396e936 cc68290
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 15:37:42 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into vue_app
+
+[33mcommit 396e936f330c6f322660eaf90885d95f9f2ba331[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 15:37:19 2018 +0700
+
+    Game status
+
+[33mcommit cc68290d4203b24a7298bf7fb16ac966c8a05d8d[m
+Merge: 7cd7d7c fab821f
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 21 15:36:16 2018 +0700
+
+    Merge pull request #9 from anhkhoa45/trang
+    
+    Update leave game & close
+
+[33mcommit fab821fbfc8da69cac08ffdb8279375861f00857[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 15:29:16 2018 +0700
+
+    Update leave game & close
+
+[33mcommit 3140116cb87492e744d768b8de104b41300040cf[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 15:15:04 2018 +0700
+
+    Update leave game & close
+
+[33mcommit 375c934f11cf6203934f8cf6d2afb3f62ff59240[m
+Merge: 58c8482 7cd7d7c
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 13:53:31 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into vue_app
+
+[33mcommit 58c8482a3509bc71eea30dca67379bb6045491c5[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 13:52:29 2018 +0700
+
+    Phaser demo code
+
+[33mcommit 7cd7d7c48bb94658a07d259ef7e4403c710c4955[m
+Merge: cb9d1dc a417d82
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 21 13:47:50 2018 +0700
+
+    Merge pull request #8 from anhkhoa45/trang
+    
+    Add ready & start game
+
+[33mcommit a417d82a4b7ea864f753eb94f3aa1917375a8ad1[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 13:39:02 2018 +0700
+
+    Update answer
+
+[33mcommit 8215bc63bab2cc20da54b4e7f3624ba87a49091a[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 11:52:15 2018 +0700
+
+    Add ready & start game
+
+[33mcommit cb9d1dc6b97aa4b419ed82e6f5f1f0006e838ed5[m
+Merge: dd34a4f 00e71b9
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 21 11:09:20 2018 +0700
+
+    Merge pull request #7 from anhkhoa45/vue_app
+    
+    Vue app
+
+[33mcommit 00e71b96f8e5d06fa4a78cfda9829b6d62f77ff1[m
+Merge: 6680ce9 dd34a4f
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 11:06:35 2018 +0700
+
+    Fix conflicts
+
+[33mcommit 6680ce9bcb47e00e8767ba8f86825977f77a1c0a[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 21 10:58:14 2018 +0700
+
+    Add phaser
+
+[33mcommit dd34a4fd35a5cac3def57d35a84abfa83fcf5142[m
+Merge: 5280cdb 51e5beb
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 21 10:57:14 2018 +0700
+
+    Merge pull request #6 from anhkhoa45/trang
+    
+    Trang
+
+[33mcommit 51e5bebb924b94c7c5013394691e5bfe82e59840[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 10:55:31 2018 +0700
+
+    Update leave game
+
+[33mcommit af40ae5ae0743b6a4158caa8a742c44f8c2d79ea[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 21 10:48:24 2018 +0700
+
+    Update leave game
+
+[33mcommit 9b51ff3f9581884e3d89a280e743974725ee0eef[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Fri Apr 20 22:19:06 2018 +0700
+
+    html, getAsJson funcs
+
+[33mcommit 421e3845c9455f26202e2f5bb9e160db6bd9f033[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Fri Apr 20 20:04:51 2018 +0700
+
+    Add leave game & game over
+
+[33mcommit a6ccb915a6bf88f5ebca7451d34dfce8b64bd59f[m
+Merge: 320c423 5280cdb
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Thu Apr 19 13:52:46 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into trang
+
+[33mcommit 5280cdbc971e337696f4db1419c8659acb32f4e4[m
+Merge: b3febbf 1db39d7
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Thu Apr 19 11:22:40 2018 +0700
+
+    Merge pull request #5 from anhkhoa45/vue_app
+    
+    Vue app
+
+[33mcommit 1db39d7e1e518347b4d926b6cf9a2c582bed640a[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Apr 17 15:34:19 2018 +0700
+
+    List game, join game
+
+[33mcommit 1501f83fa24de3928bc0cedf5a262c43bf0e0f66[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Apr 10 02:44:51 2018 +0700
+
+    Update code
+
+[33mcommit 320c423471219e219a6ecba0e363e23f0963bfe1[m
+Merge: 2a3a83e b3febbf
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 7 14:55:59 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into trang
+
+[33mcommit 2a3a83e8d18bdbf147d5e75cb66558e45e096f16[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Apr 7 14:53:15 2018 +0700
+
+    smt
+
+[33mcommit b3febbf6d32c248c171b725babf5dd4973795dcb[m
+Merge: 46280f0 2e2274a
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 7 14:15:06 2018 +0700
+
+    Merge pull request #4 from anhkhoa45/vue_app
+    
+    Fix login
+
+[33mcommit 2e2274ab9d30803ebe54d32e13af4b7c4a45c5b9[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 7 14:14:21 2018 +0700
+
+    Fix login
+
+[33mcommit 88861fe3a16998775dd355c9cbb0c3ca1c0cbd5b[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 7 14:12:39 2018 +0700
+
+    Fix login
+
+[33mcommit 46280f04ea555829016d1d96e26e428f26cce358[m
+Merge: 62981ec 828d527
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 7 09:20:29 2018 +0700
+
+    Merge pull request #3 from anhkhoa45/vue_app
+    
+    Vue app
+
+[33mcommit 828d527a27e685e72c8fc32a9e99888274bb73cb[m
+Merge: 96efae0 62981ec
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 7 00:11:19 2018 +0700
+
+    Fix conflicts
+
+[33mcommit 62981ec4f0ea22bc3747fc4c45a68d917599168b[m
+Merge: 6c150ef 1954058
+Author: Nguyen Dao Anh Khoa <khoa.1997a@gmail.com>
+Date:   Sat Apr 7 00:09:06 2018 +0700
+
+    Merge pull request #2 from anhkhoa45/ha
+    
+    Ha
+
+[33mcommit 96efae018abf12bdb68bb8136ba48cd75fc7c05b[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Apr 7 00:07:45 2018 +0700
+
+    Vue app
+
+[33mcommit aa9e6dfb6a616d7b5d08efcdae98c04e2b27fb95[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Mar 31 20:30:04 2018 +0700
+
+    Update code
+
+[33mcommit 5126939348e8688b656700292d3f93e7bc69441b[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Mar 31 20:29:48 2018 +0700
+
+    Update code
+
+[33mcommit 195405854ff25034c10604503bde46028f93ff30[m
+Author: hoha1997 <hoha.nguyen@gmail.com>
+Date:   Sat Mar 31 17:02:02 2018 +0700
+
+    fix health, shorten code
+
+[33mcommit f262a42f331d0f922246bfeb1d5cced5795e4301[m
+Merge: c1c2627 6c150ef
+Author: hoha1997 <hoha.nguyen@gmail.com>
+Date:   Sat Mar 31 16:33:54 2018 +0700
+
+    what the hell
+
+[33mcommit c1c262775d86feda388cb12b8f421fa03a34a5aa[m
+Author: hoha1997 <hoha.nguyen@gmail.com>
+Date:   Sat Mar 31 16:30:37 2018 +0700
+
+    oke chua
+
+[33mcommit 6c150efdafe577b251ece3fbc79a6d7ccdd9319a[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 15:51:09 2018 +0700
+
+    Update all model
+
+[33mcommit 826b5bb29324d1481eb0882f6b3cd13e897d3097[m
+Merge: 042877a ae3618d
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 15:46:39 2018 +0700
+
+    Fix characters
+
+[33mcommit 042877aeb77426826f682c98d3947b4fa8013f2a[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 15:39:53 2018 +0700
+
+    Them nhan vat medusa va hotgirl
+
+[33mcommit ae3618dcadeff04602ba2812539bfcc0e1d31071[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 15:36:10 2018 +0700
+
+    Update KnightPlayer and DracularPlayer
+
+[33mcommit 5428f2d4fcc1865847d6796d8ec6150c1d1112f9[m
+Merge: 6b4550c a750450
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 13:43:09 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP
+
+[33mcommit 6b4550c984591fd9c2d2b883bea8cc8ad755e497[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 13:42:40 2018 +0700
+
+    Update code
+
+[33mcommit a750450741bdec437c46f9527f983c160f41c908[m
+Merge: ccdb0cf 940140b
+Author: ngoctran1910 <31185505+ngoctran1910@users.noreply.github.com>
+Date:   Sat Mar 31 13:39:20 2018 +0700
+
+    Merge pull request #1 from anhkhoa45/ngoc
+    
+    Ngoc
+
+[33mcommit 940140b60dfce7cdd8690604d8b852d99ac17769[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 13:34:20 2018 +0700
+
+    Update code
+
+[33mcommit 3d2393c78c92ce7dea4e5d0ec8709ac198b9882f[m
+Merge: a18bd1a ccdb0cf
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 13:28:09 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into ngoc
+
+[33mcommit a18bd1aaf32f6704eb0e536a08a3bf25d5b0fecf[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 13:26:55 2018 +0700
+
+    :v
+
+[33mcommit ccdb0cfc10b7f52c21dda8a4f82288c5072e0cdb[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 13:25:32 2018 +0700
+
+    Update code
+
+[33mcommit af36074ee467aaeadbed56c38061260bc6220f44[m
+Merge: b5dd6fd 5213a8a
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 13:21:22 2018 +0700
+
+    sửa gitignore
+
+[33mcommit b5dd6fd0f03ad567cf6a0ba90e571be237855bd6[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 13:14:18 2018 +0700
+
+    thêm model
+
+[33mcommit 5213a8a07a572b9644757ca11401e18325c5bbee[m
+Author: Phan Trang <phantrang3006@gmail.com>
+Date:   Sat Mar 31 13:12:46 2018 +0700
+
+    Update code
+
+[33mcommit 2cc07941a34b36c816d25f1dbb90ad03ab07e2c1[m
+Merge: b776152 5c16f07
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 12:41:34 2018 +0700
+
+    fix conflict gitignore
+
+[33mcommit b776152af60ba42904df9fefa061cb863e431830[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Sat Mar 31 12:36:42 2018 +0700
+
+    login
+
+[33mcommit 5c16f078f2366dc92f2dadaea097bfd72db8f8dd[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Mar 31 12:24:58 2018 +0700
+
+    Update code
+
+[33mcommit a2db4a68634003fea1bab2beb5ceb063fb458e2b[m
+Merge: 8b2d1eb 69f7d04
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu Mar 22 09:04:31 2018 +0700
+
+    Merge branch 'master' of https://github.com/anhkhoa45/OOP into ngoc
+
+[33mcommit 8b2d1eb3f4451f102c010fb161789d78a2947c59[m
+Author: ngoctran1910 <skywalker20192@gmail.com>
+Date:   Thu Mar 22 09:04:06 2018 +0700
+
+    LoginServlet
+
+[33mcommit 69f7d043c02af75d3a5db28befc612ec586b192f[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Thu Mar 22 08:55:08 2018 +0700
+
+    Update code
+
+[33mcommit 177e7d72b09cf194694049169d4b1bd9d44f1336[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Mar 17 17:58:03 2018 +0700
+
+    Login, hibernate
+
+[33mcommit 33cd1e64c1c59d7d8bf43f3f871447e4239a75d2[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Sat Mar 17 17:52:40 2018 +0700
+
+    Login, hibernate
+
+[33mcommit ab5ec250ec80444f7b169ff460874650c980279d[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Thu Mar 8 16:26:04 2018 +0700
+
+    Rest example
+
+[33mcommit 2c96e8cc27b498950225247f74f82c35ea9bcce9[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Feb 27 19:32:44 2018 +0700
+
+    Update example code
+
+[33mcommit 28a02836d723c8bfc9787c0412dec41a8f41e4d9[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Feb 20 16:10:36 2018 +0700
+
+    Fix readme
+
+[33mcommit 82317e6deef5588dda1d64e14b84724cb055894d[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Feb 20 16:09:41 2018 +0700
+
+    Add readme
+
+[33mcommit 03f001b0ae8063915ac2c7e545b51a60b335ccb9[m
+Author: anhkhoahapo <khoand@haposoft.com>
+Date:   Tue Feb 20 16:03:11 2018 +0700
+
+    Init project
