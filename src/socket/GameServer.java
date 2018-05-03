@@ -1,7 +1,6 @@
 package socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import model.*;
 
 import javax.inject.Singleton;
@@ -9,14 +8,10 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.lang.Character;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static model.Game.*;
 import static model.GameStatus.GAME_OVER;
 
 @ServerEndpoint(value = "/game-server", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
@@ -263,14 +258,20 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             int modeTmp = message.getContent().get("mode").getAsInt();
-            GameMode mode;
-            if (modeTmp == 1) {
-                mode = GameMode.ATTACK;
-            } else mode = GameMode.NORMAL;
             Game game = games.get(gameId);
-            game.setMode(mode);
 
-            content.add("game", gson.toJsonTree(game));
+            switch (modeTmp){
+                case 0:
+                    game.setMode(GameMode.NORMAL);
+                    break;
+                case 1:
+                    game.setMode(GameMode.ATTACK);
+                    break;
+                default:
+                    throw new Exception("Invalid game mode!");
+            }
+
+            content.add("game", game.getStateAsJson());
             response.setContent(content);
             response.setStatus(200);
         } catch (Exception e) {
@@ -280,16 +281,6 @@ public class GameServer {
         }
         userSession.getAsyncRemote().sendObject(response);
     }
-
-//    private User getRivalUser(Game game, GameRole gameRole) {
-//        for (User u : users.values()) {
-//            if (u.getCurrentGame().equals(game)) {
-//                if (u.getCurrentGameRole() != gameRole)
-//                    return u;
-//            }
-//        }
-//        return null;
-//    }
 
     private void onSetGameCharacter(Message message, Session userSession) {
         Gson gson = new Gson();
