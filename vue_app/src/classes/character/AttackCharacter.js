@@ -1,8 +1,8 @@
-import Player from './Player';
+import Character from './Character';
 
-class AttackPlayer extends Player {
-  constructor(id, name, avatar, health, attack){
-    super(id, name, avatar);
+class AttackCharacter extends Character {
+  constructor(health, attack){
+    super();
     this.health = health;
     this.attack = attack;
     this.isStunned = false;
@@ -24,4 +24,4 @@ class AttackPlayer extends Player {
   }
 }
 
-export default AttackPlayer;
+export default Character;

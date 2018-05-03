@@ -95,6 +95,7 @@ const store = new Vuex.Store({
       return new Promise((res, rej) => {
         get('/api/user')
           .then(({data}) => {
+            //this.$store.user.id++;
             commit('saveUser', data);
             res();
           })
@@ -104,7 +105,7 @@ const store = new Vuex.Store({
       })
     },
     connectSocket({ state, commit }, onOpen){
-      let endPointURL = `ws://${window.location.host}/game-server/${state.user.id}`;
+      let endPointURL = `ws://${window.location.host}/game-server`;
       let socketClient = new WebSocket(endPointURL);
       socketClient.onopen = function(){
         socketClient.onmessage = onMessage;

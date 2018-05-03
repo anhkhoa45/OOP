@@ -44,10 +44,10 @@
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
   import GameStatus from '../helper/game_status'
-  import KnightPlayer from "../classes/player/KnightPlayer";
-  import MedusaPlayer from "../classes/player/MedusaPlayer";
-  import DraculaPlayer from "../classes/player/DraculaPlayer";
-  import HotGirlPlayer from "../classes/player/HotGirlPlayer";
+  import KnightCharacter from "../classes/character/KnightCharacter";
+  import MedusaCharacter from "../classes/character/MedusaCharacter";
+  import DraculaCharacter from "../classes/character/DraculaCharacter";
+  import HotGirlCharacter from "../classes/character/HotGirlCharacter";
 
   export default {
     data() {
@@ -88,12 +88,12 @@
       }
     },
     methods: {
-      getCharacterName(player){
-        if (player) {
-          if (player instanceof KnightPlayer) return Characters.KNIGHT.name;
-          if (player instanceof MedusaPlayer) return Characters.MEDUSA.name;
-          if (player instanceof DraculaPlayer) return Characters.DRACULA.name;
-          if (player instanceof HotGirlPlayer) return Characters.HOT_GIRL.name;
+      getCharacterName(character){
+        if (character) {
+          if (character instanceof KnightCharacter) return Characters.KNIGHT.name;
+          if (character instanceof MedusaCharacter) return Characters.MEDUSA.name;
+          if (character instanceof DraculaCharacter) return Characters.DRACULA.name;
+          if (character instanceof HotGirlCharacter) return Characters.HOT_GIRL.name;
         }
         return "";
       },
