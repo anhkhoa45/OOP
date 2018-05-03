@@ -68,8 +68,8 @@
         <div class="col-md-3">
           <select v-model="mode">
             <option value="-1" selected="selected" disabled="disabled">Select a mode</option>
-            <option :value="gameModes.NORMAL" >Normal mode</option>
-            <option :value="gameModes.ATTACK">Attack mode</option>
+            <option value="0" >Normal mode</option>
+            <option value="1">Attack mode</option>
           </select>
           <img src="../assets/img/vs.png" alt="vs" class="versus">
           <div class="startbutton">
@@ -89,8 +89,6 @@
           <br><br><br>
           <h2 class="bordertext">put name player 2</h2>
         </div>
-
-
       </div>
     </div>
   </div>

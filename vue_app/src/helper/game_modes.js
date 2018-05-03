@@ -1,4 +1,4 @@
 export default {
-  NORMAL: 0,
-  ATTACK: 1
+  NORMAL: 'NORMAL',
+  ATTACK: 'ATTACK'
 }
