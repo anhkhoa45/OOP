@@ -77,22 +77,15 @@ public class Game {
     public void setGuestCharacter(Character guestCharacter) {
         this.guestCharacter = guestCharacter;
     }
+    
     public User getMasterUser() {
         return masterUser;
     }
-
-    public void setMasterUser(User masterUser) {
-        this.masterUser = masterUser;
-    }
-
+    
     public User getGuestUser() {
         return guestUser;
     }
-
-    public void setGuestUser(User guestUser) {
-        this.guestUser = guestUser;
-    }
-
+    
     public boolean checkMaster(Character character) {
         return this.masterCharacter.equals(character);
     }

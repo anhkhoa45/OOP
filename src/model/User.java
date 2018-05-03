@@ -11,7 +11,6 @@ public class User {
     private static int id = 0;
     private String name;
     private Session session;
-    private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
     public User() {}
@@ -19,7 +18,6 @@ public class User {
     public User(Session session) {
         this.id++;
         this.session = session;
-        this.status = UserStatus.ONLINE;
     }
 
     public int getId() {
@@ -40,27 +38,6 @@ public class User {
 
     public void setSession(Session session) {
         this.session = session;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(UserStatus status) {
-        this.status = status;
-    }
-
-    public void setOnlineState() {
-        this.status = UserStatus.ONLINE;
-    }
-
-    public void setPlayingState() {
-        this.status = UserStatus.PLAYING;
-    }
-
-    public void setOfflineState() {
-        this.session = null;
-        this.status = UserStatus.OFFLINE;
     }
 
     public Set<Game> getPlayedGames() {
