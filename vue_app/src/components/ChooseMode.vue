@@ -72,10 +72,10 @@
             <option value="1">Attack mode</option>
           </select>
           <img src="../assets/img/vs.png" alt="vs" class="versus">
-          <div class="startbutton">
+          <div class="startbutton" @click.prevent="done">
             <div class="outer">
               <div class="height">
-                <div class="inner" @click.prevent="done">START</div>
+                <div class="inner">START</div>
               </div>
             </div>
           </div>

@@ -56,7 +56,14 @@ function setLeavingAlert() {
 
 function onCreateGame(data) {
   setLeavingAlert();
-  store.commit('setPlayingGameId', data.game_id);
+  store.commit('setPlayingGame', {
+    id: data.game.id,
+    mode: null,
+    me: data.game.master,
+    rival: null,
+    isMaster: true,
+    status: data.game.status
+  });
   router.push({name: 'chooseMode'});
 }
 

@@ -151,7 +151,9 @@ public class GameServer {
         GameServer.games.put(game.getId(), game);
 
         try {
-            content.addProperty("game_id", game.getId());
+            JsonObject jObjGame = game.getStateAsJson();
+            jObjGame.add("master", game.getMasterUser().getStateAsJson());
+            content.add("game", jObjGame);
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e) {
@@ -189,7 +191,7 @@ public class GameServer {
                 case ATTACK:
                     model.Character p;
                     model.Character opponent;
-                    if (game.getMasterCharacter().equals(user)) {
+                    if (game.getMasterUser().equals(user)) {
                         opponent = game.getGuestCharacter();
                         p = game.getMasterCharacter();
                     } else {
@@ -345,7 +347,6 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            game.setTopic(TopicFactory.getRandomTopic());
             game.start();
             content.add("game", game.getStateAsJson());
 
