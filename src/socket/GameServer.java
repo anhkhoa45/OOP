@@ -35,11 +35,13 @@ public class GameServer {
      * @param userSession the userSession which is opened.
      */
       @OnOpen
-    public void onOpen(Session userSession) {
-        System.out.println("New request received. Id: " + userSession.getId());
-        User user = new User(userSession);
-        users.put(userSession.getId(), user);
-    }
+      public void onOpen(Session userSession) {
+          System.out.println("New request received. Id: " + userSession.getId());
+          User user = new User(userSession);
+          if (users.containsValue(user)) {
+              users.get(userSession.getId()).setOnlineState();
+          } else users.put(userSession.getId(), user);
+      }
 
     /**
      * Callback hook for Connection close events.
@@ -53,8 +55,7 @@ public class GameServer {
     public void onClose(Session userSession) {
         System.out.println("Connection closed. Id: " + userSession.getId());
         User user = users.get(userSession.getId());
-        user.addPlayedGame(user.getCurrentGame());
-        users.remove(userSession.getId());
+        user.setSession();
 //        for (Game g : games.values()) {
 //            if (g.checkMaster(user) || g.checkGuest(user)) {
 //                leaveGame(g.getId(), userSession);
@@ -130,8 +131,7 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            user.setCurrentGame(game);
-            user.setCurrentGameRole(GameRole.GUEST);
+            game.setGuestUser(user);
 
             content.add("game", gson.toJsonTree(game));
             response.setStatus(200);
@@ -261,7 +261,11 @@ public class GameServer {
 
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
-            int mode = message.getContent().get("mode").getAsInt();
+            int modeTmp = message.getContent().get("mode").getAsInt();
+            GameMode mode;
+            if (modeTmp == 1) {
+                mode = GameMode.ATTACK;
+            } else mode = GameMode.NORMAL;
             Game game = games.get(gameId);
             game.setMode(mode);
 

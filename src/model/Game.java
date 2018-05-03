@@ -46,6 +46,14 @@ public class Game {
         this.mode = mode;
     }
 
+    public void setMasterUser(User masterUser) {
+        this.masterUser = masterUser;
+    }
+
+    public void setGuestUser(User guestUser) {
+        this.guestUser = guestUser;
+    }
+
     public long getTimeStarted() {
         return timeStarted;
     }
