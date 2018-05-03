@@ -23,16 +23,26 @@
           <div class="card">
             <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
             <div class="overlay">
-              <div class="text">Dm Khoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+              <div class="text">
+                <h3>Hot girl</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="card">
-            <img src="../assets/img/knight.png" alt="girl"height="50px" class="image girlbg">
+            <img src="../assets/img/knight.png" alt="girl" height="50px" class="image girlbg">
             <div class="overlay">
               <div class="text">
-                <div class="text">DM anh nay khong dung duoccccc</div>
+                <h3>Medusa</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
               </div>
             </div>
           </div>
@@ -42,7 +52,13 @@
           <div class="card">
             <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
             <div class="overlay">
-              <div class="text">Dm Khoa</div>
+              <div class="text">
+                <h3>Dracula</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
+              </div>
             </div>
           </div>
         </div>

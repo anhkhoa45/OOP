@@ -12,7 +12,7 @@ import java.util.Set;
 public class User {
     private static int id = 0;
     private String name;
-    private Session session;
+    private transient Session session;
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
