@@ -66,17 +66,20 @@
 
 .card:hover .overlay {
   opacity: 1;
+  cursor: pointer;
 }
 
 .text {
   color: white;
-  font-size: 20px;
+  font-size: 15px;
   position: relative;
+  padding: 0 15px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: left;
+  overflow-y: scroll;
 }
 
 /*end of flip card*/
