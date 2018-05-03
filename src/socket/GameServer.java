@@ -185,7 +185,6 @@ public class GameServer {
             Answer a = new Answer(answer);
             int score = game.getTopic().getWordScore(a.getWord());
             a.setScore(score);
-
             switch (game.getMode()) {
                 case Game.MODE_NORMAL:
                     a.setScore(score);
@@ -279,16 +278,6 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private User getRivalUser(Game game, GameRole gameRole) {
-        for (User u : users.values()) {
-            if (u.getCurrentGame().equals(game)) {
-                if (u.getCurrentGameRole() != gameRole)
-                    return u;
-            }
-        }
-        return null;
-    }
-
     private void onSetGameCharacter(Message message, Session userSession) {
         Gson gson = new Gson();
         User user = users.get(userSession.getId());
@@ -334,6 +323,7 @@ public class GameServer {
                 game.setGuestCharacter(attackCharacter);
             }
             getRivalUser(game, user.getCurrentGameRole()).getSession().getAsyncRemote().sendObject(rivalMessage);
+
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
@@ -395,37 +385,38 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-//    private void leaveGame(int gameId, Session userSession) {
-//        Message response = new Message();
-//        User user = users.get(userSession.getId());
-//
-//        Game game = games.get(gameId);
-//        response.setStatus(200);
-//        if (game.checkGuest(user)) {
-//            game.getMaster().getSession().getAsyncRemote().sendObject(response);
-//        } else {
-//            games.remove(gameId);
-//            game.getGuest().getSession().getAsyncRemote().sendObject(response);
-//        }
-//    }
-//
-//    private void onLeaveGame(Message message, Session userSession) {
-//        JsonObject content = new JsonObject();
-//        Message response = new Message();
-//
-//        response.setAction(GameAction.LEAVE_GAME);
-//
-//        try {
-//            int gameId = message.getContent().get("game_id").getAsInt();
-//            leaveGame(gameId, userSession);
-//        } catch (Exception e) {
-//            content.addProperty("message", e.getMessage());
-//            response.setStatus(500);
-//            response.setContent(content);
-//        }
-//        userSession.getAsyncRemote().sendObject(response);
-//    }
-//
+
+    private void leaveGame(int gameId, Session userSession) {
+        Message response = new Message();
+        User user = users.get(userSession.getId());
+
+        Game game = games.get(gameId);
+        response.setStatus(200);
+        if (!game.getMasterUser().equals(user)) {
+            game.getMasterUser().getSession().getAsyncRemote().sendObject(response);
+        } else {
+            games.remove(gameId);
+            game.getGuestUser().getSession().getAsyncRemote().sendObject(response);
+        }
+    }
+
+    private void onLeaveGame(Message message, Session userSession) {
+        JsonObject content = new JsonObject();
+        Message response = new Message();
+
+        response.setAction(GameAction.LEAVE_GAME);
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            leaveGame(gameId, userSession);
+        } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setStatus(500);
+            response.setContent(content);
+        }
+        userSession.getAsyncRemote().sendObject(response);
+    }
+
     private void onGetGameState(Message message, Session userSession) {
         JsonObject content = new JsonObject();
         Message response = new Message();

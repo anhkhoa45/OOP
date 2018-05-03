@@ -77,7 +77,6 @@ public class Game {
     public void setGuestCharacter(Character guestCharacter) {
         this.guestCharacter = guestCharacter;
     }
-
     public User getMasterUser() {
         return masterUser;
     }
