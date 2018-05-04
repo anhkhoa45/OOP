@@ -9,6 +9,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class GameServer {
       public void onOpen(Session userSession, @PathParam("user_name") String userName) {
           System.out.println("New request received. Id: " + userSession.getId());
           User user = UserManager.getUserByUsername(userName);
-          
+
           if (user != null) {
               user.setOnlineState();
               user.setSession(userSession);
@@ -243,8 +244,14 @@ public class GameServer {
 
         response.setAction(GameAction.GET_LIST_GAMES);
 
+        HashMap<Integer, Game> waitingGameList = new HashMap();
         try {
-            content = gson.toJsonTree(games).getAsJsonObject();
+            for (Game game : games.values()) {
+                if (!game.isFull()) {
+                    waitingGameList.put(game.getId(), game);
+                }
+            }
+            content = gson.toJsonTree(waitingGameList).getAsJsonObject();
             response.setContent(content);
             response.setStatus(200);
         } catch (Exception e) {

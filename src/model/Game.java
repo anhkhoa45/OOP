@@ -107,11 +107,11 @@ public class Game {
     }
 
     public boolean isWaiting() {
-        return this.guestCharacter == null;
+        return this.guestUser == null;
     }
 
     public boolean isFull() {
-        return this.guestCharacter != null;
+        return this.guestUser != null;
     }
 
     public boolean isGuestReady() {
