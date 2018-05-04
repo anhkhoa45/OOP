@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.JsonObject;
+import com.sun.corba.se.spi.ior.ObjectKey;
 
 import javax.persistence.*;
 import javax.websocket.Session;
@@ -10,27 +11,14 @@ import java.util.List;
 import java.util.Set;
 
 public class User {
-    private static int id = 0;
     private String name;
     private transient Session session;
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
-    public User() {}
-
-    public User(Session session) {
-        this.id++;
-        this.session = session;
-    }
-
     public User(Session session, String name){
-        this.id++;
         this.session=session;
         this.name=name;
-    }
-    
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -82,7 +70,15 @@ public class User {
 
     }
 
-    public JsonObject getStateAsJson() {
+    public boolean equals(Object obj){
+        if(obj instanceof User){
+            return ((User) obj).getName().equals(this.name);
+        }
+
+        return false;
+    }
+
+    public JsonObject getStateAsJson() throws RuntimeException {
         JsonObject json = new JsonObject();
         json.addProperty("name", this.name);
         return json;

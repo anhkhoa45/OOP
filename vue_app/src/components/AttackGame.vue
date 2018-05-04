@@ -5,7 +5,7 @@
       <h1 class="bordertext middle"><strong>Choose your spokesman &#33;</strong></h1>
       <div class="row">
         <div class="col-sm-3">
-          <div class="card">
+          <div class="card" @click.prevent="character = characters.KNIGHT.id">
             <img src="../assets/img/knight.png" alt="knight" class="image knightbg">
             <div class="overlay">
               <div class="text">
@@ -20,7 +20,7 @@
         </div>
         <br>
         <div class="col-sm-3">
-          <div class="card">
+          <div class="card" @click.prevent="character = characters.HOT_GIRL.id">
             <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
             <div class="overlay">
               <div class="text">
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="card">
+          <div class="card" @click.prevent="character = characters.MEDUSA.id">
             <img src="../assets/img/knight.png" alt="girl" height="50px" class="image girlbg">
             <div class="overlay">
               <div class="text">
@@ -49,7 +49,7 @@
         </div>
         <br>
         <div class="col-sm-3">
-          <div class="card">
+          <div class="card" @click.prevent="character = characters.DRACULA.id">
             <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
             <div class="overlay">
               <div class="text">
@@ -62,60 +62,68 @@
             </div>
           </div>
         </div>
-      </div><br>
+      </div>
+      <br>
       <div class="container">
         <div class="row">
           <div class="col-sm-3">
-            <h2 class="bordertext">put name player 1</h2>
+            <p>{{ master ? master.id : "" }}</p>
+            <p>{{ masterCharacterType }}</p>
           </div>
           <div class="col-sm-6">
-            <div class="startbutton"><div class="outer"><div class="height"><div class="inner">START</div></div></div></div>
+            <div class="startbutton" @click.prevent="start">
+              <div class="outer">
+                <div class="height">
+                  <div class="inner">START</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-sm-3">
-            <h2 class="bordertext">put name player 2</h2>
-
+            <p>{{ guest ? guest.id : "" }}</p>
+            <p>{{ guestCharacterType }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!--<div>-->
-    <!--<div class="row align-content-start">-->
-      <!--<div class="col-sm-3">-->
-        <!--<div class="card">-->
-          <!--<div class="card-body">-->
-            <!--<h5>Master</h5>-->
-            <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
-            <!--<p>{{ master ? master.id : "" }}</p>-->
-            <!--<p>{{ masterCharacterType }}</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="col-sm-6">-->
-        <!--<label for="slcCharacter">Choose your character</label>-->
-        <!--<select v-model="character" id="slcCharacter" :disabled="!guest.id">-->
-          <!--<option value="-1">Character</option>-->
-          <!--<option v-for="character in characters"-->
-                  <!--:value="character.id">-->
-            <!--{{ character.name }}-->
-          <!--</option>-->
-        <!--</select>-->
+  <!--<div class="row align-content-start">-->
+  <!--<div class="col-sm-3">-->
+  <!--<div class="card">-->
+  <!--<div class="card-body">-->
+  <!--<h5>Master</h5>-->
+  <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
+  <!--<p>{{ master ? master.id : "" }}</p>-->
+  <!--<p>{{ masterCharacterType }}</p>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="col-sm-6">-->
+  <!--<label for="slcCharacter">Choose your character</label>-->
+  <!--<select v-model="character" id="slcCharacter" :disabled="!guest.id">-->
+  <!--<option value="-1">Character</option>-->
+  <!--<option v-for="character in characters"-->
+  <!--:value="character.id">-->
+  <!--{{ character.name }}-->
+  <!--</option>-->
+  <!--</select>-->
 
-        <!--<button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>-->
-        <!--<button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>-->
-      <!--</div>-->
-      <!--<div class="col-sm-3">-->
-        <!--<div class="card">-->
-          <!--<div class="card-body">-->
-            <!--<h5>Guest</h5>-->
-            <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
-            <!--<p>{{ guest ? guest.id : "" }}</p>-->
-            <!--<p>{{ guestCharacterType }}</p>-->
-            <!--<p v-show="guestIsReady">Ready!</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+  <!--<button type="button" @click="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">Start</button>-->
+  <!--<button type="button" @click="ready" v-else :disabled="character === -1">Ready</button>-->
+  <!--</div>-->
+  <!--<div class="col-sm-3">-->
+  <!--<div class="card">-->
+  <!--<div class="card-body">-->
+  <!--<h5>Guest</h5>-->
+  <!--<img class="img-fluid rounded-circle" src="../assets/img/50x50.svg" alt="">-->
+  <!--<p>{{ guest ? guest.id : "" }}</p>-->
+  <!--<p>{{ guestCharacterType }}</p>-->
+  <!--<p v-show="guestIsReady">Ready!</p>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
   <!--</div>-->
 </template>
 
@@ -137,11 +145,11 @@
       }
     },
     watch: {
-      character(){
+      character() {
         this.changeCharacter();
       },
-      guest(){
-        if(!this.guest) {
+      guest() {
+        if (!this.guest) {
           this.character = -1;
         }
       }
@@ -163,12 +171,12 @@
       guestCharacterType() {
         return this.getCharacterName(this.guest);
       },
-      guestIsReady(){
+      guestIsReady() {
         return this.playingGame.status === GameStatus.GUEST_READY;
       }
     },
     methods: {
-      getCharacterName(character){
+      getCharacterName(character) {
         if (character) {
           if (character instanceof KnightCharacter) return Characters.KNIGHT.name;
           if (character instanceof MedusaCharacter) return Characters.MEDUSA.name;
@@ -186,16 +194,16 @@
           }
         }));
       },
-      start(){
+      start() {
         this.socketClient.send(JSON.stringify({
           action: Action.START_GAME,
-          content: { game_id: this.playingGame.id }
+          content: {game_id: this.playingGame.id}
         }))
       },
-      ready(){
+      ready() {
         this.socketClient.send(JSON.stringify({
           action: Action.GUEST_READY,
-          content: { game_id: this.playingGame.id }
+          content: {game_id: this.playingGame.id}
         }))
       }
     }
