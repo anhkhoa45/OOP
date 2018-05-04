@@ -68,11 +68,6 @@
   import Action from '../helper/game_actions'
 
   export default {
-    data() {
-      return {
-        showListGame: false
-      }
-    },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
@@ -80,19 +75,14 @@
       })
     },
     methods: {
-      createNewGame() {
-        this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
-      },
       getListGame() {
         this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
       },
-      joinGame(gameId) {
-        // this.socketClient.send(JSON.stringify({
-        //   action: Action.JOIN_GAME,
-        //   content: {
-        //     game_id: gameId
-        //   }
-        // }));
+      createNewGame() {
+        this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
+      },
+      joinGame() {
+        this.$router.push({name: 'waitingGameList'})
       }
     },
     created() {
