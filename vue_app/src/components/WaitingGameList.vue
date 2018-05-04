@@ -25,9 +25,7 @@
           games: state => state.games
         }),
         isEmpty() {
-          if (this.games.length == 0)
-            return true;
-          return false;
+          return this.games.length === 0;
         }
       },
       methods : {

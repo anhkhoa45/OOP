@@ -468,3 +468,10 @@ select {
 
 }
 
+.attack-game-box {
+  .blacked-out {
+    z-index: 1;
+    background: black;
+    height: 600px;
+  }
+}

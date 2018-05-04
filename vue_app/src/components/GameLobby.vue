@@ -82,6 +82,9 @@
       joinGame() {
         this.$router.push({name: 'waitingGameList'})
       }
+    },
+    created() {
+      // this.$store.dispatch('connectSocket', this.getListGame);
     }
   }
 </script>
