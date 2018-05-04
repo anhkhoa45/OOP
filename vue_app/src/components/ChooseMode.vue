@@ -72,7 +72,7 @@
             <option value="1">Attack mode</option>
           </select>
           <img src="../assets/img/vs.png" alt="vs" class="versus">
-          <div class="startbutton" @click.prevent="done">
+          <div class="startbutton" @click.prevent="done" aria-disabled="true">
             <div class="outer">
               <div class="height">
                 <div class="inner">START</div>
