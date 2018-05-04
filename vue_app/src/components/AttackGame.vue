@@ -71,10 +71,17 @@
             <p>{{ masterCharacterType }}</p>
           </div>
           <div class="col-sm-6">
-            <div class="startbutton" @click.prevent="start">
+            <div class="startbutton" @click.prevent="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">
               <div class="outer">
                 <div class="height">
                   <div class="inner">START</div>
+                </div>
+              </div>
+            </div>
+            <div class="startbutton" @click.prevent="ready" v-else>
+              <div class="outer">
+                <div class="height">
+                  <div class="inner">READY</div>
                 </div>
               </div>
             </div>
@@ -199,6 +206,9 @@
           action: Action.START_GAME,
           content: {game_id: this.playingGame.id}
         }))
+        if (this.guestIsReady()) {
+          this.$router.push({name : 'attackGameFight'});
+        }
       },
       ready() {
         this.socketClient.send(JSON.stringify({
