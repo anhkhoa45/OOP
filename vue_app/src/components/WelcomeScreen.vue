@@ -7,8 +7,6 @@
         <input v-model="message" placeholder="Enter your name">
         <button @click="toGameLobby">OK</button>
         <p>Message is: {{ message }}</p>
-      </p>
-</div>
     </div>
   </div>
 </template>
@@ -25,7 +23,7 @@
       toGameLobby(){
         this.$store.dispatch('connectSocket', this.message);
         this.$router.push({name: 'gameLobby'})
-      }      
+      }
     }
   }
 </script>
