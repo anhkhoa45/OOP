@@ -1,13 +1,9 @@
 package model;
 
 import com.google.gson.JsonObject;
-import com.sun.corba.se.spi.ior.ObjectKey;
 
-import javax.persistence.*;
 import javax.websocket.Session;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -16,9 +12,9 @@ public class User {
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
-    public User(Session session, String name){
-        this.session=session;
-        this.name=name;
+    public User(Session session, String name) {
+        this.session = session;
+        this.name = name;
     }
 
     public String getName() {
@@ -70,8 +66,8 @@ public class User {
 
     }
 
-    public boolean equals(Object obj){
-        if(obj instanceof User){
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
             return ((User) obj).getName().equals(this.name);
         }
 
