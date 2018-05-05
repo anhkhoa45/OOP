@@ -71,7 +71,8 @@
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
-        games: state => state.games
+        games: state => state.games,
+        username: state => state.user.name,
       })
     },
     methods: {

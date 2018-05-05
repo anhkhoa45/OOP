@@ -2,14 +2,14 @@
   <div class="container">
     <h1>List game</h1>
     <div v-if="isEmpty">Game List Empty</div>
-    <ul v-else>
-      <li v-for="game in games">
-        <div>{{ game.id }}</div>
-        <button>
-          <a href="#" @click.prevent="joinGame">JOIN</a>
-        </button>
-      </li>
-    </ul>
+    <div v-else>
+      <div class="row" v-for="game in games">
+        <div class="col-md-3" style="color : darkred">Game {{ game.id }}</div>
+        <div class="col-md-3">
+          <button class="btn btn-lg btn-default margin-top-10" @click="joinGame(game.id)">JOIN</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,7 +42,7 @@
           this.$router.push({name: 'attackGame'})
         }
       },
-      created(){
+      created() {
         this.getListGame();
       }
     }
