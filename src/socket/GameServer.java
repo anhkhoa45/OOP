@@ -251,7 +251,7 @@ public class GameServer {
                     waitingGameList.put(game.getId(), game);
                 }
             }
-            content = gson.toJsonTree(waitingGameList).getAsJsonObject();
+            content = gson.toJsonTree(games).getAsJsonObject();
             response.setContent(content);
             response.setStatus(200);
         } catch (Exception e) {
@@ -391,7 +391,7 @@ public class GameServer {
             Game game = games.get(gameId);
             game.setStatus(GameStatus.GUEST_READY);
 
-            content.addProperty("status", "GUEST_READY");
+            content.addProperty("status", game.getStatus().toString());
             response.setContent(content);
             response.setStatus(200);
 

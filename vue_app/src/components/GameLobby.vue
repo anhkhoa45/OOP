@@ -71,13 +71,11 @@
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
-        games: state => state.games
+        games: state => state.games,
+        username: state => state.user.name,
       })
     },
     methods: {
-      getListGame() {
-        this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
-      },
       createNewGame() {
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
       },

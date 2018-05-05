@@ -2,14 +2,14 @@
   <div class="container">
     <h1>List game</h1>
     <div v-if="isEmpty">Game List Empty</div>
-    <ul v-else>
-      <li v-for="game in games">
-        <div>{{ game.id }}</div>
-        <button>
-          <a href="#" @click.prevent="joinGame">JOIN</a>
-        </button>
-      </li>
-    </ul>
+    <div v-else>
+      <div class="row" v-for="game in games">
+        <div class="col-md-3" style="color : darkred">Game {{ game.id }}</div>
+        <div class="col-md-3">
+          <button class="btn btn-lg btn-default margin-top-10" @click="joinGame(game.id)">JOIN</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,12 +25,13 @@
           games: state => state.games
         }),
         isEmpty() {
-          if (this.games.length == 0)
-            return true;
-          return false;
+          return this.games.length === 0;
         }
       },
       methods : {
+        getListGame() {
+          this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
+        },
         joinGame(gameId) {
           this.socketClient.send(JSON.stringify({
             action: Action.JOIN_GAME,
@@ -40,6 +41,9 @@
           }));
           this.$router.push({name: 'attackGame'})
         }
+      },
+      created() {
+        this.getListGame();
       }
     }
 </script>
