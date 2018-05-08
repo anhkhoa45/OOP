@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
@@ -96,6 +97,9 @@ public class GameServer {
                 onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
                 break;
+            case GET_ONLINE_USERS:
+                onGetOnlineUsers(message, userSession);
+                break;
             case SET_GAME_MODE:
                 onSetGameMode(message, userSession);
                 System.out.println("ACTION_SET_GAME_MODE");
@@ -112,10 +116,10 @@ public class GameServer {
                 onReady(message, userSession);
                 System.out.println("ACTION_READY");
                 break;
-//            case LEAVE_GAME:
-//                onLeaveGame(message, userSession);
-//                System.out.println("ACTION_LEAVE_GAME");
-//                break;
+            case LEAVE_GAME:
+                onLeaveGame(message, userSession);
+                System.out.println("ACTION_LEAVE_GAME");
+                break;
             case GET_GAME_STATE:
                 onGetGameState(message, userSession);
                 System.out.println("ACTION_GET_GAME_STATE");
@@ -262,6 +266,25 @@ public class GameServer {
 
         userSession.getAsyncRemote().sendObject(response);
     }
+    
+    private void onGetOnlineUsers(Message message, Session userSession) {
+        Gson gson = new Gson();
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        //Set<String> onlineUserName=users.keySet();
+        response.setAction(GameAction.GET_ONLINE_USERS);
+        try {           
+            content = gson.toJsonTree(users).getAsJsonObject();
+            response.setContent(content);
+            response.setStatus(200);
+        } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+
+        userSession.getAsyncRemote().sendObject(response);
+    }
 
     private void onSetGameMode(Message message, Session userSession) {
         Gson gson = new Gson();
@@ -274,7 +297,6 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             int modeTmp = message.getContent().get("mode").getAsInt();
             Game game = games.get(gameId);
-
             switch (modeTmp){
                 case 0:
                     game.setMode(GameMode.NORMAL);

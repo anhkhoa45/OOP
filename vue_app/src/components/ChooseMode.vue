@@ -8,7 +8,12 @@
             <br>
             <h2 class="whitetext">Friend list</h2>
             <ul>
-              <li>
+              <li v-for="user in onlineusers">
+                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
+                <span class="whitetext">{{user.name}}</span>
+                <a href="#" class="action-button shadow animate green">Invite</a>
+              </li>
+              <!-- <li>
                 <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
                 <span class="whitetext">ina mo</span>
                 <a href="#" class="action-button shadow animate green">Invite</a>
@@ -47,12 +52,7 @@
                 <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
                 <span class="whitetext">ina mo</span>
                 <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
@@ -98,19 +98,20 @@
   import {mapState} from 'vuex'
   import Action from '../helper/game_actions'
   import Mode from '../helper/game_modes'
-
+  var intervalObj;
   export default {
     data() {
       return {
         category: 0,
         mode: -1,
-        gameModes: Mode
+        gameModes: Mode,
       }
     },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
+        onlineusers: state => state.onlineusers,
       })
     },
     methods: {
@@ -125,6 +126,17 @@
           }
         }));
       }
+    },
+   
+    created() {
+      intervalObj=setInterval(() => {
+        this.socketClient.send(JSON.stringify({
+          action: Action.GET_ONLINE_USERS,
+        }));
+      }, 5000);
+    },
+    beforeDestroy(){
+      clearInterval(intervalObj);
     }
   }
 </script>
