@@ -24,7 +24,7 @@
     methods:{
       toGameLobby(){
         this.$store.dispatch('connectSocket', this.message);
-        this.$router.push({name: 'gameLobby'})
+        this.$router.push({name: 'gameLobby'});
       }      
     }
   }
