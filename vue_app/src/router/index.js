@@ -6,6 +6,7 @@ import Middleware from './middleware'
 import Login from '../components/Login'
 import WelcomeScreen from '../components/WelcomeScreen'
 import GameLobby from '../components/GameLobby'
+import WaitingGameList from '../components/WaitingGameList'
 import ChooseMode from '../components/ChooseMode'
 import AttackGame from '../components/AttackGame'
 import NormalGame from '../components/NormalGame'
@@ -17,7 +18,8 @@ Vue.use(VueRouter);
 let routes = [
   // {path: '/', name: 'login', component: Login, beforeEnter: Middleware.redirectIfAuthenticated},
   {path: '/', name: 'welcomeScreen', component: WelcomeScreen},
-  {path: '/game-lobby', name: 'gameLobby', component: GameLobby},
+  {path: '/game-lobby', name: 'gameLobby', component: GameLobby, beforeEnter: Middleware.socketConnected},
+  {path: '/waiting-game-list', name: 'waitingGameList', component: WaitingGameList, beforeEnter: Middleware.socketConnected},
   {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
   {path: '/attack-game', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
   {path: '/normal-game', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},

@@ -18,10 +18,6 @@
   color: tomato;
 }
 
-.attack-game-box {
-  .blacked-out {
-    z-index: 1;
-    background: black;
-    height: 600px;
-  }
+.max-width-150 {
+  max-width: 150px;
 }

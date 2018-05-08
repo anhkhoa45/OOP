@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import javafx.beans.value.ObservableBooleanValue;
 
 import java.util.ArrayList;
 import java.util.List;

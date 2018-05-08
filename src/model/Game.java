@@ -21,7 +21,6 @@ public class Game {
 
     public Game(User master) {
         this.id = gameCount++;
-        this.id = gameCount++;
         this.masterUser = master;
         this.status = GameStatus.INITIAL;
     }
@@ -47,12 +46,20 @@ public class Game {
         this.mode = mode;
     }
 
-    public void setMasterUser(User masterUser) {
-        this.masterUser = masterUser;
+    public User getMasterUser() {
+        return masterUser;
+    }
+
+    public User getGuestUser() {
+        return guestUser;
     }
 
     public void setGuestUser(User guestUser) {
         this.guestUser = guestUser;
+    }
+
+    public void removeGuest() {
+        this.guestCharacter = null;
     }
 
     public long getTimeStarted() {
@@ -87,14 +94,6 @@ public class Game {
         this.guestCharacter = guestCharacter;
     }
     
-    public User getMasterUser() {
-        return masterUser;
-    }
-    
-    public User getGuestUser() {
-        return guestUser;
-    }
-    
     public boolean checkMaster(Character character) {
         return this.masterCharacter.equals(character);
     }
@@ -108,11 +107,11 @@ public class Game {
     }
 
     public boolean isWaiting() {
-        return this.guestCharacter == null;
+        return this.guestUser == null;
     }
 
     public boolean isFull() {
-        return this.guestCharacter != null;
+        return this.guestUser != null;
     }
 
     public boolean isGuestReady() {
@@ -129,14 +128,6 @@ public class Game {
 
     public Topic getTopic() {
         return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
-    }
-
-    public void removeGuest() {
-        this.guestCharacter = null;
     }
 
     public boolean start() {
@@ -162,7 +153,9 @@ public class Game {
     public JsonObject getStateAsJson() {
         JsonObject json = new JsonObject();
         json.addProperty("id", this.id);
-        json.addProperty("mode", this.mode.toString());
+        if(this.mode != null) {
+            json.addProperty("mode", this.mode.toString());
+        }
         json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
         json.addProperty("status", this.status.toString());
         return json;

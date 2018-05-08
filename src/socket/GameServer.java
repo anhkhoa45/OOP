@@ -9,6 +9,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,6 @@ import static model.GameStatus.GAME_OVER;
 public class GameServer {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
-    private static List<Topic> topics=TopicFactory.getTopics();
 
     /**
      * Callback hook for Connection open events.
@@ -34,11 +34,17 @@ public class GameServer {
       @OnOpen
       public void onOpen(Session userSession, @PathParam("user_name") String userName) {
           System.out.println("New request received. Id: " + userSession.getId());
-          User user = new User(userSession);
-          
-          if (users.containsValue(user)||users.containsKey(userName)) {
-              users.get(userSession.getId()).setOnlineState();
-          } else users.put(userSession.getId(), user);
+          User user = UserManager.getUserByUsername(userName);
+
+          if (user != null) {
+              user.setOnlineState();
+              user.setSession(userSession);
+          } else {
+              user = new User(userSession, userName);
+              UserManager.addUser(user);
+          }
+
+          users.put(userSession.getId(), user);
       }
 
     /**
@@ -60,6 +66,7 @@ public class GameServer {
 //                break;
 //            }
 //        }
+        users.remove(userSession.getId());
     }
 
     /**
@@ -154,7 +161,9 @@ public class GameServer {
         GameServer.games.put(game.getId(), game);
 
         try {
-            content.addProperty("game_id", game.getId());
+            JsonObject jObjGame = game.getStateAsJson();
+            jObjGame.add("master", game.getMasterUser().getStateAsJson());
+            content.add("game", jObjGame);
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e) {
@@ -192,7 +201,7 @@ public class GameServer {
                 case ATTACK:
                     model.Character p;
                     model.Character opponent;
-                    if (game.getMasterCharacter().equals(user)) {
+                    if (game.getMasterUser().equals(user)) {
                         opponent = game.getGuestCharacter();
                         p = game.getMasterCharacter();
                     } else {
@@ -235,7 +244,13 @@ public class GameServer {
 
         response.setAction(GameAction.GET_LIST_GAMES);
 
+        HashMap<Integer, Game> waitingGameList = new HashMap();
         try {
+            for (Game game : games.values()) {
+                if (!game.isFull()) {
+                    waitingGameList.put(game.getId(), game);
+                }
+            }
             content = gson.toJsonTree(games).getAsJsonObject();
             response.setContent(content);
             response.setStatus(200);
@@ -348,7 +363,6 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            game.setTopic(TopicFactory.getRandomTopic());
             game.start();
             content.add("game", game.getStateAsJson());
 
@@ -377,7 +391,7 @@ public class GameServer {
             Game game = games.get(gameId);
             game.setStatus(GameStatus.GUEST_READY);
 
-            content.addProperty("status", "GUEST_READY");
+            content.addProperty("status", game.getStatus().toString());
             response.setContent(content);
             response.setStatus(200);
 
