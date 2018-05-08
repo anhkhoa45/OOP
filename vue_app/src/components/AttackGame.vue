@@ -206,7 +206,7 @@
           action: Action.START_GAME,
           content: {game_id: this.playingGame.id}
         }))
-        if (this.guestIsReady()) {
+        if (this.playingGame.status === GameStatus.GUEST_READY) {
           this.$router.push({name : 'attackGameFight'});
         }
       },
@@ -215,7 +215,13 @@
           action: Action.GUEST_READY,
           content: {game_id: this.playingGame.id}
         }))
-      }
-    }
+      },
+    },
+    beforeDestroy(){
+        this.socketClient.send(JSON.stringify({
+          action: Action.LEAVE_GAME,
+          content: {game_id: this.playingGame.id}
+        }))
+    },
   }
 </script>
