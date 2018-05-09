@@ -7,7 +7,7 @@
         <div class="col-sm-3">
           <div class="card" @click.prevent="character = characters.KNIGHT.id">
             <img src="../assets/img/knight.png" alt="knight" class="image knightbg">
-            <div>
+            <div class="overlay">
               <div class="text">
                 <h3>Knight</h3>
                 <h4>Health: 120</h4>
@@ -22,7 +22,7 @@
         <div class="col-sm-3">
           <div class="card" @click.prevent="character = characters.HOT_GIRL.id">
             <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
-            <div>
+            <div class="overlay">
               <div class="text">
                 <h3>Hot girl</h3>
                 <h4>Health: 120</h4>
@@ -36,7 +36,7 @@
         <div class="col-sm-3">
           <div class="card" @click.prevent="character = characters.MEDUSA.id">
             <img src="../assets/img/knight.png" alt="girl" height="50px" class="image girlbg">
-            <div>
+            <div class="overlay">
               <div class="text">
                 <h3>Medusa</h3>
                 <h4>Health: 120</h4>
@@ -51,7 +51,7 @@
         <div class="col-sm-3">
           <div class="card" @click.prevent="character = characters.DRACULA.id">
             <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
-            <div>
+            <div class="overlay">
               <div class="text">
                 <h3>Dracula</h3>
                 <h4>Health: 120</h4>
