@@ -39,7 +39,6 @@
               game_id: gameId
             }
           }));
-          this.$router.push({name: 'attackGame'})
         }
       },
       created() {
