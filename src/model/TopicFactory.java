@@ -21,5 +21,6 @@ public class TopicFactory {
 
     public static Topic getRandomTopic(){
         return getTopics().get(new Random().nextInt(topics.size()));
+        
     }
 }

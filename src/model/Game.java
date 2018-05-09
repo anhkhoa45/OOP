@@ -129,6 +129,10 @@ public class Game {
     public Topic getTopic() {
         return topic;
     }
+    
+    public void setTopic(Topic topic){
+        this.topic=topic;
+    }
 
     public boolean start() {
         if (this.isFull() && this.isGuestReady()) {
