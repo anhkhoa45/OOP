@@ -5,6 +5,7 @@ public enum GameAction {
     JOIN_GAME,
     ANSWER_QUESTION,
     GET_LIST_GAMES,
+    GET_ONLINE_USERS, 
     SET_GAME_MODE,
     SET_GAME_CHARACTER,
     SET_RIVAL_CHARACTER,
@@ -12,5 +13,6 @@ public enum GameAction {
     GUEST_READY,
     LEAVE_GAME,
     GET_GAME_STATE,
-    BE_HIT
+    BE_HIT,
+    INVITE,
 }

@@ -26,6 +26,9 @@ export function onMessage(event) {
       case Action.GET_LIST_GAME:
         onGetListGame(content);
         break;
+      case Action.GET_ONLINE_USERS:
+        onGetOnlineUsers(content);
+        break;
       case Action.SET_GAME_MODE:
         onSetGameMode(content);
         break;
@@ -43,6 +46,9 @@ export function onMessage(event) {
         break;
       case Action.GET_GAME_STATE:
         onGetGameState(content);
+        break;
+      case Action.INVITE:
+        alert("Want to join us?");
         break;
     }
   }
@@ -69,6 +75,10 @@ function onCreateGame(data) {
 
 function onGetListGame(data) {
   store.commit('setListGame', data);
+}
+
+function onGetOnlineUsers(data) {
+  store.commit('setOnlineUser', data);
 }
 
 function onJoinGame(data) {

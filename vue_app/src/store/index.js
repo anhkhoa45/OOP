@@ -25,7 +25,8 @@ const store = new Vuex.Store({
       isMaster: false,
       status: 0
     },
-    games: []
+    games: [],
+    onlineusers: []
   },
   mutations: {
     saveToken(state, token) {
@@ -88,6 +89,9 @@ const store = new Vuex.Store({
     },
     setListGame(state, games){
       state.games = games;
+    },
+    setOnlineUser(state, onlineusers){
+      state.onlineusers = onlineusers;
     }
   },
   actions: {
