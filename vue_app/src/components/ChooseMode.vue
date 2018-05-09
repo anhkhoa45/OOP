@@ -11,7 +11,8 @@
               <li v-for="user in onlineusers">
                 <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
                 <span class="whitetext">{{user.name}}</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
+                <!-- <input type="text" v-model="onlineUserName" :value="user.name"> -->
+                <button @click="invite(user.name)"><a href="#" class="action-button shadow animate green">Invite</a></button>
               </li>
               <!-- <li>
                 <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
@@ -105,6 +106,7 @@
         category: 0,
         mode: -1,
         gameModes: Mode,
+        onlineUserName: '',
       }
     },
     computed: {
@@ -123,6 +125,15 @@
           content: {
             game_id: this.playingGame.id,
             mode: this.mode
+          }
+        }));
+      },
+      invite(userName){
+        this.socketClient.send(JSON.stringify({
+          action: Action.INVITE,
+          content: {
+            game_id: this.playingGame.id,
+            user_name: userName,
           }
         }));
       }

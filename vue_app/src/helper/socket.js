@@ -47,6 +47,9 @@ export function onMessage(event) {
       case Action.GET_GAME_STATE:
         onGetGameState(content);
         break;
+      case Action.INVITE:
+        alert("Want to join us?");
+        break;
     }
   }
 }

@@ -124,11 +124,41 @@ public class GameServer {
                 onGetGameState(message, userSession);
                 System.out.println("ACTION_GET_GAME_STATE");
                 break;
+            case INVITE:
+                onInvite(message, userSession);
+                break;
             default:
 
         }
     }
-
+    
+    private void onInvite(Message message, Session userSession){
+        Message response=new Message();
+        JsonObject content=new JsonObject();
+        Gson gson=new Gson();
+        User inviter = users.get(userSession.getId());
+        response.setAction(GameAction.INVITE);
+        try {
+            String username=message.getContent().get("user_name").getAsString();
+            User invitee=UserManager.getUserByUsername(username);
+            content.add("user", gson.toJsonTree(inviter));
+            
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            content.add("game", gson.toJsonTree(game));
+            
+            response.setStatus(200);
+            response.setContent(content);
+            invitee.getSession().getAsyncRemote().sendObject(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+        userSession.getAsyncRemote().sendObject(response);
+    }
+    
     private void onJoinGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
         Gson gson = new Gson();

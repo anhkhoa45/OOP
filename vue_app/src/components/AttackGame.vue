@@ -217,11 +217,11 @@
         }))
       },
     },
-    beforeDestroy(){
-        this.socketClient.send(JSON.stringify({
-          action: Action.LEAVE_GAME,
-          content: {game_id: this.playingGame.id}
-        }))
-    },
+    // beforeDestroy(){
+    //     this.socketClient.send(JSON.stringify({
+    //       action: Action.LEAVE_GAME,
+    //       content: {game_id: this.playingGame.id}
+    //     }))
+    // },
   }
 </script>
