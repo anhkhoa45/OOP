@@ -85,20 +85,20 @@ function onJoinGame(data) {
   if (data.game.mode === Mode.ATTACK) {
     router.push({name: 'attackGame'});
   } else {
-    router.push({name: 'normalGame'});
+    router.push({name: 'chooseMode'});
   }
 }
 
 function onSetGameMode(data) {
   store.commit('setPlayingGameMode', data.game.mode);
-  switch (data.game.mode) {
-    case Mode.ATTACK:
-      router.push({name: 'attackGame'});
-      break;
-    case Mode.NORMAL:
-      router.push({name: 'normalGame'});
-      break;
-  }
+  // switch (data.game.mode) {
+  //   case Mode.ATTACK:
+  //     router.push({name: 'attackGame'});
+  //     break;
+  //   case Mode.NORMAL:
+  //     router.push({name: 'normalGame'});
+  //     break;
+  // }
 }
 
 function createCharacter(data) {
