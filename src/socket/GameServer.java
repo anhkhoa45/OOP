@@ -4,10 +4,7 @@ import com.google.gson.JsonObject;
 import model.*;
 
 import javax.inject.Singleton;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +39,7 @@ public class GameServer {
           } else {
               user = new User(userSession, userName);
               UserManager.addUser(user);
+              System.out.print("New user");
           }
 
           users.put(userSession.getId(), user);
@@ -60,13 +58,18 @@ public class GameServer {
         System.out.println("Connection closed. Id: " + userSession.getId());
         User user = users.get(userSession.getId());
         user.setOfflineState();
-//        for (Game g : games.values()) {
-//            if (g.checkMaster(user) || g.checkGuest(user)) {
-//                leaveGame(g.getId(), userSession);
-//                break;
-//            }
-//        }
+        for (Game g : games.values()) {
+            if (g.checkMaster(user) || g.checkGuest(user)) {
+                leaveGame(g.getId(), userSession);
+                break;
+            }
+        }
         users.remove(userSession.getId());
+    }
+
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        // Do error handling here
     }
 
     /**
@@ -88,10 +91,10 @@ public class GameServer {
                 onJoinGame(message, userSession);
                 System.out.println("ACTION_JOIN_GAME");
                 break;
-//            case ANSWER_QUESTION:
-//                onAnswer(message, userSession);
-//                System.out.println("ACTION_ANSWER");
-//                break;
+            case ANSWER_QUESTION:
+                onAnswer(message, userSession);
+                System.out.println("ACTION_ANSWER");
+                break;
             case GET_LIST_GAMES:
                 onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
@@ -99,6 +102,10 @@ public class GameServer {
             case SET_GAME_MODE:
                 onSetGameMode(message, userSession);
                 System.out.println("ACTION_SET_GAME_MODE");
+                break;
+            case DONE_CHOOSE_MODE:
+                onDoneChooseMode(message, userSession);
+                System.out.println("ACTION_DONE_CHOOSE_MODE");
                 break;
             case SET_GAME_CHARACTER:
                 onSetGameCharacter(message, userSession);
@@ -112,10 +119,10 @@ public class GameServer {
                 onReady(message, userSession);
                 System.out.println("ACTION_READY");
                 break;
-//            case LEAVE_GAME:
-//                onLeaveGame(message, userSession);
-//                System.out.println("ACTION_LEAVE_GAME");
-//                break;
+            case LEAVE_GAME:
+                onLeaveGame(message, userSession);
+                System.out.println("ACTION_LEAVE_GAME");
+                break;
             case GET_GAME_STATE:
                 onGetGameState(message, userSession);
                 System.out.println("ACTION_GET_GAME_STATE");
@@ -127,7 +134,6 @@ public class GameServer {
 
     private void onJoinGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
-        Gson gson = new Gson();
         JsonObject content = new JsonObject();
         Message response = new Message();
 
@@ -138,9 +144,17 @@ public class GameServer {
             Game game = games.get(gameId);
             game.setGuestUser(user);
 
-            content.add("game", gson.toJsonTree(game));
+            JsonObject gameJson = game.getStateAsJson();
+            gameJson.add("master", game.getMasterUser().getStateAsJson());
+            gameJson.add("guest", game.getGuestUser().getStateAsJson());
+            content.add("game", gameJson);
+
             response.setStatus(200);
             response.setContent(content);
+
+            game.getMasterUser().getSession().getAsyncRemote().sendObject(
+                    new Message(200, GameAction.GUEST_JOIN_GAME, content)
+            );
         } catch (Exception e) {
             e.printStackTrace();
             content.addProperty("message", e.getMessage());
@@ -264,7 +278,6 @@ public class GameServer {
     }
 
     private void onSetGameMode(Message message, Session userSession) {
-        Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
 
@@ -289,11 +302,46 @@ public class GameServer {
             content.add("game", game.getStateAsJson());
             response.setContent(content);
             response.setStatus(200);
+
+            User guest = game.getGuestUser();
+            if(guest != null) {
+                guest.getSession().getAsyncRemote().sendObject(
+                        new Message(200, GameAction.SET_GAME_MODE, content)
+                );
+            }
         } catch (Exception e) {
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
         }
+        userSession.getAsyncRemote().sendObject(response);
+    }
+
+    private void onDoneChooseMode(Message message, Session userSession) {
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+
+        response.setAction(GameAction.DONE_CHOOSE_MODE);
+
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            User guest = game.getGuestUser();
+
+            content.addProperty("mode", game.getMode().toString());
+
+            response.setContent(content);
+            response.setStatus(200);
+
+            if(guest != null) {
+                guest.getSession().getAsyncRemote().sendObject(response);
+            }
+        } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+
         userSession.getAsyncRemote().sendObject(response);
     }
 

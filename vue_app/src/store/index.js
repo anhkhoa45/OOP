@@ -10,21 +10,8 @@ import Action from '../helper/game_actions'
 const store = new Vuex.Store({
   state: {
     token: window.localStorage.getItem('token'),
-    user: {
-      id: null,
-      email: null,
-      name: null,
-      avatar: null
-    },
     socketClient: null,
-    playingGame: {
-      id: null,
-      mode: null,
-      me: {},
-      rival: {},
-      isMaster: false,
-      status: 0
-    },
+    playingGame: null,
     games: []
   },
   mutations: {
@@ -41,40 +28,31 @@ const store = new Vuex.Store({
     logout(state){
       window.localStorage.removeItem('token');
       state.token = null;
-      state.user = {
-        id: null,
-          email: null,
-          name: null,
-          avatar: null
-      };
-      state.socketClient = {};
+      state.user = null;
+      state.socketClient = null;
     },
     resetPlayingGame(state){
-      state.playingGame = {
-        id: null,
-        mode: null,
-        question: '',
-        me: {},
-        rival: {},
-        isMaster: false
-      }
+      state.playingGame = null;
     },
-    setPlayingGameId(state, gameId){
-      state.playingGame.id = gameId;
+    setPlayingGame(state, game){
+      state.playingGame = game;
     },
     setPlayingGameMode(state, mode){
       state.playingGame.mode = mode;
     },
-    setGameCharacter(state, character){
-      state.playingGame.me = character;
+    setPlayingGameGuest(state, guest){
+      state.playingGame.guest = guest;
     },
-    setRivalCharacter(state, character){
-      state.playingGame.rival = character;
+    setMasterCharacter(state, character){
+      state.playingGame.master.character = character;
+    },
+    setGuestCharacter(state, character){
+      state.playingGame.guest.character = character;
     },
     setGameStatus(state, status){
       state.playingGame.status = status;
     },
-    setGameQuestion(state, question){
+    setGameTopic(state, question){
       state.playingGame.question = question;
     },
     updateMyInfo(state, info){
@@ -82,9 +60,6 @@ const store = new Vuex.Store({
     },
     updateRivalInfo(state, info){
       state.playingGame.rival.updateState(info);
-    },
-    setPlayingGame(state, game){
-      state.playingGame = game;
     },
     setListGame(state, games){
       state.games = games;
