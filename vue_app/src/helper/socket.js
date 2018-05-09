@@ -4,10 +4,10 @@ import Mode from '../helper/game_modes'
 import Character from '../helper/game_characters'
 import store from '../store'
 import router from '../router'
-import KnightPlayer from "../classes/character/KnightCharacter";
-import MedusaPlayer from "../classes/character/MedusaCharacter";
-import HotGirlPlayer from "../classes/character/HotGirlCharacter";
-import DraculaPlayer from "../classes/character/DraculaCharacter";
+import KnightCharacter from "../classes/character/KnightCharacter";
+import MedusaCharacter from "../classes/character/MedusaCharacter";
+import HotGirlCharacter from "../classes/character/HotGirlCharacter";
+import DraculaCharacter from "../classes/character/DraculaCharacter";
 import Game from "../classes/game/Game";
 import User from "../classes/User";
 
@@ -31,6 +31,9 @@ export function onMessage(event) {
       case Action.GET_LIST_GAME:
         onGetListGame(content);
         break;
+      case Action.GET_ONLINE_USERS:
+        onGetOnlineUsers(content);
+        break;
       case Action.SET_GAME_MODE:
         onSetGameMode(content);
         break;
@@ -51,6 +54,9 @@ export function onMessage(event) {
         break;
       case Action.GET_GAME_STATE:
         onGetGameState(content);
+        break;
+      case Action.INVITE:
+        alert("Want to join us?");
         break;
     }
   }
@@ -78,6 +84,10 @@ function onCreateGame(data) {
 
 function onGetListGame(data) {
   store.commit('setListGame', data);
+}
+
+function onGetOnlineUsers(data) {
+  store.commit('setOnlineUser', data);
 }
 
 function onJoinGame(data) {
@@ -114,33 +124,32 @@ function onDoneChooseMode(data) {
   }
 }
 
-function createPlayer(data) {
+function createCharacter(data) {
   let id = data.character.id;
   let name = data.character.name;
-  let avatar = data.character.avatar;
   let health = data.character.health;
   let attack = data.character.attack;
   let characterType = data.character_type;
 
   switch (characterType) {
     case Character.KNIGHT.id:
-      return new KnightPlayer(id, name, avatar, health, attack);
+      return new KnightCharacter(id, name, health, attack);
     case Character.MEDUSA.id:
-      return new MedusaPlayer(id, name, avatar, health, attack);
+      return new MedusaCharacter(id, name, health, attack);
     case Character.HOT_GIRL.id:
-      return new HotGirlPlayer(id, name, avatar, health, attack);
+      return new HotGirlCharacter(id, name, health, attack);
     case Character.DRACULA.id:
-      return new DraculaPlayer(id, name, avatar, health, attack);
+      return new DraculaCharacter(id, name, health, attack);
   }
 }
 
 function onSetGameCharacter(data) {
-  let character = createPlayer(data);
+  let character = createCharacter(data);
   store.commit('setGameCharacter', character);
 }
 
 function onSetRivalCharacter(data) {
-  let character = createPlayer(data);
+  let character = createCharacter(data);
   store.commit('setRivalCharacter', character);
 }
 

@@ -8,50 +8,12 @@
             <br>
             <h2 class="white-text">Friend list</h2>
             <ul>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="white-text">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
+              <li v-for="user in onlineusers">
+                <img
+                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
+                  class="thumbnail">
+                <span class="white-text">{{user.name}}</span>
+                <a @click.prevent="invite(user.name)"><a href="#" class="action-button shadow animate green">Invite</a></a>
               </li>
             </ul>
           </div>
@@ -69,7 +31,7 @@
         <div class="col-md-3">
           <select v-if="isMaster" v-model="mode">
             <option value="-1" selected="selected" disabled="disabled">Select a mode</option>
-            <option :value="0" >Normal mode</option>
+            <option :value="0">Normal mode</option>
             <option :value="1">Attack mode</option>
           </select>
           <h3 class="border-text margin-top-50" v-else>Game mode: {{ playingGameMode }}</h3>
@@ -118,38 +80,42 @@
   import Mode from '../helper/game_modes'
   import GameStatus from '../helper/game_status'
 
+  let intervalObj;
+
   export default {
     data() {
       return {
         category: 0,
         mode: -1,
-        gameModes: Mode
+        gameModes: Mode,
+        onlineUserName: '',
       }
     },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
+        onlineusers: state => state.onlineusers,
       }),
-      isMaster(){
+      isMaster() {
         return this.$store.state.user.name === this.playingGame.master.name;
       },
-      isGuest(){
+      isGuest() {
         return (this.playingGame.guest) && (this.$store.state.user.name === this.playingGame.guest.name);
       },
-      playingGameMode(){
+      playingGameMode() {
         return this.playingGame.mode || '';
       },
       guestReady() {
         return this.playingGame.status === GameStatus.GUEST_READY;
       },
-      isSelectedMode(){
+      isSelectedMode() {
         return this.playingGame.mode === Mode.ATTACK || this.playingGame.mode === Mode.NORMAL
       },
-      canStart(){
+      canStart() {
         return this.guestReady;
       },
-      canReady(){
+      canReady() {
         return this.isSelectedMode;
       },
     },
@@ -159,7 +125,7 @@
       }
     },
     methods: {
-      setGameMode(){
+      setGameMode() {
         if (this.mode === -1) return;
 
         this.socketClient.send(JSON.stringify({
@@ -178,12 +144,31 @@
           }
         }));
       },
-      ready(){
+      ready() {
         this.socketClient.send(JSON.stringify({
           action: Action.GUEST_READY,
           content: {game_id: this.playingGame.id}
         }))
+      },
+      invite(userName) {
+        this.socketClient.send(JSON.stringify({
+          action: Action.INVITE,
+          content: {
+            game_id: this.playingGame.id,
+            user_name: userName,
+          }
+        }));
       }
+    },
+    created() {
+      intervalObj = setInterval(() => {
+        this.socketClient.send(JSON.stringify({
+          action: Action.GET_ONLINE_USERS,
+        }));
+      }, 5000);
+    },
+    beforeDestroy() {
+      clearInterval(intervalObj);
     }
   }
 </script>

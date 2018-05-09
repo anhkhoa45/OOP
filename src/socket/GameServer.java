@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
@@ -99,6 +100,9 @@ public class GameServer {
                 onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
                 break;
+            case GET_ONLINE_USERS:
+                onGetOnlineUsers(message, userSession);
+                break;
             case SET_GAME_MODE:
                 onSetGameMode(message, userSession);
                 System.out.println("ACTION_SET_GAME_MODE");
@@ -127,11 +131,41 @@ public class GameServer {
                 onGetGameState(message, userSession);
                 System.out.println("ACTION_GET_GAME_STATE");
                 break;
+            case INVITE:
+                onInvite(message, userSession);
+                break;
             default:
 
         }
     }
-
+    
+    private void onInvite(Message message, Session userSession){
+        Message response=new Message();
+        JsonObject content=new JsonObject();
+        Gson gson=new Gson();
+        User inviter = users.get(userSession.getId());
+        response.setAction(GameAction.INVITE);
+        try {
+            String username=message.getContent().get("user_name").getAsString();
+            User invitee=UserManager.getUserByUsername(username);
+            content.add("user", gson.toJsonTree(inviter));
+            
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            content.add("game", gson.toJsonTree(game));
+            
+            response.setStatus(200);
+            response.setContent(content);
+            invitee.getSession().getAsyncRemote().sendObject(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+        userSession.getAsyncRemote().sendObject(response);
+    }
+    
     private void onJoinGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
         JsonObject content = new JsonObject();
@@ -276,6 +310,25 @@ public class GameServer {
 
         userSession.getAsyncRemote().sendObject(response);
     }
+    
+    private void onGetOnlineUsers(Message message, Session userSession) {
+        Gson gson = new Gson();
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        //Set<String> onlineUserName=users.keySet();
+        response.setAction(GameAction.GET_ONLINE_USERS);
+        try {           
+            content = gson.toJsonTree(users).getAsJsonObject();
+            response.setContent(content);
+            response.setStatus(200);
+        } catch (Exception e) {
+            content.addProperty("message", e.getMessage());
+            response.setContent(content);
+            response.setStatus(500);
+        }
+
+        userSession.getAsyncRemote().sendObject(response);
+    }
 
     private void onSetGameMode(Message message, Session userSession) {
         Message response = new Message();
@@ -287,7 +340,6 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             int modeTmp = message.getContent().get("mode").getAsInt();
             Game game = games.get(gameId);
-
             switch (modeTmp){
                 case 0:
                     game.setMode(GameMode.NORMAL);

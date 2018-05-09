@@ -1,8 +1,8 @@
 import AttackCharacter from './AttackCharacter';
 
 class KnightCharacter extends AttackCharacter {
-  constructor(id, name, health, attack){
-    super(id, name, health, attack);
+  constructor(health, attack){
+    super(health, attack);
   }
 }
 
