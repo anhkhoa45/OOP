@@ -6,54 +6,15 @@
         <div class="col-md-3">
           <div>
             <br>
-            <h2 class="whitetext">Friend list</h2>
+            <h2 class="white-text">Friend list</h2>
             <ul>
               <li v-for="user in onlineusers">
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">{{user.name}}</span>
-                <!-- <input type="text" v-model="onlineUserName" :value="user.name"> -->
-                <button @click="invite(user.name)"><a href="#" class="action-button shadow animate green">Invite</a></button>
+                <img
+                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
+                  class="thumbnail">
+                <span class="white-text">{{user.name}}</span>
+                <a @click.prevent="invite(user.name)"><a href="#" class="action-button shadow animate green">Invite</a></a>
               </li>
-              <!-- <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li>
-                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18" class="thumbnail">
-                <span class="whitetext">ina mo</span>
-                <a href="#" class="action-button shadow animate green">Invite</a>
-              </li> -->
             </ul>
           </div>
         </div>
@@ -64,19 +25,36 @@
               alt="Avatar" class="ava">
           </div>
           <br><br><br>
-          <h2 class="bordertext">put name player 1</h2>
+          <h2 class="border-text">{{ playingGame.master.name }}</h2>
+          <p class="border-text">Master</p>
         </div>
         <div class="col-md-3">
-          <select v-model="mode">
+          <select v-if="isMaster" v-model="mode">
             <option value="-1" selected="selected" disabled="disabled">Select a mode</option>
-            <option value="0" >Normal mode</option>
-            <option value="1">Attack mode</option>
+            <option :value="0">Normal mode</option>
+            <option :value="1">Attack mode</option>
           </select>
+          <h3 class="border-text margin-top-50" v-else>Game mode: {{ playingGameMode }}</h3>
           <img src="../assets/img/vs.png" alt="vs" class="versus">
-          <div class="startbutton" @click.prevent="done" aria-disabled="true">
+
+          <h2 v-if="isMaster && !isSelectedMode" class="border-text margin-top-50">Please choose mode first!</h2>
+
+          <div :class="{ 'start-button' : true, 'active' : canStart}"
+               v-if="isMaster && isSelectedMode"
+               @click.prevent="done">
             <div class="outer">
               <div class="height">
-                <div class="inner">START</div>
+                <div class="inner">{{ canStart ? 'START' : 'WAITING' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div :class="{ 'start-button' : true, 'active' : canReady}"
+               v-if="isGuest"
+               @click.prevent="ready">
+            <div class="outer">
+              <div class="height">
+                <div class="inner">{{ canReady ? 'READY' : 'WAITING' }}</div>
               </div>
             </div>
           </div>
@@ -88,7 +66,8 @@
               alt="Avatar" class="ava">
           </div>
           <br><br><br>
-          <h2 class="bordertext">put name player 2</h2>
+          <h2 class="border-text">{{ playingGame.guest ? playingGame.guest.name : '' }}</h2>
+          <p class="border-text">Guest</p>
         </div>
       </div>
     </div>
@@ -99,7 +78,10 @@
   import {mapState} from 'vuex'
   import Action from '../helper/game_actions'
   import Mode from '../helper/game_modes'
-  var intervalObj;
+  import GameStatus from '../helper/game_status'
+
+  let intervalObj;
+
   export default {
     data() {
       return {
@@ -113,10 +95,36 @@
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
         onlineusers: state => state.onlineusers,
-      })
+      }),
+      isMaster() {
+        return this.$store.state.user.name === this.playingGame.master.name;
+      },
+      isGuest() {
+        return (this.playingGame.guest) && (this.$store.state.user.name === this.playingGame.guest.name);
+      },
+      playingGameMode() {
+        return this.playingGame.mode || '';
+      },
+      guestReady() {
+        return this.playingGame.status === GameStatus.GUEST_READY;
+      },
+      isSelectedMode() {
+        return this.playingGame.mode === Mode.ATTACK || this.playingGame.mode === Mode.NORMAL
+      },
+      canStart() {
+        return this.guestReady;
+      },
+      canReady() {
+        return this.isSelectedMode;
+      },
+    },
+    watch: {
+      mode() {
+        this.setGameMode();
+      }
     },
     methods: {
-      done() {
+      setGameMode() {
         if (this.mode === -1) return;
 
         this.socketClient.send(JSON.stringify({
@@ -127,7 +135,21 @@
           }
         }));
       },
-      invite(userName){
+      done() {
+        this.socketClient.send(JSON.stringify({
+          action: Action.DONE_CHOOSE_MODE,
+          content: {
+            game_id: this.playingGame.id
+          }
+        }));
+      },
+      ready() {
+        this.socketClient.send(JSON.stringify({
+          action: Action.GUEST_READY,
+          content: {game_id: this.playingGame.id}
+        }))
+      },
+      invite(userName) {
         this.socketClient.send(JSON.stringify({
           action: Action.INVITE,
           content: {
@@ -137,15 +159,14 @@
         }));
       }
     },
-   
     created() {
-      intervalObj=setInterval(() => {
+      intervalObj = setInterval(() => {
         this.socketClient.send(JSON.stringify({
           action: Action.GET_ONLINE_USERS,
         }));
       }, 5000);
     },
-    beforeDestroy(){
+    beforeDestroy() {
       clearInterval(intervalObj);
     }
   }

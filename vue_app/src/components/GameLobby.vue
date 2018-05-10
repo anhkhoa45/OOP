@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="blurbg"></div>
-    <h1 class="bordertext middle"><strong>Choose game &#33;</strong></h1>
+    <h1 class="border-text middle"><strong>Choose game &#33;</strong></h1>
     <div class="container">
       <div class="row">
         <div class="col-md-3">
           <div>
             <br>
-            <h2 class="whitetext">Friend list</h2>
+            <h2 class="white-text">Friend list</h2>
             <ul>
               <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
               </li>

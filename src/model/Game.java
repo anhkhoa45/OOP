@@ -94,12 +94,12 @@ public class Game {
         this.guestCharacter = guestCharacter;
     }
     
-    public boolean checkMaster(Character character) {
-        return this.masterCharacter.equals(character);
+    public boolean checkMaster(User user) {
+        return this.masterUser.equals(user);
     }
 
-    public boolean checkGuest(Character character) {
-        return this.guestCharacter.equals(character);
+    public boolean checkGuest(User user) {
+        return this.guestUser.equals(user);
     }
 
     public boolean isEmpty() {

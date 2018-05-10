@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid margin-top-50">
+  <div class="container-fluid">
       <router-view></router-view>
   </div>
 </template>

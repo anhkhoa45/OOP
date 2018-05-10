@@ -10,21 +10,8 @@ import Action from '../helper/game_actions'
 const store = new Vuex.Store({
   state: {
     token: window.localStorage.getItem('token'),
-    user: {
-      id: null,
-      email: null,
-      name: null,
-      avatar: null
-    },
     socketClient: null,
-    playingGame: {
-      id: null,
-      mode: null,
-      me: {},
-      rival: {},
-      isMaster: false,
-      status: 0
-    },
+    playingGame: null,
     games: [],
     onlineusers: []
   },
@@ -36,66 +23,54 @@ const store = new Vuex.Store({
     saveUser(state, user) {
       state.user = user;
     },
-    setSocketClient(state, socketClient){
+    setSocketClient(state, socketClient) {
       state.socketClient = socketClient;
     },
-    logout(state){
+    logout(state) {
       window.localStorage.removeItem('token');
       state.token = null;
-      state.user = {
-        id: null,
-          email: null,
-          name: null,
-          avatar: null
-      };
-      state.socketClient = {};
+      state.user = null;
+      state.socketClient = null;
     },
-    resetPlayingGame(state){
-      state.playingGame = {
-        id: null,
-        mode: null,
-        question: '',
-        me: {},
-        rival: {},
-        isMaster: false
-      }
+    resetPlayingGame(state) {
+      state.playingGame = null;
     },
-    setPlayingGameId(state, gameId){
-      state.playingGame.id = gameId;
-    },
-    setPlayingGameMode(state, mode){
-      state.playingGame.mode = mode;
-    },
-    setGameCharacter(state, character){
-      state.playingGame.me = character;
-    },
-    setRivalCharacter(state, character){
-      state.playingGame.rival = character;
-    },
-    setGameStatus(state, status){
-      state.playingGame.status = status;
-    },
-    setGameQuestion(state, question){
-      state.playingGame.question = question;
-    },
-    updateMyInfo(state, info){
-      state.playingGame.me.updateState(info);
-    },
-    updateRivalInfo(state, info){
-      state.playingGame.rival.updateState(info);
-    },
-    setPlayingGame(state, game){
+    setPlayingGame(state, game) {
       state.playingGame = game;
     },
-    setListGame(state, games){
+    setPlayingGameMode(state, mode) {
+      state.playingGame.mode = mode;
+    },
+    setPlayingGameGuest(state, guest) {
+      state.playingGame.guest = guest;
+    },
+    setMasterCharacter(state, character) {
+      state.playingGame.master.character = character;
+    },
+    setGuestCharacter(state, character) {
+      state.playingGame.guest.character = character;
+    },
+    setGameStatus(state, status) {
+      state.playingGame.status = status;
+    },
+    setGameTopic(state, question) {
+      state.playingGame.question = question;
+    },
+    updateMyInfo(state, info) {
+      state.playingGame.me.updateState(info);
+    },
+    updateRivalInfo(state, info) {
+      state.playingGame.rival.updateState(info);
+    },
+    setListGame(state, games) {
       state.games = games;
     },
-    setOnlineUser(state, onlineusers){
+    setOnlineUser(state, onlineusers) {
       state.onlineusers = onlineusers;
     }
   },
   actions: {
-    fetchUser({ commit }){
+    fetchUser({commit}) {
       return new Promise((res, rej) => {
         get('/api/user')
           .then(({data}) => {
@@ -108,15 +83,15 @@ const store = new Vuex.Store({
           })
       })
     },
-    connectSocket({ commit }, userName){
+    connectSocket({commit}, userName) {
       return new Promise((res, rej) => {
         let endPointURL = `ws://${window.location.host}/game-server/${userName}`;
         let socketClient = new WebSocket(endPointURL);
-        socketClient.onopen = function(){
+        socketClient.onopen = function () {
           socketClient.onmessage = onMessage;
           res();
         };
-        socketClient.onerror = function(){
+        socketClient.onerror = function () {
           socketClient.close();
           rej();
         };
@@ -124,7 +99,7 @@ const store = new Vuex.Store({
         commit('setSocketClient', socketClient);
       });
     },
-    fetchListGame({ state }){
+    fetchListGame({state}) {
       state.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
     }
   }
