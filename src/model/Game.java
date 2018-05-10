@@ -59,7 +59,7 @@ public class Game {
     }
 
     public void removeGuest() {
-        this.guestCharacter = null;
+        this.guestUser = null;
     }
 
     public long getTimeStarted() {

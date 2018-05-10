@@ -2,6 +2,10 @@
   <div class="row">
     <div class="blurbg"></div>
     <div class="container">
+      <div class="row text-center">
+        <h1 class="border-text">Room {{ playingGame.id }}</h1>
+        <button type="button" class="btn btn-sm btn-danger ml-auto" @click="leaveGame">Leave game</button>
+      </div>
       <h1 class="border-text middle"><strong>Choose your spokesman &#33;</strong></h1>
       <div class="row">
         <div class="col-sm-3">

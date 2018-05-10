@@ -55,6 +55,12 @@ export function onMessage(event) {
       case Action.GET_GAME_STATE:
         onGetGameState(content);
         break;
+      case Action.LEAVE_GAME:
+        onLeaveGame(content);
+        break;
+      case Action.GUEST_LEAVE_GAME:
+        onGuestLeaveGame(content);
+        break;
       case Action.INVITE:
         alert("Want to join us?");
         break;
@@ -186,3 +192,14 @@ function onGetGameState(data) {
   store.commit('updateMyInfo', me);
   store.commit('updateRivalInfo', rival);
 }
+
+function onLeaveGame(data){
+  store.commit('setPlayingGame', null);
+  router.push({name: 'gameLobby'})
+}
+
+function onGuestLeaveGame(data){
+  store.commit('setPlayingGameGuest', null);
+  store.commit('setGameStatus', GameStatus.INITIAL);
+}
+

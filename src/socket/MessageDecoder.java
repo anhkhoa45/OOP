@@ -9,7 +9,7 @@ import javax.websocket.EndpointConfig;
 public class MessageDecoder implements Decoder.Text<Message> {
 
     @Override
-    public Message decode(final String jsonMessage) throws DecodeException {
+    public Message decode(final String jsonMessage) {
         Gson gson = new Gson();
         return gson.fromJson(jsonMessage, Message.class);
     }
