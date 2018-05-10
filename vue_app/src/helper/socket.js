@@ -125,21 +125,19 @@ function onDoneChooseMode(data) {
 }
 
 function createCharacter(data) {
-  let id = data.character.id;
-  let name = data.character.name;
   let health = data.character.health;
   let attack = data.character.attack;
   let characterType = data.character_type;
 
   switch (characterType) {
     case Character.KNIGHT.id:
-      return new KnightCharacter(id, name, health, attack);
+      return new KnightCharacter(Character.KNIGHT.name, health, attack);
     case Character.MEDUSA.id:
-      return new MedusaCharacter(id, name, health, attack);
+      return new MedusaCharacter(Character.MEDUSA.name, health, attack);
     case Character.HOT_GIRL.id:
-      return new HotGirlCharacter(id, name, health, attack);
+      return new HotGirlCharacter(Character.HOT_GIRL.name, health, attack);
     case Character.DRACULA.id:
-      return new DraculaCharacter(id, name, health, attack);
+      return new DraculaCharacter(Character.DRACULA.name, health, attack);
   }
 }
 
