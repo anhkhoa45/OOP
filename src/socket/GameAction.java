@@ -18,4 +18,6 @@ public enum GameAction {
     GET_GAME_STATE,
     BE_HIT,
     INVITE,
+    REPLY_INVITATION,
+    DECLINE_INVITATION
 }

@@ -1,6 +1,8 @@
 package socket;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import model.*;
 
@@ -107,6 +109,7 @@ public class GameServer {
                 break;
             case GET_ONLINE_USERS:
                 onGetOnlineUsers(message, userSession);
+                System.out.println("ACTION_GET_ONLINE_USERS");
                 break;
             case SET_GAME_MODE:
                 onSetGameMode(message, userSession);
@@ -139,21 +142,33 @@ public class GameServer {
             case INVITE:
                 onInvite(message, userSession);
                 break;
+            case DECLINE_INVITATION: 
+                onDecline(message, userSession);
             default:
 
         }
     }
 
-    private void onInvite(Message message, Session userSession) {
-        Message response = new Message();
-        JsonObject content = new JsonObject();
-        Gson gson = new Gson();
+    private void onDecline(Message message, Session userSession){
+        Message response=new Message();
+        String username=message.getContent().get("name").getAsString();
+        User user=UserManager.getUserByUsername(username);
+        response.setAction(GameAction.DECLINE_INVITATION);
+        response.setStatus(200);
+        user.getSession().getAsyncRemote().sendObject(response);
+    }
+    
+    private void onInvite(Message message, Session userSession){
+        Message response=new Message();
+        JsonObject content=new JsonObject();
+        Gson gson=new Gson();
         User inviter = users.get(userSession.getId());
         response.setAction(GameAction.INVITE);
         try {
-            String username = message.getContent().get("user_name").getAsString();
-            User invitee = UserManager.getUserByUsername(username);
-            content.add("user", gson.toJsonTree(inviter));
+            String username=message.getContent().get("user_name").getAsString();
+            User invitee=UserManager.getUserByUsername(username);
+            content.add("master", gson.toJsonTree(inviter));
+            content.add("guest", gson.toJsonTree(invitee));
 
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
@@ -161,7 +176,7 @@ public class GameServer {
 
             response.setStatus(200);
             response.setContent(content);
-            invitee.getSession().getAsyncRemote().sendObject(response);
+            invitee.getSession().getAsyncRemote().sendObject(new Message(200, GameAction.REPLY_INVITATION, content));
         } catch (Exception e) {
             e.printStackTrace();
             content.addProperty("message", e.getMessage());
@@ -173,6 +188,7 @@ public class GameServer {
 
     private void onJoinGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
+        user.setPlayingState();
         JsonObject content = new JsonObject();
         Message response = new Message();
 
@@ -205,6 +221,7 @@ public class GameServer {
 
     private void onCreateGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
+        user.setPlayingState();
         JsonObject content = new JsonObject();
         Message response = new Message();
 
@@ -320,17 +337,15 @@ public class GameServer {
         Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
-        Set<User> onlineUsers = new HashSet<>();
+        JsonArray onlineUsers = new JsonArray();
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {
-
             for(User u : users.values()) {
                 if(!u.getSession().getId().equals(userSession.getId())){
-                    onlineUsers.add(u);
+                    onlineUsers.add(u.getStateAsJson());
                 }
             }
-
-            content = gson.toJsonTree(onlineUsers).getAsJsonObject();
+            content.add("users", onlineUsers);
             response.setContent(content);
             response.setStatus(200);
         } catch (Exception e) {
