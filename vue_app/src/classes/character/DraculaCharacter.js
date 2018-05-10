@@ -1,8 +1,9 @@
 import AttackCharacter from './AttackCharacter';
 
 class DraculaCharacter extends AttackCharacter {
-  constructor(id, name, avatar, health, attack){
-    super(id, name, health, attack);
+  constructor(name, health, attack){
+    super(health, attack);
+    this.name = name;
   }
 }
 

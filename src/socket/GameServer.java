@@ -456,14 +456,15 @@ public class GameServer {
             content.add("character", gson.toJsonTree(attackCharacter));
             response.setContent(content);
             response.setStatus(200);
-            rivalMessage = response;
+            rivalMessage.setContent(content);
+            rivalMessage.setStatus(200);
 
             if (game.getMasterUser().equals(user)) {
                 game.setMasterCharacter(attackCharacter);
-                game.getMasterUser().getSession().getAsyncRemote().sendObject(rivalMessage);
+                game.getGuestUser().getSession().getAsyncRemote().sendObject(rivalMessage);
             } else {
                 game.setGuestCharacter(attackCharacter);
-                game.getGuestUser().getSession().getAsyncRemote().sendObject(rivalMessage);
+                game.getMasterUser().getSession().getAsyncRemote().sendObject(rivalMessage);
             }
             
         } catch (Exception e) {
