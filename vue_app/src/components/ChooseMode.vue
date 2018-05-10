@@ -106,7 +106,6 @@
         category: 0,
         mode: -1,
         gameModes: Mode,
-        onlineUserName: '',
       }
     },
     computed: {
