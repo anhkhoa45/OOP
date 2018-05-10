@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-      <router-view></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -8,6 +8,6 @@
   export default {
     beforeDestroy() {
       this.$store.state.socketClient.close();
-    }
+    },
   }
 </script>
