@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" @click="acceptInvitation" data-dismiss="modal">Accept</button>
-              <button type="button" class="btn btn-primary" @click="$store.state.haveInvitation=false">Decline</button>
+              <button type="button" class="btn btn-primary" @click="declineInvitation">Decline</button>
             </div>
           </div>
         </div>
@@ -118,6 +118,7 @@
         }));
       },
       declineInvitation(){
+        this.$store.state.haveInvitation=false;
         this.socketClient.send(JSON.stringify({
           action: Action.DECLINE_INVITATION,
           content: {
