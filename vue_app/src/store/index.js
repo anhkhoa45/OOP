@@ -14,13 +14,21 @@ const store = new Vuex.Store({
     socketClient: null,
     playingGame: null,
     games: [],
-    onlineusers: []
+    onlineusers: [],
+    haveInvitation: false,
+    invitation: [],
+    isDeclined: false,
   },
   mutations: {
+    invite(state, invitation){
+      state.haveInvitation=true;
+      state.invitation=invitation;
+    },
     saveToken(state, token) {
       window.localStorage.setItem('token', token);
       state.token = token;
     },
+    
     saveUser(state, user) {
       state.user = user;
     },

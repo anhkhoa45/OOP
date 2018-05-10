@@ -56,8 +56,11 @@ export function onMessage(event) {
       case Action.GET_GAME_STATE:
         onGetGameState(content);
         break;
-      case Action.INVITE:
-        alert("Want to join us?");
+      case Action.REPLY_INVITATION:
+        onReply(content);
+        break;
+      case Action.DECLINE_INVITATION:
+        store.state.isDeclined=true;
         break;
     }
   }
@@ -104,6 +107,10 @@ function onJoinGame(data) {
 
   store.commit('setPlayingGame', game);
   router.push({name: 'chooseMode'});
+}
+
+function onReply(data){
+  store.commit('invite', data);
 }
 
 function onGuestJoinGame(data) {

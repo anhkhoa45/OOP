@@ -135,9 +135,20 @@ public class GameServer {
             case INVITE:
                 onInvite(message, userSession);
                 break;
+            case DECLINE_INVITATION: 
+                onDecline(message, userSession);
             default:
 
         }
+    }
+    
+    private void onDecline(Message message, Session userSession){
+        Message response=new Message();
+        String username=message.getContent().get("name").getAsString();
+        User user=UserManager.getUserByUsername(username);
+        response.setAction(GameAction.DECLINE_INVITATION);
+        response.setStatus(200);
+        user.getSession().getAsyncRemote().sendObject(response);
     }
     
     private void onInvite(Message message, Session userSession){
@@ -149,7 +160,8 @@ public class GameServer {
         try {
             String username=message.getContent().get("user_name").getAsString();
             User invitee=UserManager.getUserByUsername(username);
-            content.add("user", gson.toJsonTree(inviter));
+            content.add("master", gson.toJsonTree(inviter));
+            content.add("guest", gson.toJsonTree(invitee));
             
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
@@ -157,7 +169,7 @@ public class GameServer {
             
             response.setStatus(200);
             response.setContent(content);
-            invitee.getSession().getAsyncRemote().sendObject(response);
+            invitee.getSession().getAsyncRemote().sendObject(new Message(200, GameAction.REPLY_INVITATION, content));
         } catch (Exception e) {
             e.printStackTrace();
             content.addProperty("message", e.getMessage());
@@ -169,6 +181,7 @@ public class GameServer {
     
     private void onJoinGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
+        user.setPlayingState();
         JsonObject content = new JsonObject();
         Message response = new Message();
 
@@ -201,6 +214,7 @@ public class GameServer {
 
     private void onCreateGame(Message message, Session userSession) {
         User user = users.get(userSession.getId());
+        user.setPlayingState();
         JsonObject content = new JsonObject();
         Message response = new Message();
 
@@ -318,6 +332,14 @@ public class GameServer {
         Message response = new Message();
         JsonObject content = new JsonObject();
         //Set<String> onlineUserName=users.keySet();
+//        HashMap<String, User> onlineusers = new HashMap<String, User>();
+//        for (Map.Entry<String, User> entry : users.entrySet()) {
+//            String key = entry.getKey();
+//            User user = entry.getValue();
+//            if(user.getStatus()!=UserStatus.PLAYING){
+//                onlineusers.put(key, user);
+//            }
+//        }
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {           
             content = gson.toJsonTree(users).getAsJsonObject();
