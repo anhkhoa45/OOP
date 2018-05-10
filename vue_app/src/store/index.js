@@ -6,6 +6,7 @@ Vue.use(Vuex);
 import {get} from '../helper/request'
 import {onMessage} from '../helper/socket'
 import Action from '../helper/game_actions'
+import Character from "../classes/character/Character";
 
 const store = new Vuex.Store({
   state: {
@@ -40,6 +41,10 @@ const store = new Vuex.Store({
     },
     setPlayingGameMode(state, mode) {
       state.playingGame.mode = mode;
+    },
+    setDoneChooseMode(state) {
+      state.playingGame.master.character = new Character();
+      state.playingGame.guest.character = new Character();
     },
     setPlayingGameGuest(state, guest) {
       state.playingGame.guest = guest;
@@ -81,6 +86,13 @@ const store = new Vuex.Store({
     },
     setOnlineUser(state, onlineusers) {
       state.onlineusers = onlineusers;
+    },
+    addAnswer(state, answer) {
+      if (state.user.name === state.playingGame.master.name) {
+        state.playingGame.master.character.answers.push(answer);
+      } else if (state.user.name === state.playingGame.guest.name) {
+        state.playingGame.guest.character.answers.push(answer);
+      }
     }
   },
   actions: {

@@ -26,7 +26,8 @@ export function onMessage(event) {
       case Action.GUEST_JOIN_GAME:
         onGuestJoinGame(content);
         break;
-      case Action.ANSWER_QUESTION:
+      case Action.ANSWER:
+        onAnswer(content);
         break;
       case Action.GET_LIST_GAME:
         onGetListGame(content);
@@ -114,6 +115,7 @@ function onSetGameMode(data) {
 }
 
 function onDoneChooseMode(data) {
+  store.commit('setDoneChooseMode');
   switch (data.mode) {
     case Mode.NORMAL:
       router.push({name: 'normalGame'});
@@ -167,6 +169,10 @@ function onStartGame(data) {
       router.push({name: 'normalGame'});
       break;
   }
+}
+
+function onAnswer(data) {
+  store.commit('addAnswer', data.answer);
 }
 
 function onGetGameState(data) {

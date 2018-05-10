@@ -4,7 +4,7 @@ public enum GameAction {
     CREATE_GAME,
     JOIN_GAME,
     GUEST_JOIN_GAME,
-    ANSWER_QUESTION,
+    ANSWER,
     GET_LIST_GAMES,
     GET_ONLINE_USERS, 
     SET_GAME_MODE,
