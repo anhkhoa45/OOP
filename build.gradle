@@ -45,3 +45,7 @@ gretty {
     servletContainer = 'jetty9'
     logDir = 'logs'
 }
+
+war {
+    archiveName = 'ROOT.war'
+}

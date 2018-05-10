@@ -10,6 +10,8 @@
 </template>
 
 <script>
+  import User from "../classes/User";
+
   export default {
     data() {
       return {
@@ -20,6 +22,7 @@
       connectSocket() {
         this.$store.dispatch('connectSocket', this.userName)
           .then(()=> {
+            this.$store.commit('saveUser', new User(this.userName));
             this.$router.push({name: 'gameLobby'});
           });
       }

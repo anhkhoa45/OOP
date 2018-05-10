@@ -14,35 +14,35 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    import Action from '../helper/game_actions'
+  import {mapState} from 'vuex'
+  import Action from '../helper/game_actions'
 
-    export default {
+  export default {
 
-      computed : {
-        ...mapState({
-          socketClient: state => state.socketClient,
-          games: state => state.games
-        }),
-        isEmpty() {
-          return this.games.length === 0;
-        }
-      },
-      methods : {
-        getListGame() {
-          this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
-        },
-        joinGame(gameId) {
-          this.socketClient.send(JSON.stringify({
-            action: Action.JOIN_GAME,
-            content: {
-              game_id: gameId
-            }
-          }));
-        }
-      },
-      created() {
-        this.getListGame();
+    computed: {
+      ...mapState({
+        socketClient: state => state.socketClient,
+        games: state => state.games
+      }),
+      isEmpty() {
+        return this.games.length === 0;
       }
+    },
+    methods: {
+      getListGame() {
+        this.socketClient.send(JSON.stringify({action: Action.GET_LIST_GAME}));
+      },
+      joinGame(gameId) {
+        this.socketClient.send(JSON.stringify({
+          action: Action.JOIN_GAME,
+          content: {
+            game_id: gameId
+          }
+        }));
+      }
+    },
+    created() {
+      this.getListGame();
     }
+  }
 </script>

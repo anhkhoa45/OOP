@@ -2,7 +2,7 @@
   <div class="row">
     <div class="blurbg"></div>
     <div class="container">
-      <h1 class="bordertext middle"><strong>Choose your spokesman &#33;</strong></h1>
+      <h1 class="border-text middle"><strong>Choose your spokesman &#33;</strong></h1>
       <div class="row">
         <div class="col-sm-3">
           <div class="card" @click.prevent="character = characters.KNIGHT.id">
@@ -70,27 +70,18 @@
             <p>{{ master ? master.id : "" }}</p>
             <p>{{ masterCharacterType }}</p>
           </div>
-          <div class="col-sm-6" v-if="alreadyChosenCharacter">
-            <div class="startbutton" @click.prevent="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">
+          <div class="col-sm-6">
+            <div class="start-button" @click.prevent="start" v-if="playingGame.isMaster" :disabled="!guestIsReady">
               <div class="outer">
                 <div class="height">
                   <div class="inner">START</div>
                 </div>
               </div>
             </div>
-            <div class="startbutton" @click.prevent="ready" v-else>
+            <div class="start-button" @click.prevent="ready" v-else>
               <div class="outer">
                 <div class="height">
                   <div class="inner">READY</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6" v-else>
-            <div class="startbutton">
-              <div class="outer">
-                <div class="height">
-                  <div class="inner">CHOOSE</div>
                 </div>
               </div>
             </div>
@@ -178,9 +169,9 @@
         this.socketClient.send(JSON.stringify({
           action: Action.START_GAME,
           content: {game_id: this.playingGame.id}
-        }))
+        }));
         if (this.playingGame.status === GameStatus.GUEST_READY) {
-          this.$router.push({name : 'attackGameFight'});
+          this.$router.push({name: 'attackGameFight'});
         }
       },
       ready() {
