@@ -50,6 +50,20 @@ const store = new Vuex.Store({
     setGuestCharacter(state, character) {
       state.playingGame.guest.character = character;
     },
+    setGameCharacter(state, character) {
+      if(state.user.name === state.playingGame.master.name) {
+        state.playingGame.master.character = character;
+      } else if(state.user.name === state.playingGame.guest.name) {
+        state.playingGame.guest.character = character;
+      }
+    },
+    setRivalCharacter(state, character) {
+      if(state.user.name === state.playingGame.master.name) {
+        state.playingGame.guest.character = character;
+      } else if(state.user.name === state.playingGame.guest.name) {
+        state.playingGame.master.character = character;
+      }
+    },
     setGameStatus(state, status) {
       state.playingGame.status = status;
     },
