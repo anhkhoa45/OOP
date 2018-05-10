@@ -2,6 +2,7 @@ package socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import model.*;
+import model.Character;
 
 import javax.inject.Singleton;
 import javax.websocket.*;
@@ -92,7 +93,7 @@ public class GameServer {
                 onJoinGame(message, userSession);
                 System.out.println("ACTION_JOIN_GAME");
                 break;
-            case ANSWER_QUESTION:
+            case ANSWER:
                 onAnswer(message, userSession);
                 System.out.println("ACTION_ANSWER");
                 break;
@@ -242,17 +243,18 @@ public class GameServer {
         User user = users.get(userSession.getId());
         JsonObject content = new JsonObject();
         Message response = new Message();
-
-        response.setAction(GameAction.ANSWER_QUESTION);
+        Gson gson = new Gson();
+        response.setAction(GameAction.ANSWER);
 
         try {
             String answer = message.getContent().get("answer").getAsString();
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
             Answer a = new Answer(answer);
-            int score = game.getTopic().getWordScore(a.getWord());
+            //int score = game.getTopic().getWordScore(a.getWord());
+            int score = 5;
             a.setScore(score);
-            GameMode mode=game.getMode();
+            GameMode mode = game.getMode();
             switch (mode) {
                 case NORMAL:
                     a.setScore(score);
@@ -286,7 +288,7 @@ public class GameServer {
                     }
                     break;
             }
-
+            content.add("answer", gson.toJsonTree(a));
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e) {
@@ -365,6 +367,8 @@ public class GameServer {
             switch (modeTmp){
                 case 0:
                     game.setMode(GameMode.NORMAL);
+                    game.setMasterCharacter(new Character());
+                    game.setGuestCharacter(new Character());
                     break;
                 case 1:
                     game.setMode(GameMode.ATTACK);
