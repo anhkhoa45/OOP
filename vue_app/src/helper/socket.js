@@ -136,7 +136,7 @@ function onDoneChooseMode(data) {
       break;
     case Mode.ATTACK:
       store.commit('setCurrentComponent', 'attack-game');
-      router.push({name: 'attackGame'});
+      // router.push({name: 'attackGame'});
       break;
   }
 }
@@ -188,8 +188,13 @@ function onStartGame(data) {
 
 function onGetGameState(data) {
   store.commit('setGameStatus', data.game.status);
+  store.commit('setGameTimeLeft', data.game.timeLeft);
   store.commit('updateMasterCharacterInfo', data.game.master_character);
   store.commit('updateGuestCharacterInfo', data.game.guest_character);
+
+  if(store.state.playingGame.status === GameStatus.GAME_OVER){
+    store.commit('setCurrentComponent', 'attack-game-result');
+  }
 }
 
 function onLeaveGame(data){

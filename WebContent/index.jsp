@@ -9,6 +9,7 @@
 
 <div id="app"></div>
 
+<script src="${pageContext.request.contextPath}/assets/js/vendor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 </body>
 </html>

@@ -76,6 +76,9 @@ const store = new Vuex.Store({
     setGameStatus(state, status) {
       state.playingGame.status = status;
     },
+    setGameTimeLeft(state, timeLeft) {
+      state.playingGame.timeLeft = timeLeft;
+    },
     setGameTopic(state, question) {
       state.playingGame.topic = question;
     },
