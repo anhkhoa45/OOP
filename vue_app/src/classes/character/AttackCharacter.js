@@ -9,12 +9,13 @@ class AttackCharacter extends Character {
     this.isPowered = false;
     this.isBlackout = false;
     this.numBeingAttacked = 0;
+    console.log("AttackCharacter")
   }
 
   updateState({health, attack, answers, isStunned, isPowered, isBlackout, numBeingAttacked}){
+    super.updateState({answers});
     this.health = health;
     this.attack = attack;
-    this.answers = answers;
     this.isStunned = isStunned;
     this.isPowered = isPowered;
     this.isBlackout = isBlackout;

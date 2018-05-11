@@ -59,7 +59,7 @@ public class Game {
     }
 
     public void removeGuest() {
-        this.guestCharacter = null;
+        this.guestUser = null;
     }
 
     public long getTimeStarted() {
@@ -103,7 +103,7 @@ public class Game {
     }
 
     public boolean isEmpty() {
-        return this.masterCharacter == null && this.guestCharacter == null;
+        return this.masterUser == null && this.guestUser == null;
     }
 
     public boolean isWaiting() {

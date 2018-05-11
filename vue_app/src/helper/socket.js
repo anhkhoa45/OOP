@@ -55,6 +55,12 @@ export function onMessage(event) {
       case Action.GET_GAME_STATE:
         onGetGameState(content);
         break;
+      case Action.LEAVE_GAME:
+        onLeaveGame(content);
+        break;
+      case Action.GUEST_LEAVE_GAME:
+        onGuestLeaveGame(content);
+        break;
       case Action.REPLY_INVITATION:
         onReply(content);
         break;
@@ -82,7 +88,8 @@ function onCreateGame(data) {
   });
 
   store.commit('setPlayingGame', game);
-  router.push({name: 'chooseMode'});
+  store.commit('setCurrentComponent', 'choose-mode');
+  // router.push({name: 'chooseMode'});
 }
 
 function onGetListGame(data) {
@@ -90,7 +97,7 @@ function onGetListGame(data) {
 }
 
 function onGetOnlineUsers(data) {
-  store.commit('setOnlineUser', data);
+  store.commit('setOnlineUser', data.users);
 }
 
 function onJoinGame(data) {
@@ -105,7 +112,8 @@ function onJoinGame(data) {
   });
 
   store.commit('setPlayingGame', game);
-  router.push({name: 'chooseMode'});
+  store.commit('setCurrentComponent', 'choose-mode');
+  // router.push({name: 'chooseMode'});
 }
 
 function onReply(data){
@@ -123,9 +131,11 @@ function onSetGameMode(data) {
 function onDoneChooseMode(data) {
   switch (data.mode) {
     case Mode.NORMAL:
-      router.push({name: 'normalGame'});
+      store.commit('setCurrentComponent', 'normal-game');
+      // router.push({name: 'normalGame'});
       break;
     case Mode.ATTACK:
+      store.commit('setCurrentComponent', 'attack-game');
       router.push({name: 'attackGame'});
       break;
   }
@@ -149,13 +159,11 @@ function createCharacter(data) {
 }
 
 function onSetGameCharacter(data) {
-  let character = createCharacter(data);
-  store.commit('setGameCharacter', character);
+  store.commit('setGameCharacter', createCharacter(data));
 }
 
 function onSetRivalCharacter(data) {
-  let character = createCharacter(data);
-  store.commit('setRivalCharacter', character);
+  store.commit('setRivalCharacter', createCharacter(data));
 }
 
 function onGuestReady(data) {
@@ -164,30 +172,34 @@ function onGuestReady(data) {
 
 function onStartGame(data) {
   store.commit('setGameStatus', GameStatus.STARTED);
-  store.commit('setGameQuestion', data.game.question);
+  store.commit('setGameTopic', data.game.topic);
 
   switch (data.game.mode) {
     case Mode.ATTACK:
-      router.push({name: 'attackGameFight'});
+      // router.push({name: 'attackGameFight'});
+      store.commit('setCurrentComponent', 'attack-game-fight');
       break;
     case Mode.NORMAL:
-      router.push({name: 'normalGame'});
+      store.commit('setCurrentComponent', 'normal-game');
+      // router.push({name: 'normalGame'});
       break;
   }
 }
 
 function onGetGameState(data) {
   store.commit('setGameStatus', data.game.status);
-
-  let me, rival;
-  if (store.state.playingGame.me.id === data.game.master.id) {
-    me = data.game.master;
-    rival = data.game.guest;
-  } else {
-    rival = data.game.master;
-    me = data.game.guest;
-  }
-
-  store.commit('updateMyInfo', me);
-  store.commit('updateRivalInfo', rival);
+  store.commit('updateMasterCharacterInfo', data.game.master_character);
+  store.commit('updateGuestCharacterInfo', data.game.guest_character);
 }
+
+function onLeaveGame(data){
+  store.commit('setPlayingGame', null);
+  store.commit('setCurrentComponent', 'game-lobby');
+  // router.push({name: 'gameLobby'})
+}
+
+function onGuestLeaveGame(data){
+  store.commit('setPlayingGameGuest', null);
+  store.commit('setGameStatus', GameStatus.INITIAL);
+}
+

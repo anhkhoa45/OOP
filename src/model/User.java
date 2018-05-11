@@ -1,7 +1,6 @@
 package model;
 
 import com.google.gson.JsonObject;
-import socket.Message;
 
 import javax.websocket.Session;
 import java.util.HashSet;

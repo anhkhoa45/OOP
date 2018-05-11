@@ -39,10 +39,6 @@ public class Topic {
     }
 
     public int getWordScore(String word){
-        if (this.getCorrectWords().containsKey(word.toLowerCase())){
-            return this.getCorrectWords().get(word.toLowerCase());
-        } else {
-            return 0;
-        }
+        return this.getCorrectWords().getOrDefault(word.toLowerCase(), 0);
     }
 }
