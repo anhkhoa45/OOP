@@ -134,7 +134,7 @@ function onDoneChooseMode(data) {
   switch (data.mode) {
     case Mode.NORMAL:
       store.commit('setCurrentComponent', 'normal-game');
-      // router.push({name: 'normalGame'});
+      //router.push({name: 'normalGame'});
       break;
     case Mode.ATTACK:
       store.commit('setCurrentComponent', 'attack-game');
@@ -183,7 +183,7 @@ function onStartGame(data) {
       break;
     case Mode.NORMAL:
       store.commit('setCurrentComponent', 'normal-game');
-      // router.push({name: 'normalGame'});
+      router.push({name: 'normalGame'});
       break;
   }
 }
@@ -200,6 +200,8 @@ function onGetGameState(data) {
 
   if(store.state.playingGame.status === GameStatus.GAME_OVER){
     store.commit('setCurrentComponent', 'attack-game-result');
+    store.commit('setMasterResult', data.master_result);
+    store.commit('setGuestResult', data.guest_result);
   }
 }
 
