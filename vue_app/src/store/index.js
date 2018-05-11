@@ -93,10 +93,7 @@ const store = new Vuex.Store({
     setListGame(state, games) {
       state.games = games;
     },
-// <<<<<<< HEAD
-//     setOnlineUser(state, onlineusers) {
-//       state.onlineusers = onlineusers;
-//     },
+
     addAnswer(state, answer) {
       if (state.user.name === state.playingGame.master.name) {
         state.playingGame.master.character.answers.push(answer);
@@ -104,13 +101,12 @@ const store = new Vuex.Store({
         state.playingGame.guest.character.answers.push(answer);
       }
     },
-//=======
+
     setOnlineUser(state, onlineUsers) {
       state.onlineUsers = onlineUsers;
     },
     setCurrentComponent(state, component){
       state.currentComponent = component;
-//>>>>>>> c06cee1e159232a5cd28619ec7253767aae6f2b3
     }
   },
   actions: {
