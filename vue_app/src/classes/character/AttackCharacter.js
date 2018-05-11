@@ -9,7 +9,6 @@ class AttackCharacter extends Character {
     this.isPowered = false;
     this.isBlackout = false;
     this.numBeingAttacked = 0;
-    console.log("AttackCharacter")
   }
 
   updateState({health, attack, answers, isStunned, isPowered, isBlackout, numBeingAttacked}){
@@ -25,4 +24,4 @@ class AttackCharacter extends Character {
   }
 }
 
-export default Character;
+export default AttackCharacter;
