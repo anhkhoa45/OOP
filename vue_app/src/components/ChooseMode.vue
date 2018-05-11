@@ -29,7 +29,7 @@
           <template v-if="isMaster">
             <h2 class="white-text">Friend list</h2>
             <ul class="margin-top-50">
-              <li v-for="user in onlineusers">
+              <li v-for="user in onlineUsers">
                 <img
                   src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
                   class="thumbnail">
@@ -125,7 +125,7 @@
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
-        onlineusers: state => state.onlineusers,
+        onlineUsers: state => state.onlineUsers,
         isDeclined: state => state.isDeclined,
       }),
       isMaster() {
@@ -169,6 +169,7 @@
       },
       done() {
         if (!this.canStart) return;
+
         this.socketClient.send(JSON.stringify({
           action: Action.DONE_CHOOSE_MODE,
           content: {
@@ -177,6 +178,8 @@
         }));
       },
       ready() {
+        if (!this.canReady) return;
+
         this.socketClient.send(JSON.stringify({
           action: Action.GUEST_READY,
           content: {game_id: this.playingGame.id}
@@ -201,6 +204,10 @@
       }
     },
     created() {
+      this.socketClient.send(JSON.stringify({
+        action: Action.GET_ONLINE_USERS,
+      }));
+      
       intervalObj = setInterval(() => {
         this.socketClient.send(JSON.stringify({
           action: Action.GET_ONLINE_USERS,

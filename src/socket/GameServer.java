@@ -137,7 +137,7 @@ public class GameServer {
                 break;
             case GET_GAME_STATE:
                 onGetGameState(message, userSession);
-                System.out.println("ACTION_GET_GAME_STATE");
+//                System.out.println("ACTION_GET_GAME_STATE");
                 break;
             case INVITE:
                 onInvite(message, userSession);
@@ -481,7 +481,6 @@ public class GameServer {
     }
 
     private void onStartGame(Message message, Session userSession) {
-        User user = users.get(userSession.getId());
         Message response = new Message();
         Message rivalMessage;
         JsonObject content = new JsonObject();
@@ -563,7 +562,6 @@ public class GameServer {
         } else if (gameGuest.equals(user)) {
             switch (game.getStatus()) {
                 case INITIAL:
-                    break;
                 case GUEST_READY:
                     game.setStatus(GameStatus.INITIAL);
                     game.removeGuest();
@@ -608,7 +606,10 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
 
-            content.add("game", game.getStateAsJson());
+            JsonObject jObjGame = game.getStateAsJson();
+            jObjGame.add("master_character", game.getMasterCharacter().getStateAsJson());
+            jObjGame.add("guest_character", game.getGuestCharacter().getStateAsJson());
+            content.add("game", jObjGame);
 
             response.setStatus(200);
             response.setContent(content);

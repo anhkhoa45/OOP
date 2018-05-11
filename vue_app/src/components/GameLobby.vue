@@ -3,7 +3,8 @@
     <div class="blurbg"></div>
     <div v-if="haveInvitation">
       <!-- Modal -->
-      <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block; padding-right: 17px;">
+      <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+           style="display: block; padding-right: 17px;">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -16,16 +17,16 @@
               You received an invitation from {{invitation.master.name}} for an {{invitation.game.mode}} game
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="acceptInvitation" data-dismiss="modal">Accept</button>
+              <button type="button" class="btn btn-secondary" @click="acceptInvitation" data-dismiss="modal">Accept
+              </button>
               <button type="button" class="btn btn-primary" @click="declineInvitation">Decline</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-    <h1 class="border-text middle"><strong>Choose game &#33;</strong></h1>
-    <div class="container">
+
+    <div class="container margin-top-50">
       <div class="row">
         <div class="col-md-3">
           <div>
@@ -91,6 +92,7 @@
   import Action from '../helper/game_actions'
   import Game from "../classes/game/Game"
   import User from "../classes/User"
+
   let game;
   export default {
     computed: {
@@ -107,18 +109,21 @@
         this.socketClient.send(JSON.stringify({action: Action.CREATE_NEW_GAME}));
       },
       joinGame() {
-        this.$router.push({name: 'waitingGameList'})
+        this.$store.commit('setCurrentComponent', 'waiting-game-list')
+        // this.$router.push({name: 'waitingGameList'})
       },
-      acceptInvitation(){
+      acceptInvitation() {
         this.socketClient.send(JSON.stringify({
           action: Action.JOIN_GAME,
           content: {
             game_id: this.invitation.game.id,
           }
         }));
+
+        this.$store.state.haveInvitation = false;
       },
-      declineInvitation(){
-        this.$store.state.haveInvitation=false;
+      declineInvitation() {
+        this.$store.state.haveInvitation = false;
         this.socketClient.send(JSON.stringify({
           action: Action.DECLINE_INVITATION,
           content: {
