@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div>
+      <p>Type in the words related to: {{playingGame.topic}}</p>
       <p v-if="isMaster" v-for="answer in master.answers">
         <span class="mr-10">{{ answer.word }}</span>
         <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>

@@ -259,8 +259,8 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
             Answer a = new Answer(answer);
-            //int score = game.getTopic().getWordScore(a.getWord());
-            int score = 5;
+            int score = game.getTopic().getWordScore(a.getWord());
+            
             a.setScore(score);
             GameMode mode = game.getMode();
             switch (mode) {
@@ -405,14 +405,14 @@ public class GameServer {
         JsonObject content = new JsonObject();
 
         response.setAction(GameAction.DONE_CHOOSE_MODE);
-
+        int gameId = message.getContent().get("game_id").getAsInt();
+        Game game = games.get(gameId);
         try {
-            int gameId = message.getContent().get("game_id").getAsInt();
-            Game game = games.get(gameId);
+            
+            response.setAction(GameAction.DONE_CHOOSE_MODE);
             User guest = game.getGuestUser();
 
             content.addProperty("mode", game.getMode().toString());
-
             response.setContent(content);
             response.setStatus(200);
 
@@ -426,6 +426,9 @@ public class GameServer {
         }
 
         userSession.getAsyncRemote().sendObject(response);
+        if(game.getMode()==GameMode.NORMAL){
+                onStartGame(message, userSession);
+        }
     }
 
     private void onSetGameCharacter(Message message, Session userSession) {

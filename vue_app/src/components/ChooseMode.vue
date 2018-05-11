@@ -169,13 +169,13 @@
       },
       done() {
         if (!this.canStart) return;
-
         this.socketClient.send(JSON.stringify({
           action: Action.DONE_CHOOSE_MODE,
           content: {
             game_id: this.playingGame.id
           }
         }));
+        
       },
       ready() {
         if (!this.canReady) return;

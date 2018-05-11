@@ -134,7 +134,7 @@ function onDoneChooseMode(data) {
   switch (data.mode) {
     case Mode.NORMAL:
       store.commit('setCurrentComponent', 'normal-game');
-      // router.push({name: 'normalGame'});
+      //router.push({name: 'normalGame'});
       break;
     case Mode.ATTACK:
       store.commit('setCurrentComponent', 'attack-game');
@@ -183,7 +183,7 @@ function onStartGame(data) {
       break;
     case Mode.NORMAL:
       store.commit('setCurrentComponent', 'normal-game');
-      // router.push({name: 'normalGame'});
+      router.push({name: 'normalGame'});
       break;
   }
 }
