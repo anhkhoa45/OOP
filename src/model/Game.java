@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Game {
     public static int gameCount = 0;
+    public static final int defaultGameDuration = 120; // unit: second
 
     private int id;
     private Character masterCharacter;
@@ -16,8 +17,8 @@ public class Game {
     private Topic topic;
     private GameMode mode;
     private GameStatus status;
-    private long timeStarted;
-    private long timeEnd;
+    private long timeStarted; // unit: milisecond
+    private long timeEnd; // unit: milisecond
 
     public Game(User master) {
         this.id = gameCount++;
@@ -93,7 +94,7 @@ public class Game {
     public void setGuestCharacter(Character guestCharacter) {
         this.guestCharacter = guestCharacter;
     }
-    
+
     public boolean checkMaster(User user) {
         return this.masterUser.equals(user);
     }
@@ -129,25 +130,40 @@ public class Game {
     public Topic getTopic() {
         return topic;
     }
-    
-    public void setTopic(Topic topic){
-        this.topic=topic;
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public boolean start() {
         if (this.isFull() && this.isGuestReady()) {
             this.status = GameStatus.STARTED;
-            this.timeStarted = System.nanoTime();
+            this.timeStarted = System.currentTimeMillis();
             this.topic = TopicFactory.getRandomTopic();
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(Game.defaultGameDuration * 1000);
+                    if (this.status == GameStatus.STARTED) {
+                        this.status = GameStatus.GAME_OVER;
+                        this.timeEnd = System.currentTimeMillis();
+                    }
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+
             return true;
         } else {
             return false;
         }
     }
 
-    public long getPlayedTime() {
-        long currentTime = System.nanoTime();
-        return (currentTime - this.timeStarted);
+    public long getTimeLeft() {
+        if (this.status == GameStatus.GAME_OVER) return 0;
+
+        long currentTime = System.currentTimeMillis();
+        return (this.timeStarted + Game.defaultGameDuration * 1000 - currentTime) / 1000;
     }
 
     public boolean destroy() {
@@ -157,11 +173,12 @@ public class Game {
     public JsonObject getStateAsJson() {
         JsonObject json = new JsonObject();
         json.addProperty("id", this.id);
-        if(this.mode != null) {
+        if (this.mode != null) {
             json.addProperty("mode", this.mode.toString());
         }
         json.addProperty("topic", this.topic != null ? this.topic.getValue() : "");
         json.addProperty("status", this.status.toString());
+        json.addProperty("timeLeft", this.getTimeLeft());
         return json;
     }
 }

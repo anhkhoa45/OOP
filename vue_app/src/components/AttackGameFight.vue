@@ -3,6 +3,12 @@
     <div :class="{ 'blacked-out' : me.isBlackout }"></div>
     <div class="col-md-6 offset-md-3">
       <div class="row">
+        <div class="col-md-12 text-center">
+          Time left: {{ playingGame.timeLeft }}
+        </div>
+        <div class="col-md-12 text-center">
+          Topic: {{ playingGame.topic }}
+        </div>
         <div class="col-md-6 answer-box left-box">
           <h1>Master</h1>
           <p><strong>Health: </strong>{{ playingGame.master.character.health }}</p>
@@ -51,7 +57,8 @@
     data() {
       return {
         answer: '',
-        gameInterval: null
+        gameInterval: null,
+        gameScreen: null
       }
     },
     computed: {
@@ -90,10 +97,6 @@
             game_id: this.playingGame.id
           }
         }));
-
-        if(this.playingGame.status === GameStatus.GAME_OVER){
-          this.$router.push({name: 'attackGameResult'})
-        }
       }
     },
     created() {
