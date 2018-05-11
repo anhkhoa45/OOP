@@ -14,10 +14,11 @@ const store = new Vuex.Store({
     socketClient: null,
     playingGame: null,
     games: [],
-    onlineusers: [],
+    onlineUsers: [],
     haveInvitation: false,
     invitation: [],
     isDeclined: false,
+    currentComponent: 'welcome-screen'
   },
   mutations: {
     invite(state, invitation){
@@ -28,7 +29,7 @@ const store = new Vuex.Store({
       window.localStorage.setItem('token', token);
       state.token = token;
     },
-    
+
     saveUser(state, user) {
       state.user = user;
     },
@@ -81,26 +82,35 @@ const store = new Vuex.Store({
       state.playingGame.status = status;
     },
     setGameTopic(state, question) {
-      state.playingGame.question = question;
+      state.playingGame.topic = question;
     },
-    updateMyInfo(state, info) {
-      state.playingGame.me.updateState(info);
+    updateMasterCharacterInfo(state, info) {
+      state.playingGame.master.character.updateState(info);
     },
-    updateRivalInfo(state, info) {
-      state.playingGame.rival.updateState(info);
+    updateGuestCharacterInfo(state, info) {
+      state.playingGame.guest.character.updateState(info);
     },
     setListGame(state, games) {
       state.games = games;
     },
-    setOnlineUser(state, onlineusers) {
-      state.onlineusers = onlineusers;
-    },
+// <<<<<<< HEAD
+//     setOnlineUser(state, onlineusers) {
+//       state.onlineusers = onlineusers;
+//     },
     addAnswer(state, answer) {
       if (state.user.name === state.playingGame.master.name) {
         state.playingGame.master.character.answers.push(answer);
       } else if (state.user.name === state.playingGame.guest.name) {
         state.playingGame.guest.character.answers.push(answer);
       }
+    },
+//=======
+    setOnlineUser(state, onlineUsers) {
+      state.onlineUsers = onlineUsers;
+    },
+    setCurrentComponent(state, component){
+      state.currentComponent = component;
+//>>>>>>> c06cee1e159232a5cd28619ec7253767aae6f2b3
     }
   },
   actions: {

@@ -14,6 +14,7 @@ public enum GameAction {
     START_GAME,
     GUEST_READY,
     LEAVE_GAME,
+    GUEST_LEAVE_GAME,
     GET_GAME_STATE,
     BE_HIT,
     INVITE,

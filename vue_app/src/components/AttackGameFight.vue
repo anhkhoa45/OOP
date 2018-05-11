@@ -1,26 +1,26 @@
 <template>
   <div class="row attack-game-box">
-    <div :class="{ 'blacked-out' : playingGame.me.isBlackout }"></div>
+    <div :class="{ 'blacked-out' : me.isBlackout }"></div>
     <div class="col-md-6 offset-md-3">
       <div class="row">
         <div class="col-md-6 answer-box left-box">
           <h1>Master</h1>
-          <p><strong>Health: </strong>{{ master.health }}</p>
-          <p><strong>Attack: </strong>{{ master.attack }}</p>
+          <p><strong>Health: </strong>{{ playingGame.master.character.health }}</p>
+          <p><strong>Attack: </strong>{{ playingGame.master.character.attack }}</p>
           <hr>
-          <p v-for="answer in master.answers">
-            <span class="mr-10">{{ answer.answer }}</span>
+          <p v-for="answer in playingGame.master.character.answers">
+            <span class="mr-10">{{ answer.word }}</span>
             <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
             <span v-else class="negative-state">{{ answer.score }}</span>
           </p>
         </div>
         <div class="col-md-6 answer-box">
           <h1>Guest</h1>
-          <p><strong>Health: </strong>{{ guest.health }}</p>
-          <p><strong>Attack: </strong>{{ guest.attack }}</p>
+          <p><strong>Health: </strong>{{ playingGame.guest.character.health }}</p>
+          <p><strong>Attack: </strong>{{ playingGame.guest.character.attack }}</p>
           <hr>
-          <p v-for="answer in guest.answers">
-            <span class="mr-10">{{ answer.answer }}</span>
+          <p v-for="answer in playingGame.guest.character.answers">
+            <span class="mr-10">{{ answer.word }}</span>
             <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
             <span v-else class="negative-state">{{ answer.score }}</span>
           </p>
@@ -58,15 +58,16 @@
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
+        user: state => state.user,
       }),
-      master() {
-        return this.playingGame.isMaster ? this.playingGame.me : this.playingGame.rival;
+      me() {
+        return this.playingGame.master.name === this.user.name ? this.playingGame.master : this.playingGame.guest;
       },
-      guest() {
-        return this.playingGame.isMaster ? this.playingGame.rival : this.playingGame.me;
+      rival() {
+        return this.playingGame.master.name === this.user.name ? this.playingGame.guest : this.playingGame.master;
       },
       canAnswer(){
-        return this.playingGame.status !== GameStatus.GAME_OVER && !this.playingGame.me.isStunned;
+        return this.playingGame.status !== GameStatus.GAME_OVER && !this.me.character.isStunned;
       }
     },
     methods: {
