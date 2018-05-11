@@ -23,6 +23,8 @@ let routes = [
   {path: '/choose-mode', name: 'chooseMode', component: ChooseMode, beforeEnter: Middleware.joinedGame},
   {path: '/attack-game', name: 'attackGame', component: AttackGame, beforeEnter: Middleware.joinedGame},
   {path: '/normal-game', name: 'normalGame', component: NormalGame, beforeEnter: Middleware.joinedGame},
+  // {path: '/normal-game-master', name: 'normalGameMaster', component: NormalGameMaster, beforeEnter: Middleware.joinedGame},
+  // {path: '/normal-game-guest', name: 'normalGameGuest', component: NormalGameGuest, beforeEnter: Middleware.joinedGame},
   {path: '/attack-game/play', name: 'attackGameFight', component: AttackGameFight, beforeEnter: Middleware.joinedGame},
   {path: '/attack-game/result', name: 'attackGameResult', component: AttackGameResult, beforeEnter: Middleware.joinedGame},
 ];
