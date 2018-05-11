@@ -617,7 +617,10 @@ public class GameServer {
             jObjGame.add("master_character", game.getMasterCharacter().getStateAsJson());
             jObjGame.add("guest_character", game.getGuestCharacter().getStateAsJson());
             content.add("game", jObjGame);
-
+            if(game.getStatus()==GameStatus.GAME_OVER){
+                content.addProperty("master_result", getResult(game.getMasterCharacter()));
+                content.addProperty("guest_result", getResult(game.getGuestCharacter()));
+            }
             response.setStatus(200);
             response.setContent(content);
         } catch (Exception e) {
@@ -626,5 +629,12 @@ public class GameServer {
             response.setContent(content);
         }
         userSession.getAsyncRemote().sendObject(response);
+    }
+    private int getResult(Character character){
+        int res=0;
+        for(int i=0; i<character.getAnswers().size(); i++){
+            res+=character.getAnswers().get(i).getScore();
+        }
+        return res;
     }
 }

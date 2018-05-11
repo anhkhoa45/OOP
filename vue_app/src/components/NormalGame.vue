@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <div>
+      <div class="col-md-12 text-center">
+        Time left: {{ playingGame.timeLeft }}
+      </div>
       <p>Type in the words related to: {{playingGame.topic}}</p>
       <p v-if="isMaster" v-for="answer in master.answers">
         <span class="mr-10">{{ answer.word }}</span>
@@ -69,7 +72,23 @@
           }
         }));
         this.answer = '';
-      }
+      },
+      updateGameState() {
+        this.socketClient.send(JSON.stringify({
+          action: Action.GET_GAME_STATE,
+          content: {
+            game_id: this.playingGame.id
+          }
+        }));
+      },
+    },
+    created() {
+      this.gameInterval = setInterval(() => {
+        this.updateGameState();
+      }, 50);
+    },
+    beforeDestroy() {
+      clearInterval(this.gameInterval);
     }
   }
 </script>

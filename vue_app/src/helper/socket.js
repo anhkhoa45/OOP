@@ -200,6 +200,8 @@ function onGetGameState(data) {
 
   if(store.state.playingGame.status === GameStatus.GAME_OVER){
     store.commit('setCurrentComponent', 'attack-game-result');
+    store.commit('setMasterResult', data.master_result);
+    store.commit('setGuestResult', data.guest_result);
   }
 }
 
