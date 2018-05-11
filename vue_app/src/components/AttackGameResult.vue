@@ -26,8 +26,8 @@
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
-        masterRes: state=>state.masterResult,
-        guestRes: state=>state.guestResult,
+        masterRes: state => state.masterResult,
+        guestRes: state => state.guestResult,
       }),
       master() {
         return this.playingGame.master.character;
