@@ -2,7 +2,7 @@
   <div class="row text-center">
     <div class="blurbg"></div>
     <div class="container margin-top-50">
-      <div v-if="isDeclined">.0000000000000000000000
+      <div v-if="isDeclined">
         <!-- Modal -->
         <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
              style="display: block; padding-right: 17px;">
