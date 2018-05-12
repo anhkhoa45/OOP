@@ -130,6 +130,7 @@ body:after {
   }
 
   ul {
+  	font-size: 20px;
     list-style-type: none;
     margin-top: 30px;
     padding: 0;
@@ -206,6 +207,7 @@ body:after {
   height: 30px;
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 .ava {
@@ -341,6 +343,7 @@ body:after {
   display: block;
   margin: 30px;
   margin-left: 50px;
+  cursor: pointer;
 }
 
 .push_button:before {
@@ -484,11 +487,11 @@ body:after {
   }
 
   .play-area {
-    background: white;
 
     .answer-box {
-      min-height: 500px;
-      max-height: 700px;
+    	margin-top: 20px;
+      min-height: 200px;
+      max-height: 300px;
       overflow-y: auto;
 
       &.left-box {

@@ -1,6 +1,7 @@
 <template>
     <div class="container margin-top-10">
       <div class="row attack-game-box">
+        <div :class="{ 'blacked-out' : me.isBlackout }"></div>
         <div class="col-md-5">
           <h3>{{ me.name }}</h3>
             <div class="health-bar" :style="{width: me.character.maxHealth}">
@@ -18,8 +19,8 @@
         </div>
         <div class="col-md-5">
           <h3 class="text-right">{{ rival.name }}</h3>
-            <div class="health-bar" :style="{width: me.character.maxHealth}">
-              <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
+            <div class="health-bar" :style="{width: rival.character.maxHealth}">
+              <div class="bar text-center" :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
               {{ rival.character.health }}
               </div>
             </div>
@@ -30,31 +31,30 @@
       </div>
       <div class="row margin-top-10">
         <div class="col-md-4">
-          <h2>99</h2>
+          <h2>99 (point)</h2>
         </div>
         <div class="col-md-4 text-center">
           <h2>Topic: {{ playingGame.topic }}</h2>
         </div>
         <div class="col-md-4 text-right">
-          <h2>88</h2>
+          <h2>88 )point</h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3">
-          <img src="knight.png" alt="knight" class="hero" style="margin-left: -150px">
         </div>
-        <div class="col-md-6 text-left">
-        <div class="row">
+        <div class="col-md-6 play-area text-left">
+          <div class="row">
             <div class="col-md-6 answer-box left-box">
               <p v-for="answer in me.character.answers">
-                <span class="mr-10">{{ answer.word }}</span>
+                <h4 class="mr-10">{{ answer.word }}</h4>
                 <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
-                <span v-else class="negative-state">{{    answer.score }}</span>
+                <span v-else class="negative-state">{{ answer.score }}</span>
               </p>
             </div>
             <div class="col-md-6 answer-box">
               <p v-for="answer in rival.character.answers">
-                <span class="mr-10">{{ answer.word }}</span>
+                <h4 class="mr-10">{{ answer.word }}</h4>
                 <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
                 <span v-else class="negative-state">{{ answer.score }}</span>
               </p>
@@ -82,7 +82,6 @@
       </div>
         </div>
         <div class="col-md-3 text-right">
-          <img src="knight.png" alt="knight" class="hero" style="margin-left: -250px">
         </div>
       </div>
     </div>
@@ -188,7 +187,6 @@
         }));
       },
       preload() {
-        this.gameAnimation.load.image('background', './assets/img/game_bg.jpg');
         let myAtlas = this.me.character.atlas;
         let rivalAtlas = this.rival.character.atlas;
         this.gameAnimation.load.atlas(myAtlas.name, myAtlas.sprite, myAtlas.spriteScript);
