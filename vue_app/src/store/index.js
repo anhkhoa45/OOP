@@ -10,7 +10,6 @@ import Character from "../classes/character/Character";
 
 const store = new Vuex.Store({
   state: {
-    token: window.localStorage.getItem('token'),
     socketClient: null,
     playingGame: null,
     games: [],
@@ -19,36 +18,38 @@ const store = new Vuex.Store({
     invitation: [],
     isDeclined: false,
     currentComponent: 'welcome-screen',
+    error: null,
     masterResult: 0,
     guestResult: 0,
   },
   mutations: {
+    invite(state, invitation) {
+      state.haveInvitation = true;
+      state.invitation = invitation;
+    },
     setMasterResult(state, res){
       state.masterResult=res;
     },
     setGuestResult(state, res){
       state.guestResult=res;
     },
-    invite(state, invitation){
-      state.haveInvitation=true;
-      state.invitation=invitation;
-    },
-    saveToken(state, token) {
-      window.localStorage.setItem('token', token);
-      state.token = token;
-    },
-
     saveUser(state, user) {
       state.user = user;
     },
     setSocketClient(state, socketClient) {
       state.socketClient = socketClient;
     },
-    logout(state) {
-      window.localStorage.removeItem('token');
-      state.token = null;
-      state.user = null;
+    reset(state) {
       state.socketClient = null;
+      state.playingGame = null;
+      state.games = [];
+      state.onlineUsers = [];
+      state.haveInvitation = false;
+      state.invitation = [];
+      state.isDeclined = false;
+    },
+    error(state, error){
+      state.error = error;
     },
     resetPlayingGame(state) {
       state.playingGame = null;
@@ -58,10 +59,6 @@ const store = new Vuex.Store({
     },
     setPlayingGameMode(state, mode) {
       state.playingGame.mode = mode;
-    },
-    setDoneChooseMode(state) {
-      state.playingGame.master.character = new Character();
-      state.playingGame.guest.character = new Character();
     },
     setPlayingGameGuest(state, guest) {
       state.playingGame.guest = guest;
@@ -73,16 +70,16 @@ const store = new Vuex.Store({
       state.playingGame.guest.character = character;
     },
     setGameCharacter(state, character) {
-      if(state.user.name === state.playingGame.master.name) {
+      if (state.user.name === state.playingGame.master.name) {
         state.playingGame.master.character = character;
-      } else if(state.user.name === state.playingGame.guest.name) {
+      } else if (state.user.name === state.playingGame.guest.name) {
         state.playingGame.guest.character = character;
       }
     },
     setRivalCharacter(state, character) {
-      if(state.user.name === state.playingGame.master.name) {
+      if (state.user.name === state.playingGame.master.name) {
         state.playingGame.guest.character = character;
-      } else if(state.user.name === state.playingGame.guest.name) {
+      } else if (state.user.name === state.playingGame.guest.name) {
         state.playingGame.master.character = character;
       }
     },
@@ -112,11 +109,10 @@ const store = new Vuex.Store({
         state.playingGame.guest.character.answers.push(answer);
       }
     },
-
     setOnlineUser(state, onlineUsers) {
       state.onlineUsers = onlineUsers;
     },
-    setCurrentComponent(state, component){
+    setCurrentComponent(state, component) {
       state.currentComponent = component;
     }
   },
@@ -144,9 +140,13 @@ const store = new Vuex.Store({
         };
         socketClient.onerror = function () {
           socketClient.close();
-          rej();
+          commit('reset');
+          commit('setCurrentComponent', 'welcome-screen');
         };
-
+        socketClient.onclose = function () {
+          commit('reset');
+          commit('setCurrentComponent', 'welcome-screen');
+        };
         commit('setSocketClient', socketClient);
       });
     },

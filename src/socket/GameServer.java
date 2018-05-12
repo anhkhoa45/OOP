@@ -2,7 +2,6 @@ package socket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import model.*;
 import model.Character;
@@ -10,9 +9,8 @@ import model.Character;
 import javax.inject.Singleton;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
@@ -34,6 +32,23 @@ public class GameServer {
     @OnOpen
     public void onOpen(Session userSession, @PathParam("user_name") String userName) {
         System.out.println("New request received. Id: " + userSession.getId());
+
+        for (User u : users.values()){
+            if(u.getName().equals(userName)){
+                JsonObject message = new JsonObject();
+                message.addProperty("message","Username has been taken");
+                userSession.getAsyncRemote().sendObject(
+                        new Message(500, GameAction.LOGIN, message)
+                );
+                try {
+                    userSession.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }
+
         User user = UserManager.getUserByUsername(userName);
 
         if (user != null) {
@@ -46,6 +61,12 @@ public class GameServer {
         }
 
         users.put(userSession.getId(), user);
+
+        JsonObject message = new JsonObject();
+        message.addProperty("username", userName);
+        userSession.getAsyncRemote().sendObject(
+                new Message(200, GameAction.LOGIN, message)
+        );
     }
 
     /**
@@ -104,6 +125,10 @@ public class GameServer {
                 onAnswer(message, userSession);
                 System.out.println("ACTION_ANSWER");
                 break;
+            case POWER:
+                onPower(message, userSession);
+                System.out.println("ACTION_POWER");
+                break;
             case GET_LIST_GAMES:
                 onGetListGame(message, userSession);
                 System.out.println("ACTION_GET_LIST_GAMES");
@@ -143,31 +168,31 @@ public class GameServer {
             case INVITE:
                 onInvite(message, userSession);
                 break;
-            case DECLINE_INVITATION: 
+            case DECLINE_INVITATION:
                 onDecline(message, userSession);
             default:
 
         }
     }
 
-    private void onDecline(Message message, Session userSession){
-        Message response=new Message();
-        String username=message.getContent().get("name").getAsString();
-        User user=UserManager.getUserByUsername(username);
+    private void onDecline(Message message, Session userSession) {
+        Message response = new Message();
+        String username = message.getContent().get("name").getAsString();
+        User user = UserManager.getUserByUsername(username);
         response.setAction(GameAction.DECLINE_INVITATION);
         response.setStatus(200);
         user.getSession().getAsyncRemote().sendObject(response);
     }
-    
-    private void onInvite(Message message, Session userSession){
-        Message response=new Message();
-        JsonObject content=new JsonObject();
-        Gson gson=new Gson();
+
+    private void onInvite(Message message, Session userSession) {
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        Gson gson = new Gson();
         User inviter = users.get(userSession.getId());
         response.setAction(GameAction.INVITE);
         try {
-            String username=message.getContent().get("user_name").getAsString();
-            User invitee=UserManager.getUserByUsername(username);
+            String username = message.getContent().get("user_name").getAsString();
+            User invitee = UserManager.getUserByUsername(username);
             content.add("master", gson.toJsonTree(inviter));
             content.add("guest", gson.toJsonTree(invitee));
 
@@ -259,42 +284,36 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
             Answer a = new Answer(answer);
-            int score = game.getTopic().getWordScore(a.getWord());
-            
-            a.setScore(score);
-            GameMode mode = game.getMode();
-            switch (mode) {
-                case NORMAL:
-                    a.setScore(score);
-                    if (game.getMasterUser().equals(user))
-                        game.getMasterCharacter().addAnswer(a);
-                    else game.getGuestCharacter().addAnswer(a);
-                    break;
-                case ATTACK:
-                    model.Character p;
-                    model.Character opponent;
-                    if (game.getMasterUser().equals(user)) {
-                        opponent = game.getGuestCharacter();
-                        p = game.getMasterCharacter();
-                    } else {
-                        p = game.getGuestCharacter();
-                        opponent = game.getMasterCharacter();
-                    }
 
-                    if (opponent.checkDuplicateAnswer(a) || p.checkDuplicateAnswer(a)) {
-                        score = 0;
+            Character character;
+            Character opponentCharacter;
+
+            if (game.checkMaster(user)) {
+                character = game.getMasterCharacter();
+                opponentCharacter = game.getGuestCharacter();
+            } else if (game.checkGuest(user)) {
+                character = game.getGuestCharacter();
+                opponentCharacter = game.getMasterCharacter();
+            } else {
+                throw new RuntimeException("User not found");
+            }
+
+            if (character.checkDuplicateAnswer(a)) {
+                a.setScore(0);
+                character.addAnswer(a);
+            } else {
+                int score = game.getTopic().getWordScore(a.getWord());
+                a.setScore(score);
+                character.addAnswer(a);
+                if (game.getMode() == GameMode.ATTACK && a.getScore() > 0) {
+                    AttackCharacter tmp1 = (AttackCharacter) character;
+                    AttackCharacter tmp2 = (AttackCharacter) opponentCharacter;
+                    tmp1.attack(tmp2);
+                    if (tmp1.isDead() || tmp2.isDead()) {
+                        game.setStatus(GAME_OVER);
+                        game.setTimeEnd(System.currentTimeMillis());
                     }
-                    a.setScore(score);
-                    p.addAnswer(a);
-                    if (score != 0 || game.getMasterCharacter() instanceof MedusaCharacter || game.getGuestCharacter() instanceof MedusaCharacter) {
-                        AttackCharacter tmp1 = (AttackCharacter) p;
-                        AttackCharacter tmp2 = (AttackCharacter) opponent;
-                        tmp1.attack(tmp2);
-                        if (tmp1.isDead() || tmp2.isDead()) {
-                            game.setStatus(GAME_OVER);
-                        }
-                    }
-                    break;
+                }
             }
             content.add("answer", gson.toJsonTree(a));
             response.setStatus(200);
@@ -307,6 +326,44 @@ public class GameServer {
         }
 
         userSession.getAsyncRemote().sendObject(response);
+    }
+
+    private void onPower(Message message, Session userSession) {
+        User user = users.get(userSession.getId());
+        try {
+            int gameId = message.getContent().get("game_id").getAsInt();
+            Game game = games.get(gameId);
+            Character character;
+            Character opponentCharacter;
+
+            if (game.checkMaster(user)) {
+                character = game.getMasterCharacter();
+                opponentCharacter = game.getGuestCharacter();
+            } else if (game.checkGuest(user)) {
+                character = game.getGuestCharacter();
+                opponentCharacter = game.getMasterCharacter();
+            } else {
+                throw new RuntimeException("User not found");
+            }
+
+            switch (game.getMode()) {
+                case NORMAL:
+                    throw new RuntimeException("Permission denied!");
+                case ATTACK:
+                    AttackCharacter tmp1 = (AttackCharacter) character;
+                    AttackCharacter tmp2 = (AttackCharacter) opponentCharacter;
+                    tmp1.power(tmp2);
+                    if (tmp1.isDead() || tmp2.isDead()) {
+                        game.setStatus(GAME_OVER);
+                        game.setTimeEnd(System.currentTimeMillis());
+                    }
+                    break;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onGetListGame(Message message, Session userSession) {
@@ -342,8 +399,8 @@ public class GameServer {
         JsonArray onlineUsers = new JsonArray();
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {
-            for(User u : users.values()) {
-                if(!u.getSession().getId().equals(userSession.getId())){
+            for (User u : users.values()) {
+                if (!u.getSession().getId().equals(userSession.getId())) {
                     onlineUsers.add(u.getStateAsJson());
                 }
             }
@@ -451,14 +508,14 @@ public class GameServer {
                 case GameCharacter.KNIGHT:
                     attackCharacter = new KnightCharacter();
                     break;
-                case GameCharacter.MEDUSA:
-                    attackCharacter = new MedusaCharacter();
+                case GameCharacter.WIZARD:
+                    attackCharacter = new WizardCharacter();
+                    break;
+                case GameCharacter.ARCHER:
+                    attackCharacter = new ArcherCharacter();
                     break;
                 case GameCharacter.HOT_GIRL:
-                    attackCharacter = new HotgirlCharacter();
-                    break;
-                case GameCharacter.DRACULA:
-                    attackCharacter = new DraculaCharacter();
+                    attackCharacter = new HotGirlCharacter();
                     break;
                 default:
                     throw new Exception("Character type not found");

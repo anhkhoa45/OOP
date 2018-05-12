@@ -1,10 +1,12 @@
 package socket;
 
 public enum GameAction {
+    LOGIN,
     CREATE_GAME,
     JOIN_GAME,
     GUEST_JOIN_GAME,
     ANSWER,
+    POWER,
     GET_LIST_GAMES,
     GET_ONLINE_USERS, 
     SET_GAME_MODE,

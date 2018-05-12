@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.KNIGHT.id)">
-            <img src="../assets/img/knight.png" alt="knight" class="image knightbg">
+            <img src="../assets/img/knight.png" alt="Knight" class="image knightbg">
             <div class="overlay">
               <div class="text">
                 <h3>Knight</h3>
@@ -23,39 +23,39 @@
           </div>
         </div>
         <div class="col-sm-3">
+          <div class="card" @click.prevent="setCharacter(characters.ARCHER.id)">
+            <img src="../assets/img/archer.png" alt="Archer" class="image draculabg">
+            <div class="overlay">
+              <div class="text">
+                <h3>Archer</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="card" @click.prevent="setCharacter(characters.WIZARD.id)">
+            <img src="../assets/img/wizard.png" alt="Wizard" height="50px" class="image wizardbg">
+            <div class="overlay">
+              <div class="text">
+                <h3>Wizard</h3>
+                <h4>Health: 120</h4>
+                <h4>atk: 12</h4>
+                <h4>ss: Combo</h4>
+                <h4>Capable of getting hits</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.HOT_GIRL.id)">
-            <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
+            <img src="../assets/img/girl.png" alt="Hot girl" class="image girlbg">
             <div class="overlay">
               <div class="text">
                 <h3>Hot girl</h3>
-                <h4>Health: 120</h4>
-                <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="card" @click.prevent="setCharacter(characters.MEDUSA.id)">
-            <img src="../assets/img/knight.png" alt="girl" height="50px" class="image girlbg">
-            <div class="overlay">
-              <div class="text">
-                <h3>Medusa</h3>
-                <h4>Health: 120</h4>
-                <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="card" @click.prevent="setCharacter(characters.DRACULA.id)">
-            <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
-            <div class="overlay">
-              <div class="text">
-                <h3>Dracula</h3>
                 <h4>Health: 120</h4>
                 <h4>atk: 12</h4>
                 <h4>ss: Combo</h4>
@@ -109,11 +109,6 @@
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
-  import GameStatus from '../helper/game_status'
-  import KnightCharacter from "../classes/character/KnightCharacter";
-  import MedusaCharacter from "../classes/character/MedusaCharacter";
-  import DraculaCharacter from "../classes/character/DraculaCharacter";
-  import HotGirlCharacter from "../classes/character/HotGirlCharacter";
 
   export default {
     data() {
@@ -137,13 +132,15 @@
         return this.$store.state.user.name === this.playingGame.master.name;
       },
       isGuest() {
-        return (this.playingGame.guest) && (this.$store.state.user.name === this.playingGame.guest.name);
+        return (this.playingGame.guest != null) && (this.$store.state.user.name === this.playingGame.guest.name);
       },
       canStart() {
-        return this.playingGame.guest && this.playingGame.guest.character && this.playingGame.master.character;
+        return this.playingGame.guest != null
+          && this.playingGame.guest.character != null
+          && this.playingGame.master.character != null;
       },
       canReady() {
-        return this.playingGame.guest.character;
+        return this.playingGame.guest.character != null;
       },
       masterCharacter(){
         if (this.playingGame.master.character){

@@ -21,18 +21,18 @@ public abstract class AttackCharacter extends Character {
         this.numBeingAttacked = 0;
     }
 
-//    public AttackCharacter(Character character) {
-//        super(character.getId(), player.getSession());
-//        this.answers = player.answers;
-//        this.isStunned = false;
-//        this.isPowered = false;
-//        this.isBlackout = false;
-//        this.numBeingAttacked = 0;
-//    }
-
     abstract public void attack(AttackCharacter guardCharacter);
 
-    abstract public boolean guard(AttackCharacter attackCharacter);
+    public boolean guard(AttackCharacter attackCharacter){
+        Answer attackerAns = attackCharacter.getAnswers().get(attackCharacter.getAnswers().size() -1);
+
+        if(this.checkDuplicateAnswer(attackerAns)){
+            attackerAns.setScore(0);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     abstract public void power(AttackCharacter guardCharacter);
 

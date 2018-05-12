@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Game {
     public static int gameCount = 0;
-    public static final int defaultGameDuration = 12; // unit: second
+    public static final int defaultGameDuration = 60; // unit: second
 
     private int id;
     private Character masterCharacter;
@@ -69,6 +69,14 @@ public class Game {
 
     public void setTimeStarted(long timeStarted) {
         this.timeStarted = timeStarted;
+    }
+
+    public long getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(long timeEnd) {
+        this.timeEnd = timeEnd;
     }
 
     public GameStatus getStatus() {

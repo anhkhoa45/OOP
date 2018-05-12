@@ -19,8 +19,17 @@
   export default {
     computed: {
       ...mapState({
-        currentComponent: state => state.currentComponent
+        currentComponent: state => state.currentComponent,
+        error: state => state.error
       })
+    },
+    watch: {
+      error(){
+        if(this.error !== null){
+          alert('Some error occurred \n' + this.error);
+          this.$store.state.error = null;
+        }
+      }
     },
     beforeDestroy() {
       this.$store.state.socketClient.close();
