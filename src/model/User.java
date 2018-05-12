@@ -8,13 +8,17 @@ import java.util.Set;
 
 public class User {
     private String name;
+    private String password;
+    private String avatar;
     private transient Session session;
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
-    public User(Session session, String name) {
+    public User(Session session, String name, String password, String avatar) {
         this.session = session;
         this.name = name;
+        this.password = password;
+        this.avatar = avatar;
     }
 
     public String getName() {
@@ -23,6 +27,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Session getSession() {
@@ -77,6 +97,7 @@ public class User {
     public JsonObject getStateAsJson() throws RuntimeException {
         JsonObject json = new JsonObject();
         json.addProperty("name", this.name);
+        json.addProperty("avatar", this.avatar);
         return json;
     }
 
