@@ -10,6 +10,7 @@ import Character from "../classes/character/Character";
 
 const store = new Vuex.Store({
   state: {
+    user: null,
     socketClient: null,
     playingGame: null,
     games: [],
@@ -40,6 +41,7 @@ const store = new Vuex.Store({
       state.socketClient = socketClient;
     },
     reset(state) {
+      state.user = null;
       state.socketClient = null;
       state.playingGame = null;
       state.games = [];
@@ -47,6 +49,8 @@ const store = new Vuex.Store({
       state.haveInvitation = false;
       state.invitation = [];
       state.isDeclined = false;
+      state.currentComponent = 'welcome-screen';
+      state.error = null;
     },
     error(state, error){
       state.error = error;
@@ -130,9 +134,9 @@ const store = new Vuex.Store({
           })
       })
     },
-    connectSocket({commit}, userName) {
+    connectSocket({commit}, {userName, password, avatar}) {
       return new Promise((res, rej) => {
-        let endPointURL = `ws://${window.location.host}/game-server/${userName}`;
+        let endPointURL = `ws://${window.location.host}/game-server/${userName}/${password}/${avatar}`;
         let socketClient = new WebSocket(endPointURL);
         socketClient.onopen = function () {
           socketClient.onmessage = onMessage;

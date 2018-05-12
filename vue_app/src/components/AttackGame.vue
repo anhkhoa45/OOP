@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="blurbg"></div>
+    <div class="blur-bg"></div>
     <div class="container">
       <div class="row text-center margin-top-50">
         <h1 class="border-text middle">Room {{ playingGame.id }}</h1>
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="card" @click.prevent="setCharacter(characters.MEDUSA.id)">
+          <div class="card" @click.prevent="setCharacter(characters.WIZARD.id)">
             <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
             <div class="overlay">
               <div class="text">
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="card" @click.prevent="setCharacter(characters.DRACULA.id)">
+          <div class="card" @click.prevent="setCharacter(characters.ARCHER.id)">
             <img src="../assets/img/archer.png" alt="archer" class="image archerbg">
             <div class="overlay">
               <div class="text">

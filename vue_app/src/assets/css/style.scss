@@ -1,28 +1,3 @@
-.welcome-screen {
-  min-height: 800px;
-  background: #ffffff url("../img/welcome-background.jpg") no-repeat center center;
-  background-size: cover;
-
-  h1, button {
-    color: white;
-  }
-}
-
-.btn-game-mode {
-  height: 100px;
-  width: 100px;
-}
-
-.answer-box {
-  min-height: 300px;
-  max-height: 500px;
-  overflow-y: auto;
-
-  &.left-box {
-    border-right: grey solid 1px;
-  }
-}
-
 .border-text {
   color: white;
   text-align: center;
@@ -88,7 +63,7 @@
 /*end of flip card*/
 
 /*back ground setting*/
-div.blurbg {
+.blur-bg {
   height: 100%;
   width: 100%;
   text-align: center;
@@ -118,47 +93,48 @@ div.blurbg {
 /*end of background setting*/
 
 /*friend list setting*/
-h2 {
-  font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-}
+.friend-list {
+  h2 {
+    font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    color: aqua;
+    text-align: left;
+  }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-  height: 350px;
-}
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    height: 350px;
+  }
 
-li {
-  font: 200 16px/1.5 Helvetica, Verdana, sans-serif;
-  border-bottom: 2px solid #ccc;
-  padding-right: 5px;
-  text-align: left;
-}
+  li {
+    text-decoration: none;
+    color: #fff;
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+    display: block;
+    width: 240px;
+    font: 200 18px/1.5 Helvetica, Verdana, sans-serif;
+    border-bottom: 2px solid #ccc;
+    padding-right: 10px;
+  }
 
-li:last-child {
-  border: none;
-}
+  li:last-child {
+    border: none;
+  }
 
-li {
-  text-decoration: none;
-  color: #fff;
-  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-  transition: font-size 0.3s ease, background-color 0.3s ease;
-  display: block;
+  li:hover {
+    font-size: 26px;
+    background: #008B8B;
+  }
 }
-
-li:hover {
-  font-size: 20px;
-  background: #008B8B;
-}
-
-/*end of friendlist setting*/
+/*end of friend list setting*/
 
 /*choose invite setting*/
 .animate {
@@ -452,7 +428,7 @@ li:hover {
   background-image: linear-gradient(top, #D4AC0D, #F4D03F);
 }
 
-select {
+.select-box {
   font-size: 18px;
   margin-left: 35px;
   margin-top: 50px;
@@ -478,8 +454,19 @@ select {
     background: black;
     height: 600px;
   }
+
   .play-area {
     background: white;
+
+    .answer-box {
+      min-height: 500px;
+      max-height: 700px;
+      overflow-y: auto;
+
+      &.left-box {
+        border-right: grey solid 1px;
+      }
+    }
   }
 
   .health-bar {
@@ -521,5 +508,123 @@ select {
     top: 0;
     left: 0;
     z-index: -1;
+  }
+}
+
+.VueCarousel-wrapper {
+  .avatar {
+    position: relative;
+    max-width: 100px;
+    max-height: 100px;
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      background: rgba(256, 256, 256, 0.5);
+      color: #f1f1f1;
+      width: 100%;
+      height: 100%;
+      transition: .5s ease;
+      border-radius: 50%;
+      z-index: 100;
+    }
+  }
+}
+
+.game-list {
+  /*fire setting*/
+  .fire {
+    animation: burn 1.5s linear infinite alternate;
+    -webkit-animation: burn 1.5s linear infinite alternate;
+    -moz-animation: burn 1.5s linear infinite alternate;
+    -ms-animation: burn 1.5s linear infinite alternate;
+  }
+
+  @keyframes burn {
+    from {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .4em #ffae34, .2em -.3em .3em #ec760c, -.2em -.4em .4em #cd4606, .1em -.5em .7em #973716, .1em -.7em .7em #451b0e;
+    }
+    45% {
+      text-shadow: .1em -.2em .5em #fefcc9, .15em 0 .4em #feec85, -.1em -.25em .5em #ffae34, .15em -.45em .5em #ec760c, -.1em -.5em .6em #cd4606, 0 -.8em .6em #973716, .2em -1em .8em #451b0e;
+    }
+    70% {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .6em #ffae34, .2em -.3em .4em #ec760c, -.2em -.4em .7em #cd4606, .1em -.5em .7em #973716, .1em -.7em .9em #451b0e;
+    }
+    to {
+      text-shadow: -.1em -.2em .6em #fefcc9, -.15em 0 .6em #feec85, .1em -.25em .6em #ffae34, -.15em -.45em .5em #ec760c, .1em -.5em .6em #cd4606, 0 -.8em .6em #973716, -.2em -1em .8em #451b0e;
+    }
+  }
+
+  @-webkit-keyframes burn {
+    from {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .4em #ffae34, .2em -.3em .3em #ec760c, -.2em -.4em .4em #cd4606, .1em -.5em .7em #973716, .1em -.7em .7em #451b0e;
+    }
+    45% {
+      text-shadow: .1em -.2em .5em #fefcc9, .15em 0 .4em #feec85, -.1em -.25em .5em #ffae34, .15em -.45em .5em #ec760c, -.1em -.5em .6em #cd4606, 0 -.8em .6em #973716, .2em -1em .8em #451b0e;
+    }
+    70% {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .6em #ffae34, .2em -.3em .4em #ec760c, -.2em -.4em .7em #cd4606, .1em -.5em .7em #973716, .1em -.7em .9em #451b0e;
+    }
+    to {
+      text-shadow: -.1em -.2em .6em #fefcc9, -.15em 0 .6em #feec85, .1em -.25em .6em #ffae34, -.15em -.45em .5em #ec760c, .1em -.5em .6em #cd4606, 0 -.8em .6em #973716, -.2em -1em .8em #451b0e;
+    }
+  }
+
+  @-moz-keyframes burn {
+    from {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .4em #ffae34, .2em -.3em .3em #ec760c, -.2em -.4em .4em #cd4606, .1em -.5em .7em #973716, .1em -.7em .7em #451b0e;
+    }
+    45% {
+      text-shadow: .1em -.2em .5em #fefcc9, .15em 0 .4em #feec85, -.1em -.25em .5em #ffae34, .15em -.45em .5em #ec760c, -.1em -.5em .6em #cd4606, 0 -.8em .6em #973716, .2em -1em .8em #451b0e;
+    }
+    70% {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .6em #ffae34, .2em -.3em .4em #ec760c, -.2em -.4em .7em #cd4606, .1em -.5em .7em #973716, .1em -.7em .9em #451b0e;
+    }
+    to {
+      text-shadow: -.1em -.2em .6em #fefcc9, -.15em 0 .6em #feec85, .1em -.25em .6em #ffae34, -.15em -.45em .5em #ec760c, .1em -.5em .6em #cd4606, 0 -.8em .6em #973716, -.2em -1em .8em #451b0e;
+    }
+  }
+
+  @-ms-keyframes burn {
+    from {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .4em #ffae34, .2em -.3em .3em #ec760c, -.2em -.4em .4em #cd4606, .1em -.5em .7em #973716, .1em -.7em .7em #451b0e;
+    }
+    45% {
+      text-shadow: .1em -.2em .5em #fefcc9, .15em 0 .4em #feec85, -.1em -.25em .5em #ffae34, .15em -.45em .5em #ec760c, -.1em -.5em .6em #cd4606, 0 -.8em .6em #973716, .2em -1em .8em #451b0e;
+    }
+    70% {
+      text-shadow: -.1em 0 .3em #fefcc9, .1em -.1em .3em #feec85, -.2em -.2em .6em #ffae34, .2em -.3em .4em #ec760c, -.2em -.4em .7em #cd4606, .1em -.5em .7em #973716, .1em -.7em .9em #451b0e;
+    }
+    to {
+      text-shadow: -.1em -.2em .6em #fefcc9, -.15em 0 .6em #feec85, .1em -.25em .6em #ffae34, -.15em -.45em .5em #ec760c, .1em -.5em .6em #cd4606, 0 -.8em .6em #973716, -.2em -1em .8em #451b0e;
+    }
+  }
+  /*end of fire setting*/
+
+  .reset {
+    line-height: 40px;
+    margin: 25px;
+    height: 120px;
+  }
+
+  .scrollable {
+    height: 500px;
+    overflow: auto;
+  }
+
+  .big-text {
+    font-size: 30px;
+    color: white;
+    margin-left: 10px;
+    float: left;
+    text-shadow: -1px 0 black, 0 2px black, 1px 0 black, 0 -01px black;
+  }
+
+  input {
+    height: 30px;
+    width: 30px;
+    font-size: 30px;
+    float: left;
+    margin-left: 25%;
   }
 }

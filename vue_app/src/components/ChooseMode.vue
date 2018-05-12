@@ -1,6 +1,6 @@
 <template>
-  <div class="row text-center">
-    <div class="blurbg"></div>
+  <div class="row">
+    <div class="blur-bg"></div>
     <div class="container margin-top-50">
       <div v-if="isDeclined">
         <!-- Modal -->
@@ -25,14 +25,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 friend-list">
           <template v-if="isMaster">
-            <h2 class="border-text">Friend list</h2>
+            <h2 class="border-text">Online users</h2>
             <ul class="margin-top-50">
               <li v-for="user in onlineUsers">
-                <img
-                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
-                  class="thumbnail">
+                <img :src="`./assets/img/avatar/${user.avatar}.png`" class="thumbnail">
                 <span class="white-text">{{user.name}}</span>
                 <a @click.prevent="invite(user.name)" class="action-button shadow animate green">
                 Invite
@@ -49,16 +47,14 @@
           <div class="row">
             <div class="col-md-4">
               <div class="card">
-                <img
-                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/27867694_1566230860169928_418230993458335818_n.jpg?_nc_cat=0&oh=13d04ba97111c7989ed5c9a6d5797f58&oe=5B8D2FEC"
-                  alt="Avatar" class="ava">
+                <img :src="masterAvatar" alt="Avatar" class="ava">
               </div>
               <br><br><br>
               <h2 class="border-text">{{ playingGame.master.name }}</h2>
               <p class="border-text">Master</p>
             </div>
             <div class="col-md-4">
-              <select v-if="isMaster" v-model="mode">
+              <select class="select-box" v-if="isMaster" v-model="mode">
                 <option value="-1" selected="selected" disabled="disabled">Select a mode</option>
                 <option :value="0">Normal mode</option>
                 <option :value="1">Attack mode</option>
@@ -90,9 +86,7 @@
             </div>
             <div class="col-md-4">
               <div class="card">
-                <img
-                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/31517242_2054158958156500_3197652428060355511_n.jpg?_nc_cat=0&oh=6616b19fb2acf843b8ddb549e6a47d3c&oe=5B579FC7"
-                  alt="Avatar" class="ava">
+                <img :src="guestAvatar" alt="Avatar" class="ava">
               </div>
               <br><br><br>
               <h2 class="border-text">{{ playingGame.guest ? playingGame.guest.name : '' }}</h2>
@@ -127,12 +121,19 @@
         playingGame: state => state.playingGame,
         onlineUsers: state => state.onlineUsers,
         isDeclined: state => state.isDeclined,
+        user: state => state.user,
       }),
       isMaster() {
         return this.$store.state.user.name === this.playingGame.master.name;
       },
       isGuest() {
         return (this.playingGame.guest) && (this.$store.state.user.name === this.playingGame.guest.name);
+      },
+      masterAvatar(){
+        return `./assets/img/avatar/${this.playingGame.master.avatar}.png`;
+      },
+      guestAvatar(){
+        return this.playingGame.guest ? `./assets/img/avatar/${this.playingGame.guest.avatar}.png` : `./assets/img/avatar/default.png`;
       },
       playingGameMode() {
         return this.playingGame.mode || '';
@@ -175,7 +176,7 @@
             game_id: this.playingGame.id
           }
         }));
-        
+
       },
       ready() {
         if (!this.canReady) return;
@@ -207,7 +208,7 @@
       this.socketClient.send(JSON.stringify({
         action: Action.GET_ONLINE_USERS,
       }));
-      
+
       intervalObj = setInterval(() => {
         this.socketClient.send(JSON.stringify({
           action: Action.GET_ONLINE_USERS,
