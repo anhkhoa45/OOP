@@ -1,6 +1,7 @@
 class User {
-  constructor(name){
+  constructor(name, avatar){
     this.name = name;
+    this.avatar = avatar;
     this.character = null;
   }
 }

@@ -5,7 +5,7 @@
       <div id="content"></div>
     </div>
     <div class="col-md-6 offset-md-3">
-      <div class="row play-area">
+      <div class="row play-area margin-top-50">
         <div class="col-md-12 text-center">
           Time left: {{ playingGame.timeLeft }}
         </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="row margin-top-50">
-        <div class="col-md-9">
+        <div class="col-md-8">
           <input class="form-control" type="text" placeholder="Your answer"
                  v-model="answer" @keyup.enter="sendAnswer" :disabled="!canAnswer">
         </div>
@@ -59,6 +59,8 @@
                   @click="sendAnswer" :disabled="!canAnswer">
             Send
           </button>
+        </div>
+        <div class="col-md-2">
           <button class="btn btn-danger" type="button"
                   @click="power" :disabled="!canPower">
             Power

@@ -21,7 +21,7 @@ export function onMessage(event) {
     let content = jsonObj.content;
     switch (jsonObj.action) {
       case Action.LOGIN: // Game created
-        store.commit('saveUser', new User(content.username));
+        store.commit('saveUser', new User(content.name, content.avatar));
         store.commit('setCurrentComponent', 'game-lobby');
         break;
       case Action.CREATE_NEW_GAME: // Game created
@@ -91,7 +91,7 @@ function onCreateGame(data) {
   let game = new Game({
     id: data.game.id,
     mode: data.game.mode,
-    master: new User(data.game.master.name),
+    master: new User(data.game.master.name, data.game.master.avatar),
     status: data.game.status
   });
 
@@ -101,7 +101,7 @@ function onCreateGame(data) {
 }
 
 function onGetListGame(data) {
-  store.commit('setListGame', data);
+  store.commit('setListGame', data.games);
 }
 
 function onGetOnlineUsers(data) {
@@ -114,8 +114,8 @@ function onJoinGame(data) {
   let game = new Game({
     id: data.game.id,
     mode: data.game.mode,
-    master: new User(data.game.master.name),
-    guest: new User(data.game.guest.name),
+    master: new User(data.game.master.name, data.game.master.avatar),
+    guest: new User(data.game.guest.name, data.game.guest.avatar),
     status: data.game.status
   });
 
@@ -129,7 +129,7 @@ function onReply(data){
 }
 
 function onGuestJoinGame(data) {
-  store.commit('setPlayingGameGuest', new User(data.game.guest.name));
+  store.commit('setPlayingGameGuest', new User(data.game.guest.name, data.game.guest.avatar));
 }
 
 function onSetGameMode(data) {

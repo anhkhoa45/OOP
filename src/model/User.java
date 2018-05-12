@@ -97,7 +97,6 @@ public class User {
     public JsonObject getStateAsJson() throws RuntimeException {
         JsonObject json = new JsonObject();
         json.addProperty("name", this.name);
-        json.addProperty("password", this.password);
         json.addProperty("avatar", this.avatar);
         return json;
     }

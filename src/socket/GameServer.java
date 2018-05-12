@@ -11,6 +11,8 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
@@ -20,17 +22,6 @@ import static model.GameStatus.GAME_OVER;
 public class GameServer {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
-
-    private void error(Session userSession, String error){
-        JsonObject message = new JsonObject();
-        message.addProperty("message", error);
-        userSession.getAsyncRemote().sendObject(new Message(500, GameAction.LOGIN, message));
-        try {
-            userSession.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @OnOpen
     public void onOpen(Session userSession,
@@ -49,7 +40,8 @@ public class GameServer {
         User user = UserManager.getUserByUsername(userName);
 
         if (user != null) {
-            if(user.getPassword().equals(password)) {
+            if(!user.getPassword().equals(password)) {
+                System.out.print(user.getPassword() + ", " + password);
                 error(userSession, "Password not match!"); return;
             }
             user.setOnlineState();
@@ -67,14 +59,6 @@ public class GameServer {
         );
     }
 
-    /**
-     * Callback hook for Connection close events.
-     * <p>
-     * This method will be invoked when a client closes a WebSocket
-     * connection.
-     *
-     * @param userSession the userSession which is opened.
-     */
     @OnClose
     public void onClose(Session userSession) {
         userOffline(userSession);
@@ -84,6 +68,18 @@ public class GameServer {
     @OnError
     public void onError(Session userSession, Throwable throwable) {
         userOffline(userSession);
+        System.out.println("Connection error. Id: " + userSession.getId());
+    }
+
+    private void error(Session userSession, String error){
+        JsonObject message = new JsonObject();
+        message.addProperty("message", error);
+        userSession.getAsyncRemote().sendObject(new Message(500, GameAction.LOGIN, message));
+        try {
+            userSession.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void userOffline(Session userSession) {
@@ -373,14 +369,18 @@ public class GameServer {
 
         response.setAction(GameAction.GET_LIST_GAMES);
 
-        HashMap<Integer, Game> waitingGameList = new HashMap<>();
+        JsonArray waitingGameList = new JsonArray();
+        JsonObject jObjGame;
         try {
             for (Game game : games.values()) {
                 if (!game.isFull()) {
-                    waitingGameList.put(game.getId(), game);
+                    jObjGame = game.getStateAsJson();
+                    jObjGame.add("master", game.getMasterUser().getStateAsJson());
+                    waitingGameList.add(jObjGame);
                 }
             }
-            content = gson.toJsonTree(waitingGameList).getAsJsonObject();
+
+            content.add("games", waitingGameList);
             response.setContent(content);
             response.setStatus(200);
         } catch (Exception e) {

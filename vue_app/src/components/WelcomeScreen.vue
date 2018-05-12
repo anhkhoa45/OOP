@@ -1,7 +1,8 @@
 <template>
-  <div class="welcome-screen row align-items-center">
+  <div class="row align-items-center margin-top-50">
+    <div class="blur-bg"></div>
     <div class="col-md-8 offset-md-2 text-center">
-      <h1 class="margin-top-50">WordSmith</h1>
+      <h1 class="margin-top-50 text-white">WordSmith</h1>
       <h2 class="margin-top-50 text-white">Choose your avatar</h2>
       <carousel :per-page="7" :space-padding="5" :loop="true">
         <slide v-for="i in 13" :key="i">
