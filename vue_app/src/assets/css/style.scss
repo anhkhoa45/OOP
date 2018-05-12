@@ -86,7 +86,7 @@
 /*end of flip card*/
 
 /*back ground setting*/
-div.blurbg {
+.blur-bg {
   height: 100%;
   width: 100%;
   text-align: center;
@@ -118,48 +118,45 @@ div.blurbg {
 /*end of background setting*/
 
 /*friend list setting*/
-h2 {
-  font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
+.friend-list {
+  h2 {
+    font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    height: 350px;
+  }
+
+  li {
+    text-decoration: none;
+    color: #fff;
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+    display: block;
+    width: 240px;
+    font: 200 18px/1.5 Helvetica, Verdana, sans-serif;
+    border-bottom: 2px solid #ccc;
+    padding-right: 10px;
+  }
+
+  li:last-child {
+    border: none;
+  }
+
+  li:hover {
+    font-size: 26px;
+    background: #008B8B;
+  }
 }
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow-y: scroll;
-  height: 350px;
-}
-
-li {
-  font: 200 18px/1.5 Helvetica, Verdana, sans-serif;
-  border-bottom: 2px solid #ccc;
-  padding-right: 10px;
-}
-
-li:last-child {
-  border: none;
-}
-
-li {
-  text-decoration: none;
-  color: #fff;
-  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-  transition: font-size 0.3s ease, background-color 0.3s ease;
-  display: block;
-  width: 240px;
-
-}
-
-li:hover {
-  font-size: 26px;
-  background: #008B8B;
-}
-
-/*end of friendlist setting*/
+/*end of friend list setting*/
 
 /*choose invite setting*/
 .animate {
@@ -451,7 +448,7 @@ li:hover {
   background-image: linear-gradient(top, #D4AC0D, #F4D03F);
 }
 
-select {
+.select-box {
   font-size: 18px;
   margin-left: 35px;
   margin-top: 50px;
@@ -520,5 +517,25 @@ select {
     top: 0;
     left: 0;
     z-index: -1;
+  }
+}
+
+.VueCarousel-wrapper {
+  .avatar {
+    position: relative;
+    max-width: 100px;
+    max-height: 100px;
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      background: rgba(256, 256, 256, 0.5);
+      color: #f1f1f1;
+      width: 100%;
+      height: 100%;
+      transition: .5s ease;
+      border-radius: 50%;
+      z-index: 100;
+    }
   }
 }

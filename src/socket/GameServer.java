@@ -15,57 +15,55 @@ import javax.websocket.server.PathParam;
 
 import static model.GameStatus.GAME_OVER;
 
-@ServerEndpoint(value = "/game-server/{user_name}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "/game-server/{user_name}/{password}/{avatar}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Singleton
 public class GameServer {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static HashMap<Integer, Game> games = new HashMap<Integer, Game>();
 
-    /**
-     * Callback hook for Connection open events.
-     * <p>
-     * This method will be invoked when a client requests for a
-     * WebSocket connection.
-     *
-     * @param userSession the userSession which is opened.
-     */
+    private void error(Session userSession, String error){
+        JsonObject message = new JsonObject();
+        message.addProperty("message", error);
+        userSession.getAsyncRemote().sendObject(new Message(500, GameAction.LOGIN, message));
+        try {
+            userSession.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnOpen
-    public void onOpen(Session userSession, @PathParam("user_name") String userName) {
+    public void onOpen(Session userSession,
+                       @PathParam("user_name") String userName,
+                       @PathParam("password") String password,
+                       @PathParam("avatar") String avatar
+    ) {
         System.out.println("New request received. Id: " + userSession.getId());
 
         for (User u : users.values()){
             if(u.getName().equals(userName)){
-                JsonObject message = new JsonObject();
-                message.addProperty("message","Username has been taken");
-                userSession.getAsyncRemote().sendObject(
-                        new Message(500, GameAction.LOGIN, message)
-                );
-                try {
-                    userSession.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return;
+                error(userSession, "User is playing!"); return;
             }
         }
 
         User user = UserManager.getUserByUsername(userName);
 
         if (user != null) {
+            if(user.getPassword().equals(password)) {
+                error(userSession, "Password not match!"); return;
+            }
             user.setOnlineState();
             user.setSession(userSession);
         } else {
-            user = new User(userSession, userName);
+            user = new User(userSession, userName, password, avatar);
             UserManager.addUser(user);
             System.out.print("New user");
         }
 
         users.put(userSession.getId(), user);
 
-        JsonObject message = new JsonObject();
-        message.addProperty("username", userName);
         userSession.getAsyncRemote().sendObject(
-                new Message(200, GameAction.LOGIN, message)
+                new Message(200, GameAction.LOGIN, user.getStateAsJson())
         );
     }
 
@@ -91,15 +89,17 @@ public class GameServer {
     private void userOffline(Session userSession) {
         User user = users.get(userSession.getId());
 
-        for (Game g : games.values()) {
-            if (g.checkMaster(user) || g.checkGuest(user)) {
-                leaveGame(g.getId(), userSession);
-                break;
+        if(user != null){
+            for (Game g : games.values()) {
+                if (g.checkMaster(user) || g.checkGuest(user)) {
+                    leaveGame(g.getId(), userSession);
+                    break;
+                }
             }
-        }
 
-        user.setOfflineState();
-        users.remove(userSession.getId());
+            user.setOfflineState();
+            users.remove(userSession.getId());
+        }
     }
 
     /**

@@ -1,17 +1,13 @@
 <template>
   <div>
-    <div class="blurbg"></div>
+    <div class="blur-bg"></div>
     <div v-if="haveInvitation">
-      <!-- Modal -->
       <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
            style="display: block; padding-right: 17px;">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Invitation</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <!-- <span aria-hidden="true">&times;</span> -->
-              </button>
             </div>
             <div class="modal-body">
               You received an invitation from {{invitation.master.name}} for an {{invitation.game.mode}} game
@@ -28,49 +24,46 @@
 
     <div class="container margin-top-50">
       <div class="row">
-        <div class="col-md-3">
-          <div>
-            <br>
-            <h2 class="white-text">Friend list</h2>
-            <ul>
-              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-              <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
-                                                                      class="action-button shadow animate green">Invite</a>
-              </li>
-            </ul>
-          </div>
+        <div class="col-md-3 friend-list">
+          <h2 class="white-text">Friend list</h2>
+          <ul>
+            <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">Dm<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">Khoa<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">bobo<a href="#" class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">putang<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+            <li><img src="knightbig.png" class="thumbnail">ina mo<a href="#"
+                                                                    class="action-button shadow animate green">Invite</a>
+            </li>
+          </ul>
         </div>
         <div class="col-md-3">
           <a href="#" class="push_button red" @click.prevent="createNewGame">CREATE GAME</a>

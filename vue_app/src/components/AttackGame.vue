@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="blurbg"></div>
+    <div class="blur-bg"></div>
     <div class="container">
       <div class="row text-center margin-top-50">
         <h1 class="border-text middle">Room {{ playingGame.id }}</h1>

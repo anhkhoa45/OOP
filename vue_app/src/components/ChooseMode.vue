@@ -1,6 +1,6 @@
 <template>
   <div class="row text-center">
-    <div class="blurbg"></div>
+    <div class="blur-bg"></div>
     <div class="container margin-top-50">
       <div v-if="isDeclined">
         <!-- Modal -->
@@ -25,13 +25,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 friend-list">
           <template v-if="isMaster">
             <h2 class="white-text">Friend list</h2>
             <ul class="margin-top-50">
               <li v-for="user in onlineUsers">
-                <img
-                  src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
+                <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t1.0-9/12717928_735444449925317_690561526535870400_n.jpg?_nc_cat=0&oh=188f6e38bcd098efc2f2a17e4543e8d6&oe=5B5D5D18"
                   class="thumbnail">
                 <span class="white-text">{{user.name}}</span>
                 <a @click.prevent="invite(user.name)" class="action-button shadow animate green">
@@ -58,7 +57,7 @@
               <p class="border-text">Master</p>
             </div>
             <div class="col-md-4">
-              <select v-if="isMaster" v-model="mode">
+              <select class="select-box" v-if="isMaster" v-model="mode">
                 <option value="-1" selected="selected" disabled="disabled">Select a mode</option>
                 <option :value="0">Normal mode</option>
                 <option :value="1">Attack mode</option>
@@ -175,7 +174,7 @@
             game_id: this.playingGame.id
           }
         }));
-        
+
       },
       ready() {
         if (!this.canReady) return;
@@ -207,7 +206,7 @@
       this.socketClient.send(JSON.stringify({
         action: Action.GET_ONLINE_USERS,
       }));
-      
+
       intervalObj = setInterval(() => {
         this.socketClient.send(JSON.stringify({
           action: Action.GET_ONLINE_USERS,

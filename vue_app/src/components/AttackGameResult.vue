@@ -2,7 +2,7 @@
   <div>
     <h1>Game result</h1>
     <p>...</p>
-    <div class="blurbg"></div>
+    <div class="blur-bg"></div>
     <div class="row">
     	<div class="col-md-3">
 	    	<ul >
@@ -13,7 +13,7 @@
 
     	</div>
 	</div>
-    
+
   </div>
 </template>
 
@@ -21,7 +21,7 @@
   import {mapState} from 'vuex'
   export default {
     name: "AttackGameResult",
-  
+
   computed: {
       ...mapState({
         socketClient: state => state.socketClient,
@@ -35,7 +35,7 @@
       guest() {
         return this.playingGame.guest.character;
       },
-      
+
       isMaster() {
         return this.$store.state.user.name === this.playingGame.master.name;
       }
