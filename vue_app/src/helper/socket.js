@@ -5,18 +5,24 @@ import Character from '../helper/game_characters'
 import store from '../store'
 import router from '../router'
 import KnightCharacter from "../classes/character/KnightCharacter";
-import MedusaCharacter from "../classes/character/MedusaCharacter";
+import WizardCharacter from "../classes/character/WizardCharacter";
+import ArcherCharacter from "../classes/character/ArcherCharacter";
 import HotGirlCharacter from "../classes/character/HotGirlCharacter";
-import DraculaCharacter from "../classes/character/DraculaCharacter";
 import Game from "../classes/game/Game";
 import User from "../classes/User";
 
 export function onMessage(event) {
   let jsonObj = JSON.parse(event.data);
 
-  if (jsonObj.status === 200) {
+  if (jsonObj.status === 500) {
+    store.commit('error', jsonObj.content.message);
+  } else if (jsonObj.status === 200) {
     let content = jsonObj.content;
     switch (jsonObj.action) {
+      case Action.LOGIN: // Game created
+        store.commit('saveUser', new User(content.username));
+        store.commit('setCurrentComponent', 'game-lobby');
+        break;
       case Action.CREATE_NEW_GAME: // Game created
         onCreateGame(content);
         break;
@@ -130,7 +136,6 @@ function onSetGameMode(data) {
 }
 
 function onDoneChooseMode(data) {
-  store.commit('setDoneChooseMode');
   switch (data.mode) {
     case Mode.NORMAL:
       store.commit('setCurrentComponent', 'normal-game');
@@ -151,12 +156,12 @@ function createCharacter(data) {
   switch (characterType) {
     case Character.KNIGHT.id:
       return new KnightCharacter(Character.KNIGHT.name, health, attack);
-    case Character.MEDUSA.id:
-      return new MedusaCharacter(Character.MEDUSA.name, health, attack);
+    case Character.WIZARD.id:
+      return new WizardCharacter(Character.WIZARD.name, health, attack);
     case Character.HOT_GIRL.id:
       return new HotGirlCharacter(Character.HOT_GIRL.name, health, attack);
-    case Character.DRACULA.id:
-      return new DraculaCharacter(Character.DRACULA.name, health, attack);
+    case Character.ARCHER.id:
+      return new ArcherCharacter(Character.ARCHER.name, health, attack);
   }
 }
 
@@ -197,10 +202,6 @@ function onGetGameState(data) {
   store.commit('setGameTimeLeft', data.game.timeLeft);
   store.commit('updateMasterCharacterInfo', data.game.master_character);
   store.commit('updateGuestCharacterInfo', data.game.guest_character);
-
-  if(store.state.playingGame.status === GameStatus.GAME_OVER){
-    store.commit('setCurrentComponent', 'attack-game-result');
-  }
 }
 
 function onLeaveGame(data){

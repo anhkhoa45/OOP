@@ -21,6 +21,7 @@ module.exports = {
     filename: './js/[name].js'
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'js/vendor.js'/* filename= */ }),
     new CleanWebpackPlugin(['dist']),
     new webpack.DefinePlugin({
       'process.env': {

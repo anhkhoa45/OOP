@@ -17,13 +17,8 @@ public class KnightCharacter extends AttackCharacter {
         }
         if (!guardCharacter.guard(this)){
             guardCharacter.takeDamage(this.attack);
-            if (isPowered) this.attack += 2;
+            if (this.isPowered) this.attack += 2;
         }
-    }
-
-    @Override
-    public boolean guard(AttackCharacter attackCharacter) {
-        return false;
     }
 
     @Override

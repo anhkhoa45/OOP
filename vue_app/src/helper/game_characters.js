@@ -1,6 +1,6 @@
 export default {
   KNIGHT:   {id: 0, name: 'Knight'},
-  MEDUSA:   {id: 1, name: 'Medusa'},
-  HOT_GIRL: {id: 2, name: 'Hot girl'},
-  DRACULA:  {id: 3, name: 'Dracula'},
+  WIZARD:   {id: 1, name: 'Wizard'},
+  ARCHER: {id: 2, name: 'Archer'},
+  HOT_GIRL:  {id: 3, name: 'Hot girl'},
 }

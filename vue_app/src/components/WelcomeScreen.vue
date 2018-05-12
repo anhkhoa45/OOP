@@ -37,12 +37,7 @@
           return;
         }
 
-        this.$store.dispatch('connectSocket', this.userName)
-          .then(()=> {
-            this.$store.commit('saveUser', new User(this.userName));
-            this.$store.commit('setCurrentComponent', 'game-lobby');
-            // this.$router.push({name: 'gameLobby'});
-          });
+        this.$store.dispatch('connectSocket', this.userName);
       }
     }
   }

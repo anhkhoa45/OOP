@@ -1,8 +1,11 @@
 <template>
   <div class="row attack-game-box">
     <div :class="{ 'blacked-out' : me.isBlackout }"></div>
+    <div class="col-md-12">
+      <div id="content"></div>
+    </div>
     <div class="col-md-6 offset-md-3">
-      <div class="row">
+      <div class="row play-area">
         <div class="col-md-12 text-center">
           Time left: {{ playingGame.timeLeft }}
         </div>
@@ -10,22 +13,36 @@
           Topic: {{ playingGame.topic }}
         </div>
         <div class="col-md-6 answer-box left-box">
-          <h1>Master</h1>
-          <p><strong>Health: </strong>{{ playingGame.master.character.health }}</p>
-          <p><strong>Attack: </strong>{{ playingGame.master.character.attack }}</p>
+          <div class="health-bar" :style="{width: me.character.maxHealth}">
+            <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
+              {{ me.character.health }}
+              <div class="hit"></div>
+            </div>
+          </div>
+          <p><strong>Attack: </strong>{{ me.character.attack }}</p>
+          <p v-if="me.character.isPowered">
+            <strong class="text-danger">Powered!</strong>
+          </p>
           <hr>
-          <p v-for="answer in playingGame.master.character.answers">
+          <p v-for="answer in me.character.answers">
             <span class="mr-10">{{ answer.word }}</span>
             <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
             <span v-else class="negative-state">{{ answer.score }}</span>
           </p>
         </div>
         <div class="col-md-6 answer-box">
-          <h1>Guest</h1>
-          <p><strong>Health: </strong>{{ playingGame.guest.character.health }}</p>
-          <p><strong>Attack: </strong>{{ playingGame.guest.character.attack }}</p>
+          <div class="health-bar" :style="{width: rival.character.maxHealth}">
+            <div class="bar text-center" :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
+              {{ rival.character.health }}
+              <div class="hit"></div>
+            </div>
+          </div>
+          <p><strong>Attack: </strong>{{ rival.character.attack }}</p>
+          <p v-if="rival.character.isPowered">
+            <strong class="text-danger">Powered!</strong>
+          </p>
           <hr>
-          <p v-for="answer in playingGame.guest.character.answers">
+          <p v-for="answer in rival.character.answers">
             <span class="mr-10">{{ answer.word }}</span>
             <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
             <span v-else class="negative-state">{{ answer.score }}</span>
@@ -42,6 +59,10 @@
                   @click="sendAnswer" :disabled="!canAnswer">
             Send
           </button>
+          <button class="btn btn-danger" type="button"
+                  @click="power" :disabled="!canPower">
+            Power
+          </button>
         </div>
       </div>
     </div>
@@ -53,12 +74,17 @@
   import Action from '../helper/game_actions'
   import GameStatus from '../helper/game_status'
 
+  import Phaser from 'phaser'
+
   export default {
     data() {
       return {
         answer: '',
         gameInterval: null,
-        gameScreen: null
+        gameScreen: null,
+        gameAnimation: null,
+        myCharacterAnimation: null,
+        rivalCharacterAnimation: null,
       }
     },
     computed: {
@@ -73,22 +99,66 @@
       rival() {
         return this.playingGame.master.name === this.user.name ? this.playingGame.guest : this.playingGame.master;
       },
-      canAnswer(){
+      canAnswer() {
         return this.playingGame.status !== GameStatus.GAME_OVER && !this.me.character.isStunned;
+      },
+      canPower() {
+        return this.me.character.numBeingAttacked >= 5;
+      }
+    },
+    watch: {
+      'me.character.health': function (newVal, oldVal) {
+        if(newVal === 0) {
+          this.myCharacterAnimation.animations.play('die');
+        } else if(newVal < oldVal) {
+          let anim1 = this.rivalCharacterAnimation.animations.play('attack');
+          let anim2 = this.myCharacterAnimation.animations.play('hurt');
+
+          anim1.onComplete.add(() => { this.rivalCharacterAnimation.animations.play('idle'); }, this.gameAnimation);
+          anim2.onComplete.add(() => { this.myCharacterAnimation.animations.play('idle'); }, this.gameAnimation);
+        }
+      },
+      'rival.character.health': function(newVal, oldVal) {
+        if(newVal === 0) {
+          this.rivalCharacterAnimation.animations.play('die');
+        } else if(newVal < oldVal) {
+          let anim1 = this.myCharacterAnimation.animations.play('attack');
+          let anim2 = this.rivalCharacterAnimation.animations.play('hurt');
+
+          anim1.onComplete.add(() => { this.myCharacterAnimation.animations.play('idle'); }, this.gameAnimation);
+          anim2.onComplete.add(() => { this.rivalCharacterAnimation.animations.play('idle'); }, this.gameAnimation);
+        }
+      },
+      'playingGame.status': function(newVal) {
+        if(newVal === GameStatus.GAME_OVER){
+          setTimeout(() => {
+            this.$store.commit('setCurrentComponent', 'attack-game-result');
+          }, 2000)
+        }
       }
     },
     methods: {
       sendAnswer() {
-        if(!this.answer) return;
+        if (!this.answer) return;
 
         this.socketClient.send(JSON.stringify({
-          action: Action.ANSWER_QUESTION,
+          action: Action.ANSWER,
           content: {
             answer: this.answer,
-            game_id: this.playingGame.id
+            game_id: this.playingGame.id,
           }
         }));
         this.answer = '';
+      },
+      power() {
+        if (!this.canPower) return;
+
+        this.socketClient.send(JSON.stringify({
+          action: Action.POWER,
+          content: {
+            game_id: this.playingGame.id
+          }
+        }));
       },
       updateGameState() {
         this.socketClient.send(JSON.stringify({
@@ -97,15 +167,55 @@
             game_id: this.playingGame.id
           }
         }));
+      },
+      preload() {
+        this.gameAnimation.load.image('background', './assets/img/game_bg.jpg');
+        let myAtlas = this.me.character.atlas;
+        let rivalAtlas = this.rival.character.atlas;
+        this.gameAnimation.load.atlas(myAtlas.name, myAtlas.sprite, myAtlas.spriteScript);
+        this.gameAnimation.load.atlas(rivalAtlas.name, rivalAtlas.sprite, rivalAtlas.spriteScript);
+      },
+      create() {
+        this.gameAnimation.add.sprite(0, 0, 'background');
+
+        this.myCharacterAnimation = this.gameAnimation.add.sprite(0, this.gameAnimation.height - 350, this.me.character.atlas.name, 0);
+        this.myCharacterAnimation.scale.setTo(0.5, 0.5);
+        this.me.character.animations.forEach(animation => {
+          this.myCharacterAnimation.animations.add(
+            animation.name, animation.frames, animation.interval, animation.repeat, false
+          );
+        });
+
+        this.rivalCharacterAnimation = this.gameAnimation.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 350, this.rival.character.atlas.name, 0);
+        this.rivalCharacterAnimation.scale.setTo(-0.5, 0.5);
+        this.rival.character.animations.forEach(animation => {
+          this.rivalCharacterAnimation.animations.add(
+            animation.name, animation.frames, animation.interval, animation.repeat, false
+          );
+        });
+
+        this.myCharacterAnimation.animations.play('idle');
+        this.rivalCharacterAnimation.animations.play('idle');
+      },
+      initGame() {
+        let w = document.documentElement.clientWidth;
+        let h = document.documentElement.clientHeight;
+
+        this.gameAnimation = new Phaser.Game(w, h, Phaser.AUTO, 'content',
+          {preload: this.preload, create: this.create}
+        );
       }
     },
     created() {
       this.gameInterval = setInterval(() => {
         this.updateGameState();
       }, 50);
+
+      this.initGame();
     },
     beforeDestroy() {
       clearInterval(this.gameInterval);
+      this.gameAnimation.destroy();
     }
   }
 </script>
