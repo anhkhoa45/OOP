@@ -14,7 +14,9 @@
 }
 
 .answer-box {
-  min-height: 500px;
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
 
   &.left-box {
     border-right: grey solid 1px;
@@ -24,19 +26,19 @@
 .border-text {
   color: white;
   text-align: center;
-  text-shadow: -1px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  text-shadow: -1px 0 black, 0 2px black, 1px 0 black,0 -01px black;
 }
 
 .middle {
   height: 40px;
   text-align: center;
-  position: relative
+  position: relative;
 }
 
 .white-text {
   color: aliceblue;
   text-align: left;
-  margin-left: 10px;
+  text-shadow: -1px 0 black, 0 2px black, 1px 0 black,0 -01px black;
 }
 
 /*end of text setting*/
@@ -74,13 +76,13 @@
   color: white;
   font-size: 15px;
   position: relative;
-  padding: 0 15px;
+  padding: 0 10px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: left;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /*end of flip card*/
@@ -90,9 +92,8 @@ div.blurbg {
   height: 100%;
   width: 100%;
   text-align: center;
-  background: url('../img/welcome-background.jpg') no-repeat center;
+  background: url('../img/bg.jpg') no-repeat center;
   background-size: cover;
-  filter: blur(10px);
   position: fixed;
   left: 0;
   top: 0;
@@ -107,12 +108,11 @@ div.blurbg {
   background-color: CornflowerBlue;
 }
 
-.girlbg {
-  background-color: darkslategray;
+.girlbg{
+  background-color: MediumOrchid;
 }
-
-.draculabg {
-  background-color: darkmagenta
+.archerbg{
+  background-color: Sienna;
 }
 
 /*end of background setting*/
@@ -128,14 +128,15 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 350px;
 }
 
 li {
-  font: 200 18px/1.5 Helvetica, Verdana, sans-serif;
+  font: 200 16px/1.5 Helvetica, Verdana, sans-serif;
   border-bottom: 2px solid #ccc;
-  padding-right: 10px;
+  padding-right: 5px;
+  text-align: left;
 }
 
 li:last-child {
@@ -150,12 +151,10 @@ li {
   -o-transition: font-size 0.3s ease, background-color 0.3s ease;
   transition: font-size 0.3s ease, background-color 0.3s ease;
   display: block;
-  width: 240px;
-
 }
 
 li:hover {
-  font-size: 26px;
+  font-size: 20px;
   background: #008B8B;
 }
 
@@ -168,7 +167,7 @@ li:hover {
 }
 
 .action-button {
-  margin-top: 7px;
+  margin-top: 6px;
   position: relative;
   padding: 0 20px;
   float: right;
@@ -200,9 +199,11 @@ li:hover {
 
 /*image setting*/
 .thumbnail {
+  margin-right: auto;
   width: 30px;
   height: 30px;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .ava {
