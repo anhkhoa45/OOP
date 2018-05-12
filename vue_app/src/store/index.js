@@ -18,12 +18,20 @@ const store = new Vuex.Store({
     invitation: [],
     isDeclined: false,
     currentComponent: 'welcome-screen',
-    error: null
+    error: null,
+    masterResult: 0,
+    guestResult: 0,
   },
   mutations: {
     invite(state, invitation) {
       state.haveInvitation = true;
       state.invitation = invitation;
+    },
+    setMasterResult(state, res){
+      state.masterResult=res;
+    },
+    setGuestResult(state, res){
+      state.guestResult=res;
     },
     saveUser(state, user) {
       state.user = user;
