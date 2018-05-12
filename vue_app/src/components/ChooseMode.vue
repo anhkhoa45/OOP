@@ -2,7 +2,7 @@
   <div class="row text-center">
     <div class="blurbg"></div>
     <div class="container margin-top-50">
-      <div v-if="isDeclined">
+      <div v-if="isDeclined">.0000000000000000000000
         <!-- Modal -->
         <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
              style="display: block; padding-right: 17px;">
@@ -27,7 +27,7 @@
       <div class="row">
         <div class="col-md-3">
           <template v-if="isMaster">
-            <h2 class="white-text">Friend list</h2>
+            <h2 class="border-text">Friend list</h2>
             <ul class="margin-top-50">
               <li v-for="user in onlineUsers">
                 <img
@@ -35,7 +35,7 @@
                   class="thumbnail">
                 <span class="white-text">{{user.name}}</span>
                 <a @click.prevent="invite(user.name)" class="action-button shadow animate green">
-                  Invite
+                Invite
                 </a>
               </li>
             </ul>
