@@ -16,50 +16,53 @@
                 <h3>Knight</h3>
                 <h4>Health: 120</h4>
                 <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
+                <h4>ss: WomboCombo</h4>
+                <h4>"Don't be shock, i'm hard as rock."</h4>
               </div>
             </div>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.HOT_GIRL.id)">
-            <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
+            <img src="../assets/img/girl.png" alt="girl" class="image girlbg">
             <div class="overlay">
               <div class="text">
                 <h3>Hot girl</h3>
-                <h4>Health: 120</h4>
-                <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
+                <h4>Health: 100</h4>
+                <h4>atk: 6</h4>
+                <h4>def: anger</h4>
+                <h4>ss: burn</h4>
+                <h4>"Hit me twice, you&#39;ll pay the price &#33;"</h4>
               </div>
             </div>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.MEDUSA.id)">
-            <img src="../assets/img/knight.png" alt="girl" height="50px" class="image girlbg">
+            <img src="../assets/img/wizard.png" alt="wizard" class="image wizardbg">
             <div class="overlay">
               <div class="text">
-                <h3>Medusa</h3>
-                <h4>Health: 120</h4>
-                <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
+                <h3>Wizard</h3>
+                <h4>Health: 80</h4>
+                <h4>atk: 10</h4>
+                <h4>def: stun</h4>
+                <h4>ss: Freeze</h4>
+                <h4>"Cold and clever, there's no one better"</h4>
               </div>
             </div>
           </div>
         </div>
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.DRACULA.id)">
-            <img src="../assets/img/knight.png" alt="Avatar" class="image draculabg">
+            <img src="../assets/img/archer.png" alt="archer" class="image archerbg">
             <div class="overlay">
               <div class="text">
-                <h3>Dracula</h3>
-                <h4>Health: 120</h4>
-                <h4>atk: 12</h4>
-                <h4>ss: Combo</h4>
-                <h4>Capable of getting hits</h4>
+                <h3>archer</h3>
+                <h4>Health: 100</h4>
+                <h4>atk: 6</h4>
+                <h4>def: life drain</h4>
+                <h4>ss: Night shade</h4>
+                <h4>What do you mean&#63; You can't see the screen&#63;</h4>
               </div>
             </div>
           </div>
@@ -67,10 +70,10 @@
       </div>
       <div class="container">
         <div class="row">
-          <div class="col-sm-3 border-text">
-            <p>MASTER</p>
-            <p>{{ playingGame.master.name }}</p>
-            <p>{{ masterCharacter }}</p>
+          <div class="col-sm-3 border-text margin-top-10">
+            <h4>MASTER</h4>
+            <h4>{{ playingGame.master.name }}</h4>
+            <h3>{{ masterCharacter }}</h3>
           </div>
           <div class="col-sm-6">
             <div class="start-button active" @click.prevent="start" v-if="isMaster && canStart">
@@ -94,10 +97,10 @@
               Waiting ...
             </h2>
           </div>
-          <div class="col-sm-3 border-text">
-            <p>GUEST</p>
-            <p>{{ playingGame.guest.name }}</p>
-            <p>{{ guestCharacter }}</p>
+          <div class="col-sm-3 border-text margin-top-10">
+            <h4>GUEST</h4>
+            <h4>{{ playingGame.guest.name }}</h4>
+            <h3>{{ guestCharacter }}</h3>
           </div>
         </div>
       </div>
