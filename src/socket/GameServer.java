@@ -33,18 +33,20 @@ public class GameServer {
     ) {
         System.out.println("New request received. Id: " + userSession.getId());
 
-        for (User u : users.values()){
-            if(u.getName().equals(userName)){
-                error(userSession, "User is playing!"); return;
+        for (User u : users.values()) {
+            if (u.getName().equals(userName)) {
+                error(userSession, "User is playing!");
+                return;
             }
         }
 
         User user = UserManager.getUserByUsername(userName);
 
         if (user != null) {
-            if(!user.getPassword().equals(password)) {
+            if (!user.getPassword().equals(password)) {
                 System.out.print(user.getPassword() + ", " + password);
-                error(userSession, "Password not match!"); return;
+                error(userSession, "Password not match!");
+                return;
             }
             user.setOnlineState();
             user.setAvatar(avatar);
@@ -53,6 +55,7 @@ public class GameServer {
             user = new User(userSession, userName, password, avatar);
             UserManager.addUser(user);
             System.out.print("New user");
+            user.setOnlineState();
         }
 
         users.put(userSession.getId(), user);
@@ -75,7 +78,7 @@ public class GameServer {
         throwable.printStackTrace();
     }
 
-    private void error(Session userSession, String error){
+    private void error(Session userSession, String error) {
         JsonObject message = new JsonObject();
         message.addProperty("message", error);
         userSession.getAsyncRemote().sendObject(new Message(500, null, message));
@@ -89,7 +92,7 @@ public class GameServer {
     private void userOffline(Session userSession) {
         User user = users.get(userSession.getId());
 
-        if(user != null){
+        if (user != null) {
             for (Game g : games.values()) {
                 if (g.checkMaster(user) || g.checkGuest(user)) {
                     leaveGame(g.getId(), userSession);
@@ -166,6 +169,9 @@ public class GameServer {
             case GET_PLAYED_GAMES:
                 onGetPlayedGames(message, userSession);
                 break;
+            case REVEAL_CORRECT_WORDS:
+                onReveal(message, userSession);
+                break;
             default:
         }
     }
@@ -176,7 +182,7 @@ public class GameServer {
         JsonArray playedGames = new JsonArray();
         JsonObject jObjGame;
 
-        for(Game g : user.getPlayedGames()){
+        for (Game g : user.getPlayedGames()) {
             jObjGame = g.getStateAsJson();
             jObjGame.add("master", g.getMasterUser().getStateAsJson());
             jObjGame.add("guest", g.getGuestUser().getStateAsJson());
@@ -197,6 +203,22 @@ public class GameServer {
         String username = message.getContent().get("name").getAsString();
         User user = UserManager.getUserByUsername(username);
         response.setAction(GameAction.DECLINE_INVITATION);
+        response.setStatus(200);
+        user.getSession().getAsyncRemote().sendObject(response);
+    }
+
+    private void onReveal(Message message, Session userSession) {
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        Gson gson = new Gson();
+        int gameId = message.getContent().get("game_id").getAsInt();
+        Game game = games.get(gameId);
+
+        content.add("correctWord", gson.toJsonTree(game.getTopic().getCorrectWords()));
+        User user = users.get(userSession.getId());
+
+        response.setContent(content);
+        response.setAction(GameAction.REVEAL_CORRECT_WORDS);
         response.setStatus(200);
         user.getSession().getAsyncRemote().sendObject(response);
     }
@@ -367,7 +389,7 @@ public class GameServer {
                     throw new RuntimeException("Permission denied!");
                 case ATTACK:
                     AttackCharacter tmp1 = (AttackCharacter) character;
-                    if(!tmp1.isPowered()) {
+                    if (!tmp1.isPowered()) {
                         AttackCharacter tmp2 = (AttackCharacter) opponentCharacter;
                         tmp1.power(tmp2);
                         if (tmp1.isDead() || tmp2.isDead()) {
@@ -418,7 +440,7 @@ public class GameServer {
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {
             for (User u : users.values()) {
-                if (!u.getSession().getId().equals(userSession.getId())) {
+                if (!u.getSession().getId().equals(userSession.getId()) && u.getStatus() == UserStatus.ONLINE) {
                     onlineUsers.add(u.getStateAsJson());
                 }
             }
@@ -483,7 +505,7 @@ public class GameServer {
         int gameId = message.getContent().get("game_id").getAsInt();
         Game game = games.get(gameId);
         try {
-            
+
             response.setAction(GameAction.DONE_CHOOSE_MODE);
             User guest = game.getGuestUser();
 
@@ -501,8 +523,8 @@ public class GameServer {
         }
 
         userSession.getAsyncRemote().sendObject(response);
-        if(game.getMode()==GameMode.NORMAL){
-                onStartGame(message, userSession);
+        if (game.getMode() == GameMode.NORMAL) {
+            onStartGame(message, userSession);
         }
     }
 
@@ -695,7 +717,7 @@ public class GameServer {
             jObjGame.add("master_character", game.getMasterCharacter().getStateAsJson());
             jObjGame.add("guest_character", game.getGuestCharacter().getStateAsJson());
             content.add("game", jObjGame);
-            if(game.getStatus()==GameStatus.GAME_OVER){
+            if (game.getStatus() == GameStatus.GAME_OVER) {
                 content.addProperty("master_result", getResult(game.getMasterCharacter()));
                 content.addProperty("guest_result", getResult(game.getGuestCharacter()));
             }
@@ -709,10 +731,10 @@ public class GameServer {
         userSession.getAsyncRemote().sendObject(response);
     }
 
-    private int getResult(Character character){
-        int res=0;
-        for(int i=0; i<character.getAnswers().size(); i++){
-            res+=character.getAnswers().get(i).getScore();
+    private int getResult(Character character) {
+        int res = 0;
+        for (int i = 0; i < character.getAnswers().size(); i++) {
+            res += character.getAnswers().get(i).getScore();
         }
         return res;
     }

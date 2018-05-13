@@ -16,13 +16,13 @@ const store = new Vuex.Store({
     playingGame: null,
     games: [],
     onlineUsers: [],
+    correctWords: [],
     haveInvitation: false,
+    haveCorrectWords: false,
     invitation: [],
     isDeclined: false,
     currentComponent: 'welcome-screen',
     error: null,
-    masterResult: 0,
-    guestResult: 0,
     gameAnimation: new Phaser.Game(1140, 665, Phaser.AUTO, 'content', {
       preload() {
         this.load.atlas('knight', './assets/sprites/knight.png', './assets/sprites/knight.json');
@@ -30,11 +30,14 @@ const store = new Vuex.Store({
         this.load.atlas('wizard', './assets/sprites/wizard.png', './assets/sprites/wizard.json');
         this.load.atlas('archer', './assets/sprites/archer.png', './assets/sprites/archer.json');
       },
-      create(){
+      create() {
         this.state.add('initial', {
-          preload(){},
-          create(){},
-          update(){}
+          preload() {
+          },
+          create() {
+          },
+          update() {
+          }
         });
 
         this.state.start('initial');
@@ -46,17 +49,15 @@ const store = new Vuex.Store({
       state.haveInvitation = true;
       state.invitation = invitation;
     },
-    setMasterResult(state, res){
-      state.masterResult=res;
-    },
-    setGuestResult(state, res){
-      state.guestResult=res;
-    },
     saveUser(state, user) {
       state.user = user;
     },
     setPlayedGames(state, games) {
       state.playedGames = games;
+    },
+    saveCorrectWords(state, data) {
+      state.haveCorrectWords = true;
+      state.correctWords = data;
     },
     setSocketClient(state, socketClient) {
       state.socketClient = socketClient;
@@ -73,7 +74,7 @@ const store = new Vuex.Store({
       state.currentComponent = 'welcome-screen';
       state.error = null;
     },
-    error(state, error){
+    error(state, error) {
       state.error = error;
     },
     resetPlayingGame(state) {
