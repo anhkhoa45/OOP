@@ -482,10 +482,16 @@ body:after {
 
 .attack-game-box {
   position: relative;
+
   .blacked-out {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
-    background: black;
-    height: 600px;
+    background: forestgreen;
+    min-height: 350px;
+    max-height: 400px;
   }
 
   .play-area {
@@ -493,7 +499,6 @@ body:after {
     	margin-top: 20px;
       height: 280px;
       overflow-y: auto;
-
       &.left-box {
         border-right: Silver solid 1px;
       }

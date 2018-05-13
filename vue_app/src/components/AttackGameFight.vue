@@ -1,7 +1,6 @@
 <template>
   <div class="container attack-game-box">
     <div class="row">
-      <div :class="{ 'blacked-out' : me.isBlackout }"></div>
       <div class="col-md-5">
         <h3>
           {{ me.name }}
@@ -34,20 +33,29 @@
       </div>
     </div>
     <div class="row margin-top-10">
-      <div class="col-md-4">
-        <h2>{{ myTotalScore }} points</h2>
+      <div class="col-md-3">
+        <p>
+          <span class="text-danger">Attack: {{ me.character.attack }}</span> -
+          <span class="text-primary">Score: {{ myTotalScore }}</span>
+        </p>
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-6 text-center">
         <h2>Topic: {{ playingGame.topic }}</h2>
       </div>
-      <div class="col-md-4 text-right">
-        <h2>{{ rivalTotalScore }} points</h2>
+
+      <div class="col-md-3 text-right">
+        <p>
+          <span class="text-primary">Score: {{ rivalTotalScore }}</span> -
+          <span class="text-danger">Attack: {{ rival.character.attack }}</span>
+        </p>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3">
+      <div v-if="me.character.isBlackout" class="col-md-6 blacked-out">
+        <h1 class="text-center margin-top-50">Censored!</h1>
       </div>
-      <div class="col-md-6 play-area text-left">
+      <div class="w-100"></div>
+      <div class="col-md-6 offset-md-3 play-area text-left">
         <div class="row">
           <div class="col-md-6 answer-box left-box">
             <p v-for="answer in me.character.answers">
@@ -81,11 +89,7 @@
               Power &#33;&#33;&#33;
             </button>
           </div>
-
-
         </div>
-      </div>
-      <div class="col-md-3 text-right">
       </div>
     </div>
   </div>
@@ -117,6 +121,10 @@
         return this.playingGame.master.name === this.user.name ? this.playingGame.master : this.playingGame.guest;
       },
       myTotalScore() {
+        let totalScore = 0;
+        for (let i = 0; i < this.me.character.answers.length; i++) {
+          totalScore += this.me.character.answers[i].score;
+        }
         return this.me.character.answers.reduce((a, c) => a + c.score, 0);
       },
       rival() {
