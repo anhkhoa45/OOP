@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <h2 v-if="isMaster && !canStart" class="border-text margin-top-50">
+            <h2 v-if="isMaster && !canStart" class="border-text margin-top-50 text-center">
               Waiting ...
             </h2>
             <div class="start-button active" @click.prevent="ready" v-if="isGuest && canReady">
@@ -92,7 +92,7 @@
                 </div>
               </div>
             </div>
-            <h2 v-if="isGuest && !canStart" class="border-text margin-top-50">
+            <h2 v-if="isGuest && !canStart" class="border-text margin-top-50 text-center">
               Waiting ...
             </h2>
           </div>
