@@ -75,6 +75,9 @@ export function onMessage(event) {
       case Action.DECLINE_INVITATION:
         store.state.isDeclined = true;
         break;
+      case Action.GET_PLAYED_GAMES:
+        onGetPlayedGames(content);
+        break;
     }
   }
 }
@@ -222,5 +225,9 @@ function onLeaveGame(data) {
 function onGuestLeaveGame(data) {
   store.commit('setPlayingGameGuest', null);
   store.commit('setGameStatus', GameStatus.INITIAL);
+}
+
+function onGetPlayedGames(data){
+  store.commit('setPlayedGames', data.played_games);
 }
 

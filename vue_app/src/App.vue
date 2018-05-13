@@ -17,6 +17,7 @@
   import NormalGame from './components/NormalGame'
   import AttackGameFight from './components/AttackGameFight'
   import AttackGameResult from './components/AttackGameResult'
+  import ListPlayedGame from './components/ListPlayedGame'
 
   export default {
     computed: {
@@ -37,7 +38,8 @@
       this.$store.state.socketClient.close();
     },
     components: {
-      WelcomeScreen, GameLobby, WaitingGameList, ChooseMode, AttackGame, NormalGame, AttackGameFight, AttackGameResult
+      WelcomeScreen, GameLobby, WaitingGameList, ChooseMode, AttackGame,
+      NormalGame, AttackGameFight, AttackGameResult, ListPlayedGame
     }
   }
 </script>

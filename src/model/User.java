@@ -78,12 +78,8 @@ public class User {
         return playedGames;
     }
 
-    public void setPlayedGames(Set<Game> playedGames) {
-        this.playedGames = playedGames;
-    }
-
-    public void doAnswer() {
-
+    public void addPlayedGame(Game game) {
+        this.playedGames.add(game);
     }
 
     public boolean equals(Object obj) {

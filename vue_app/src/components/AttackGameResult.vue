@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="row attack-game-box">
-      <div class="col-md-12">
-        <div id="content"></div>
-      </div>
       <div class="col-md-6 offset-md-3">
         <div class="row play-area margin-top-50">
           <div class="col-md-6 answer-box left-box">

@@ -2,6 +2,7 @@ package socket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import model.*;
 import model.Character;
@@ -12,6 +13,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.websocket.server.PathParam;
 
@@ -100,14 +102,6 @@ public class GameServer {
         }
     }
 
-    /**
-     * Callback hook for Message Events.
-     * <p>
-     * This method will be invoked when a client send a message.
-     *
-     * @param message     The text message
-     * @param userSession The session of the client
-     */
     @OnMessage
     public void onMessage(Message message, Session userSession) {
         switch (message.getAction()) {
@@ -168,8 +162,34 @@ public class GameServer {
                 break;
             case DECLINE_INVITATION:
                 onDecline(message, userSession);
+                break;
+            case GET_PLAYED_GAMES:
+                onGetPlayedGames(message, userSession);
+                break;
             default:
         }
+    }
+
+    private void onGetPlayedGames(Message message, Session userSession) {
+        User user = users.get(userSession.getId());
+        JsonObject content = new JsonObject();
+        JsonArray playedGames = new JsonArray();
+        JsonObject jObjGame;
+
+        for(Game g : user.getPlayedGames()){
+            jObjGame = g.getStateAsJson();
+            jObjGame.add("master", g.getMasterUser().getStateAsJson());
+            jObjGame.add("guest", g.getGuestUser().getStateAsJson());
+            jObjGame.add("master_character", g.getMasterCharacter().getStateAsJson());
+            jObjGame.add("guest_character", g.getGuestCharacter().getStateAsJson());
+            playedGames.add(jObjGame);
+        }
+
+        content.add("played_games", playedGames);
+
+        userSession.getAsyncRemote().sendObject(
+                new Message(200, GameAction.GET_PLAYED_GAMES, content)
+        );
     }
 
     private void onDecline(Message message, Session userSession) {
@@ -184,7 +204,6 @@ public class GameServer {
     private void onInvite(Message message, Session userSession) {
         Message response = new Message();
         JsonObject content = new JsonObject();
-        Gson gson = new Gson();
         User inviter = users.get(userSession.getId());
         response.setAction(GameAction.INVITE);
         try {
@@ -358,15 +377,12 @@ public class GameServer {
                     }
                     break;
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void onGetListGame(Message message, Session userSession) {
-        Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
 
@@ -396,7 +412,6 @@ public class GameServer {
     }
 
     private void onGetOnlineUsers(Message message, Session userSession) {
-        Gson gson = new Gson();
         Message response = new Message();
         JsonObject content = new JsonObject();
         JsonArray onlineUsers = new JsonArray();
@@ -558,6 +573,9 @@ public class GameServer {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
             game.start();
+
+            game.getMasterUser().addPlayedGame(game);
+            game.getGuestUser().addPlayedGame(game);
             content.add("game", game.getStateAsJson());
 
             response.setContent(content);
@@ -690,6 +708,7 @@ public class GameServer {
         }
         userSession.getAsyncRemote().sendObject(response);
     }
+
     private int getResult(Character character){
         int res=0;
         for(int i=0; i<character.getAnswers().size(); i++){

@@ -21,5 +21,6 @@ public enum GameAction {
     BE_HIT,
     INVITE,
     REPLY_INVITATION,
-    DECLINE_INVITATION
+    DECLINE_INVITATION,
+    GET_PLAYED_GAMES
 }
