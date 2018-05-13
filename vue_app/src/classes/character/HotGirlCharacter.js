@@ -20,6 +20,14 @@ class HotGirlCharacter extends AttackCharacter {
       {name: 'die', frames: Phaser.Animation.generateFrameNames('die/', 0, 21, '.png', 1), interval: 15, repeat: false},
     ]
   }
+
+  updateState({health, attack, answers, isStunned, isPowered, isBlackout, numBeingAttacked}){
+    super.updateState({health, attack, answers, isStunned, isPowered, isBlackout, numBeingAttacked});
+    if(health > this.maxHealth){
+      this.maxHealth = health;
+    }
+    return this;
+  }
 }
 
 export default HotGirlCharacter;

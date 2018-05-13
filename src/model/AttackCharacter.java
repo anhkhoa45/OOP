@@ -40,6 +40,10 @@ public abstract class AttackCharacter extends Character {
         return this.health == 0;
     }
 
+    public boolean isPowered(){
+        return this.isPowered;
+    }
+
     public void takeDamage(int damage){
         if(this.health > damage){
             this.numBeingAttacked++;

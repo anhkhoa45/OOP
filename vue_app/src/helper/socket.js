@@ -73,7 +73,7 @@ export function onMessage(event) {
         onReply(content);
         break;
       case Action.DECLINE_INVITATION:
-        store.state.isDeclined=true;
+        store.state.isDeclined = true;
         break;
     }
   }
@@ -124,7 +124,7 @@ function onJoinGame(data) {
   // router.push({name: 'chooseMode'});
 }
 
-function onReply(data){
+function onReply(data) {
   store.commit('invite', data);
 }
 
@@ -206,20 +206,20 @@ function onGetGameState(data) {
   store.commit('updateMasterCharacterInfo', data.game.master_character);
   store.commit('updateGuestCharacterInfo', data.game.guest_character);
 
-  if(store.state.playingGame.mode === Mode.NORMAL && store.state.playingGame.status === GameStatus.GAME_OVER){
+  if (store.state.playingGame.mode === Mode.NORMAL && store.state.playingGame.status === GameStatus.GAME_OVER) {
     store.commit('setCurrentComponent', 'attack-game-result');
     store.commit('setMasterResult', data.master_result);
     store.commit('setGuestResult', data.guest_result);
   }
 }
 
-function onLeaveGame(data){
+function onLeaveGame(data) {
   store.commit('setPlayingGame', null);
   store.commit('setCurrentComponent', 'game-lobby');
   // router.push({name: 'gameLobby'})
 }
 
-function onGuestLeaveGame(data){
+function onGuestLeaveGame(data) {
   store.commit('setPlayingGameGuest', null);
   store.commit('setGameStatus', GameStatus.INITIAL);
 }

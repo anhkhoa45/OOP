@@ -1,7 +1,9 @@
 <template>
   <div class="container-fluid">
+    <div class="container margin-top-10 attack-game-box">
+      <div class="row" id="content"></div>
+    </div>
     <component :is="currentComponent"></component>
-    <!--<router-view></router-view>-->
   </div>
 </template>
 
