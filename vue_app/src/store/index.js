@@ -15,13 +15,13 @@ const store = new Vuex.Store({
     playingGame: null,
     games: [],
     onlineUsers: [],
+    correctWords: [],
     haveInvitation: false,
+    haveCorrectWords: false,
     invitation: [],
     isDeclined: false,
     currentComponent: 'welcome-screen',
     error: null,
-    masterResult: 0,
-    guestResult: 0,
     gameAnimation: new Phaser.Game(1140, 665, Phaser.AUTO, 'content', {
       preload() {
         this.load.atlas('knight', './assets/sprites/knight.png', './assets/sprites/knight.json');
@@ -45,14 +45,12 @@ const store = new Vuex.Store({
       state.haveInvitation = true;
       state.invitation = invitation;
     },
-    setMasterResult(state, res){
-      state.masterResult=res;
-    },
-    setGuestResult(state, res){
-      state.guestResult=res;
-    },
     saveUser(state, user) {
       state.user = user;
+    },
+    saveCorrectWords(state, data){
+      state.haveCorrectWords=true;
+      state.correctWords=data;
     },
     setSocketClient(state, socketClient) {
       state.socketClient = socketClient;

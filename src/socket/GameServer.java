@@ -51,6 +51,7 @@ public class GameServer {
             user = new User(userSession, userName, password, avatar);
             UserManager.addUser(user);
             System.out.print("New user");
+            user.setOnlineState();
         }
 
         users.put(userSession.getId(), user);
@@ -168,6 +169,8 @@ public class GameServer {
                 break;
             case DECLINE_INVITATION:
                 onDecline(message, userSession);
+            case REVEAL_CORRECT_WORDS:
+                onReveal(message, userSession);
             default:
         }
     }
@@ -177,6 +180,22 @@ public class GameServer {
         String username = message.getContent().get("name").getAsString();
         User user = UserManager.getUserByUsername(username);
         response.setAction(GameAction.DECLINE_INVITATION);
+        response.setStatus(200);
+        user.getSession().getAsyncRemote().sendObject(response);
+    }
+    
+    private void onReveal(Message message, Session userSession) {
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        Gson gson = new Gson();
+        int gameId = message.getContent().get("game_id").getAsInt();
+        Game game = games.get(gameId);
+        
+        content.add("correctWord", gson.toJsonTree(game.getTopic().getCorrectWords()));
+        User user = users.get(userSession.getId());
+        
+        response.setContent(content);
+        response.setAction(GameAction.REVEAL_CORRECT_WORDS);
         response.setStatus(200);
         user.getSession().getAsyncRemote().sendObject(response);
     }
@@ -403,7 +422,7 @@ public class GameServer {
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {
             for (User u : users.values()) {
-                if (!u.getSession().getId().equals(userSession.getId())) {
+                if (!u.getSession().getId().equals(userSession.getId()) && u.getStatus()==UserStatus.ONLINE) {
                     onlineUsers.add(u.getStateAsJson());
                 }
             }
