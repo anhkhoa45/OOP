@@ -35,6 +35,7 @@
               <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
               <span v-else class="negative-state">{{ answer.score }}</span>
             </p>
+            <p>Total score: {{myTotalScore}}</p>
           </div>
           <div class="col-md-6 answer-box">
             <h3 class="text-right">{{ rival.name }}</h3>
@@ -55,7 +56,7 @@
               <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
               <span v-else class="negative-state">{{ answer.score }}</span>
             </p>
-
+            <p>Total score: {{rivalTotalScore}}</p>
           </div>
         </div>
         <div class="row margin-top-50 text-center">
@@ -64,11 +65,14 @@
           </div>
           <div class="col-md-6 text-center">
             <button type="button" class="btn btn-primary" @click="revealCorrectWords">Reveal correct words</button>
+            <p v-if="haveCorrectWords" v-for="item in correctWords">
+              <span class="mr-10">{{ item.word }}</span>
+             
+            </p>
           </div>
         </div>
       </div>
     </div>
-<!-- >>>>>>> d4c04e5396e7411f2587e57c3e6e8febd6b91108 -->
   </div>
 </template>
 
@@ -77,13 +81,18 @@
   import Mode from '../helper/game_modes'
   import Action from '../helper/game_actions'
   export default {
+  	// data() {
+   //    return {
+   //     show: false,
+   //    }
+   //  },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,
         playingGame: state => state.playingGame,
         user: state => state.user,
-        masterRes: state => state.masterResult,
-        guestRes: state => state.guestResult,
+        correctWords: state => state.correctWords,
+        haveCorrectWords: state => state.haveCorrectWords,
       }),
       me() {
         return this.playingGame.master.name === this.user.name ? this.playingGame.master : this.playingGame.guest;
@@ -98,22 +107,14 @@
       	return this.playingGame.mode === Mode.ATTACK;
       },
       isWin(){
-      	if(this.$store.state.user.name === this.playingGame.master.name){
-      		if(this.masterRes>this.guestRes) return true;
-      		else return false;
-      	}
-      	else{
-      		if(this.masterRes<this.guestRes) return true;
-      		else return false;
-      	}
+      	return this.myTotalScore>this.rivalTotalScore;
       },
-  //     getScore(){
-  //     	var score=0;
-  //     	this.playingGame.master.character.answers.forEach(value => {
-		//   score += value;
-		// });
-  //     	return score;
-  //     }
+      myTotalScore() {
+        return this.me.character.answers.reduce((a, c) => a + c.score, 0);
+      },
+      rivalTotalScore() {
+        return this.rival.character.answers.reduce((a, c) => a + c.score, 0);
+      },
     },
     methods: {
       toGameLobby(){
@@ -121,10 +122,11 @@
         this.$store.commit('setPlayingGame', null);
       },
       revealCorrectWords(){
+      	this.show=true;
       	this.socketClient.send(JSON.stringify({
           action: Action.REVEAL_CORRECT_WORDS,
           content: {
-            topic: this.playingGame.topic
+            game_id: this.playingGame.id
           }
         }));
       }

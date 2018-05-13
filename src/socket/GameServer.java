@@ -168,6 +168,8 @@ public class GameServer {
                 break;
             case DECLINE_INVITATION:
                 onDecline(message, userSession);
+            case REVEAL_CORRECT_WORDS:
+                onReveal(message, userSession);
             default:
         }
     }
@@ -177,6 +179,22 @@ public class GameServer {
         String username = message.getContent().get("name").getAsString();
         User user = UserManager.getUserByUsername(username);
         response.setAction(GameAction.DECLINE_INVITATION);
+        response.setStatus(200);
+        user.getSession().getAsyncRemote().sendObject(response);
+    }
+    
+    private void onReveal(Message message, Session userSession) {
+        Message response = new Message();
+        JsonObject content = new JsonObject();
+        Gson gson = new Gson();
+        int gameId = message.getContent().get("game_id").getAsInt();
+        Game game = games.get(gameId);
+        
+        content.add("correctWord", gson.toJsonTree(game.getTopic().getCorrectWords()));
+        User user = users.get(userSession.getId());
+        
+        response.setContent(content);
+        response.setAction(GameAction.REVEAL_CORRECT_WORDS);
         response.setStatus(200);
         user.getSession().getAsyncRemote().sendObject(response);
     }

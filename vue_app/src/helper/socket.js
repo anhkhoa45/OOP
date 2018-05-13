@@ -75,6 +75,9 @@ export function onMessage(event) {
       case Action.DECLINE_INVITATION:
         store.state.isDeclined = true;
         break;
+      case Action.REVEAL_CORRECT_WORDS:
+        onReveal(content);
+        break;
     }
   }
 }
@@ -106,6 +109,10 @@ function onGetListGame(data) {
 
 function onGetOnlineUsers(data) {
   store.commit('setOnlineUser', data.users);
+}
+
+function onReveal(data) {
+  store.commit('saveCorrectWords', data.correctWord);
 }
 
 function onJoinGame(data) {
@@ -208,8 +215,6 @@ function onGetGameState(data) {
 
   if (store.state.playingGame.mode === Mode.NORMAL && store.state.playingGame.status === GameStatus.GAME_OVER) {
     store.commit('setCurrentComponent', 'attack-game-result');
-    store.commit('setMasterResult', data.master_result);
-    store.commit('setGuestResult', data.guest_result);
   }
 }
 
