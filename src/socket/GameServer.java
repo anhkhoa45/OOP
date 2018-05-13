@@ -45,6 +45,7 @@ public class GameServer {
                 error(userSession, "Password not match!"); return;
             }
             user.setOnlineState();
+            user.setAvatar(avatar);
             user.setSession(userSession);
         } else {
             user = new User(userSession, userName, password, avatar);

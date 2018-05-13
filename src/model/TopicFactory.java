@@ -31,10 +31,6 @@ public class TopicFactory {
             databaseCorrectWords.put("行", 1);
             databaseCorrectWords.put("レコード", 1);
             topics.add(new Topic("データベース", databaseCorrectWords));
-
-            topics.add(new Topic("データベース 1", databaseCorrectWords));
-
-            topics.add(new Topic("データベース 2", databaseCorrectWords));
         }
 
         return topics;

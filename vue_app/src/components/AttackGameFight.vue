@@ -83,7 +83,6 @@
       return {
         answer: '',
         gameInterval: null,
-        gameScreen: null,
         gameAnimation: null,
         myCharacterAnimation: null,
         rivalCharacterAnimation: null,
@@ -180,16 +179,16 @@
       create() {
         this.gameAnimation.add.sprite(0, 0, 'background');
 
-        this.myCharacterAnimation = this.gameAnimation.add.sprite(0, this.gameAnimation.height - 350, this.me.character.atlas.name, 0);
-        this.myCharacterAnimation.scale.setTo(0.5, 0.5);
+        this.myCharacterAnimation = this.gameAnimation.add.sprite(0, this.gameAnimation.height - 450, this.me.character.atlas.name, 0);
+        this.myCharacterAnimation.scale.setTo(0.7, 0.7);
         this.me.character.animations.forEach(animation => {
           this.myCharacterAnimation.animations.add(
             animation.name, animation.frames, animation.interval, animation.repeat, false
           );
         });
 
-        this.rivalCharacterAnimation = this.gameAnimation.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 350, this.rival.character.atlas.name, 0);
-        this.rivalCharacterAnimation.scale.setTo(-0.5, 0.5);
+        this.rivalCharacterAnimation = this.gameAnimation.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 450, this.rival.character.atlas.name, 0);
+        this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
           this.rivalCharacterAnimation.animations.add(
             animation.name, animation.frames, animation.interval, animation.repeat, false
