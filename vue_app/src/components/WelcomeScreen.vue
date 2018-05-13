@@ -61,7 +61,7 @@
         if (!this.avatar) {
           this.error.push({message: 'You must choose avatar! '});
         }
-        else if (!this.userName || ! this.password) {
+        else if (!this.userName || !this.password) {
           this.error.push({message: 'You must enter your user name and password! '});
         }
         if(this.error.length > 0) return;

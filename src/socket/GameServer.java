@@ -68,14 +68,15 @@ public class GameServer {
 
     @OnError
     public void onError(Session userSession, Throwable throwable) {
-        userOffline(userSession);
         System.out.println("Connection error. Id: " + userSession.getId());
+        error(userSession, "Server internal error");
+        throwable.printStackTrace();
     }
 
     private void error(Session userSession, String error){
         JsonObject message = new JsonObject();
         message.addProperty("message", error);
-        userSession.getAsyncRemote().sendObject(new Message(500, GameAction.LOGIN, message));
+        userSession.getAsyncRemote().sendObject(new Message(500, null, message));
         try {
             userSession.close();
         } catch (IOException e) {
@@ -163,11 +164,11 @@ public class GameServer {
                 break;
             case INVITE:
                 onInvite(message, userSession);
+                System.out.println("ACTION_INVITE");
                 break;
             case DECLINE_INVITATION:
                 onDecline(message, userSession);
             default:
-
         }
     }
 
@@ -189,12 +190,12 @@ public class GameServer {
         try {
             String username = message.getContent().get("user_name").getAsString();
             User invitee = UserManager.getUserByUsername(username);
-            content.add("master", gson.toJsonTree(inviter));
-            content.add("guest", gson.toJsonTree(invitee));
+            content.add("master", inviter.getStateAsJson());
+            content.add("guest", invitee.getStateAsJson());
 
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            content.add("game", gson.toJsonTree(game));
+            content.add("game", game.getStateAsJson());
 
             response.setStatus(200);
             response.setContent(content);

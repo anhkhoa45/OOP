@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Phaser from 'phaser'
 
 Vue.use(Vuex);
 
@@ -21,6 +22,23 @@ const store = new Vuex.Store({
     error: null,
     masterResult: 0,
     guestResult: 0,
+    gameAnimation: new Phaser.Game(1140, 665, Phaser.AUTO, 'content', {
+      preload() {
+        this.load.atlas('knight', './assets/sprites/knight.png', './assets/sprites/knight.json');
+        this.load.atlas('girl', './assets/sprites/girl.png', './assets/sprites/girl.json');
+        this.load.atlas('wizard', './assets/sprites/wizard.png', './assets/sprites/wizard.json');
+        this.load.atlas('archer', './assets/sprites/archer.png', './assets/sprites/archer.json');
+      },
+      create(){
+        this.state.add('initial', {
+          preload(){},
+          create(){},
+          update(){}
+        });
+
+        this.state.start('initial');
+      }
+    }, true),
   },
   mutations: {
     invite(state, invitation) {
@@ -142,9 +160,9 @@ const store = new Vuex.Store({
           res();
         };
         socketClient.onerror = function () {
+          console.log('ok');
+          commit('error', 'Some error occurred');
           socketClient.close();
-          commit('reset');
-          commit('setCurrentComponent', 'welcome-screen');
         };
         socketClient.onclose = function () {
           commit('reset');

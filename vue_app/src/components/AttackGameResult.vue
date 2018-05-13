@@ -7,6 +7,7 @@
       <div class="col-md-6 offset-md-3">
         <div class="row play-area margin-top-50">
           <div class="col-md-6 answer-box left-box">
+            <h3>{{ me.name }}</h3>
             <div class="health-bar" :style="{width: me.character.maxHealth}">
               <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
                 {{ me.character.health }}
@@ -25,6 +26,7 @@
             </p>
           </div>
           <div class="col-md-6 answer-box">
+            <h3 class="text-right">{{ rival.name }}</h3>
             <div class="health-bar" :style="{width: rival.character.maxHealth}">
               <div class="bar text-center"
                    :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
