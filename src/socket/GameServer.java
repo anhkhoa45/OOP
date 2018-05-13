@@ -51,6 +51,7 @@ public class GameServer {
             user = new User(userSession, userName, password, avatar);
             UserManager.addUser(user);
             System.out.print("New user");
+            user.setOnlineState();
         }
 
         users.put(userSession.getId(), user);
@@ -421,7 +422,7 @@ public class GameServer {
         response.setAction(GameAction.GET_ONLINE_USERS);
         try {
             for (User u : users.values()) {
-                if (!u.getSession().getId().equals(userSession.getId())) {
+                if (!u.getSession().getId().equals(userSession.getId()) && u.getStatus()==UserStatus.ONLINE) {
                     onlineUsers.add(u.getStateAsJson());
                 }
             }

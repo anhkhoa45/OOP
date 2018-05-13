@@ -65,8 +65,8 @@
           </div>
           <div class="col-md-6 text-center">
             <button type="button" class="btn btn-primary" @click="revealCorrectWords">Reveal correct words</button>
-            <p v-if="haveCorrectWords" v-for="item in correctWords">
-              <span class="mr-10">{{ item.word }}</span>
+            <p v-if="haveCorrectWords" v-for="(key, value) in correctWords">
+              <span class="mr-10 text-center">{{ value }} : {{ key }}</span>
              
             </p>
           </div>
