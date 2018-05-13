@@ -33,6 +33,7 @@ public class WizardCharacter extends AttackCharacter {
     public boolean guard(AttackCharacter attackCharacter) {
         Answer a = attackCharacter.getAnswers().get(attackCharacter.getAnswers().size() - 1);
         if (this.checkDuplicateAnswer(a)) {
+            a.setScore(0);
             freeze(5000, attackCharacter);
             return true;
         }

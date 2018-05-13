@@ -25,10 +25,12 @@
                 <div class="hit"></div>
               </div>
             </div>
+
             <p v-if="isAttackMode"><strong>Attack: </strong>{{ me.character.attack }}</p>
             <p v-if="isAttackMode&&me.character.isPowered">
               <strong class="text-danger">Powered!</strong>
             </p>
+
             <hr>
             <p v-for="answer in me.character.answers">
               <span class="mr-10">{{ answer.word }}</span>
@@ -46,10 +48,12 @@
                 <div class="hit"></div>
               </div>
             </div>
+
             <p v-if="isAttackMode"><strong>Attack: </strong>{{ rival.character.attack }}</p>
             <p v-if="isAttackMode&&rival.character.isPowered">
               <strong class="text-danger">Powered!</strong>
             </p>
+
             <hr>
             <p v-for="answer in rival.character.answers">
               <span class="mr-10">{{ answer.word }}</span>
@@ -81,11 +85,6 @@
   import Mode from '../helper/game_modes'
   import Action from '../helper/game_actions'
   export default {
-  	// data() {
-   //    return {
-   //     show: false,
-   //    }
-   //  },
     computed: {
       ...mapState({
         socketClient: state => state.socketClient,

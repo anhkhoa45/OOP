@@ -16,6 +16,13 @@ public class TopicFactory {
             animalCorrectWords.put("horse", 2);
             animalCorrectWords.put("bird", 1);
             animalCorrectWords.put("crocodile", 3);
+            animalCorrectWords.put("snake", 1);
+            animalCorrectWords.put("buffalo", 1);
+            animalCorrectWords.put("fish", 1);
+            animalCorrectWords.put("lion", 3);
+            animalCorrectWords.put("elephant", 2);
+            animalCorrectWords.put("tiger", 1);
+            animalCorrectWords.put("panda", 3);
             topics.add(new Topic("Animal", animalCorrectWords));
 
 //            HashMap<String, Integer> databaseCorrectWords = new HashMap<>();
@@ -31,10 +38,6 @@ public class TopicFactory {
 //            databaseCorrectWords.put("行", 1);
 //            databaseCorrectWords.put("レコード", 1);
 //            topics.add(new Topic("データベース", databaseCorrectWords));
-//
-//            topics.add(new Topic("データベース 1", databaseCorrectWords));
-
-//           topics.add(new Topic("データベース 2", databaseCorrectWords));
         }
 
         return topics;
