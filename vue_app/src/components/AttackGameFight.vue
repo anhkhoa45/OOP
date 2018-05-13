@@ -229,6 +229,7 @@
           );
         });
 
+
         this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 450, this.rival.character.atlas.name, 0);
         this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
