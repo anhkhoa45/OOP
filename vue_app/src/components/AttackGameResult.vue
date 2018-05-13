@@ -15,9 +15,6 @@
               </div>
             </div>
             <p><strong>Attack: </strong>{{ me.character.attack }}</p>
-            <p v-if="me.character.isPowered">
-              <strong class="text-danger">Powered!</strong>
-            </p>
             <hr>
             <p v-for="answer in me.character.answers">
               <span class="mr-10">{{ answer.word }}</span>
@@ -35,9 +32,6 @@
               </div>
             </div>
             <p><strong>Attack: </strong>{{ rival.character.attack }}</p>
-            <p v-if="rival.character.isPowered">
-              <strong class="text-danger">Powered!</strong>
-            </p>
             <hr>
             <p v-for="answer in rival.character.answers">
               <span class="mr-10">{{ answer.word }}</span>

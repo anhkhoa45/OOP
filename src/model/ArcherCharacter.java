@@ -36,7 +36,7 @@ public class ArcherCharacter extends AttackCharacter {
             final long timeInterval = 5000;
             new Thread(() -> {
                 while (!guardCharacter.isDead()) {
-                    guardCharacter.health -= 10;
+                    guardCharacter.takeDamage(10);
                     try {
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {

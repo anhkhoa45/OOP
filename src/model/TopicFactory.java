@@ -16,21 +16,28 @@ public class TopicFactory {
             animalCorrectWords.put("horse", 2);
             animalCorrectWords.put("bird", 1);
             animalCorrectWords.put("crocodile", 3);
+            animalCorrectWords.put("snake", 1);
+            animalCorrectWords.put("buffalo", 1);
+            animalCorrectWords.put("fish", 1);
+            animalCorrectWords.put("lion", 3);
+            animalCorrectWords.put("elephant", 2);
+            animalCorrectWords.put("tiger", 1);
+            animalCorrectWords.put("panda", 3);
             topics.add(new Topic("Animal", animalCorrectWords));
 
-            HashMap<String, Integer> databaseCorrectWords = new HashMap<>();
-            databaseCorrectWords.put("整理する", 1);
-            databaseCorrectWords.put("抽出する", 1);
-            databaseCorrectWords.put("データ構造", 1);
-            databaseCorrectWords.put("階層型データベース", 3);
-            databaseCorrectWords.put("子レコード", 2);
-            databaseCorrectWords.put("親レコード", 1);
-            databaseCorrectWords.put("関係データベース", 3);
-            databaseCorrectWords.put("表", 1);
-            databaseCorrectWords.put("テーブル", 1);
-            databaseCorrectWords.put("行", 1);
-            databaseCorrectWords.put("レコード", 1);
-            topics.add(new Topic("データベース", databaseCorrectWords));
+//            HashMap<String, Integer> databaseCorrectWords = new HashMap<>();
+//            databaseCorrectWords.put("整理する", 1);
+//            databaseCorrectWords.put("抽出する", 1);
+//            databaseCorrectWords.put("データ構造", 1);
+//            databaseCorrectWords.put("階層型データベース", 3);
+//            databaseCorrectWords.put("子レコード", 2);
+//            databaseCorrectWords.put("親レコード", 1);
+//            databaseCorrectWords.put("関係データベース", 3);
+//            databaseCorrectWords.put("表", 1);
+//            databaseCorrectWords.put("テーブル", 1);
+//            databaseCorrectWords.put("行", 1);
+//            databaseCorrectWords.put("レコード", 1);
+//            topics.add(new Topic("データベース", databaseCorrectWords));
         }
 
         return topics;
