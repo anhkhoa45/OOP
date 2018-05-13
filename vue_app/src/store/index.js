@@ -11,6 +11,7 @@ import Action from '../helper/game_actions'
 const store = new Vuex.Store({
   state: {
     user: null,
+    playedGames: [],
     socketClient: null,
     playingGame: null,
     games: [],
@@ -29,11 +30,14 @@ const store = new Vuex.Store({
         this.load.atlas('wizard', './assets/sprites/wizard.png', './assets/sprites/wizard.json');
         this.load.atlas('archer', './assets/sprites/archer.png', './assets/sprites/archer.json');
       },
-      create(){
+      create() {
         this.state.add('initial', {
-          preload(){},
-          create(){},
-          update(){}
+          preload() {
+          },
+          create() {
+          },
+          update() {
+          }
         });
 
         this.state.start('initial');
@@ -48,9 +52,12 @@ const store = new Vuex.Store({
     saveUser(state, user) {
       state.user = user;
     },
-    saveCorrectWords(state, data){
-      state.haveCorrectWords=true;
-      state.correctWords=data;
+    setPlayedGames(state, games) {
+      state.playedGames = games;
+    },
+    saveCorrectWords(state, data) {
+      state.haveCorrectWords = true;
+      state.correctWords = data;
     },
     setSocketClient(state, socketClient) {
       state.socketClient = socketClient;
@@ -67,7 +74,7 @@ const store = new Vuex.Store({
       state.currentComponent = 'welcome-screen';
       state.error = null;
     },
-    error(state, error){
+    error(state, error) {
       state.error = error;
     },
     resetPlayingGame(state) {
@@ -120,7 +127,6 @@ const store = new Vuex.Store({
     setListGame(state, games) {
       state.games = games;
     },
-
     addAnswer(state, answer) {
       if (state.user.name === state.playingGame.master.name) {
         state.playingGame.master.character.answers.push(answer);
@@ -158,7 +164,6 @@ const store = new Vuex.Store({
           res();
         };
         socketClient.onerror = function () {
-          console.log('ok');
           commit('error', 'Some error occurred');
           socketClient.close();
         };

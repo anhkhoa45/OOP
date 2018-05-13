@@ -31,7 +31,7 @@
           <a href="#" class="push_button blue" @click.prevent="joinGame">JOIN GAME</a>
         </div>
         <div class="col-md-4">
-          <a href="#" class="push_button yellow" @click.prevent="joinGame">RANDOM GAME</a>
+          <a href="#" class="push_button yellow" @click.prevent="toListPlayedGame">PLAYING HISTORY</a>
 
         </div>
       </div>
@@ -77,6 +77,9 @@
             name: this.invitation.master.name,
           }
         }));
+      },
+      toListPlayedGame(){
+        this.$store.commit('setCurrentComponent', 'list-played-game')
       }
     }
   }

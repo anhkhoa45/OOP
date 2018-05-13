@@ -75,6 +75,9 @@ export function onMessage(event) {
       case Action.DECLINE_INVITATION:
         store.state.isDeclined = true;
         break;
+      case Action.GET_PLAYED_GAMES:
+        onGetPlayedGames(content);
+        break;
       case Action.REVEAL_CORRECT_WORDS:
         onReveal(content);
         break;
@@ -221,11 +224,14 @@ function onGetGameState(data) {
 function onLeaveGame(data) {
   store.commit('setPlayingGame', null);
   store.commit('setCurrentComponent', 'game-lobby');
-  // router.push({name: 'gameLobby'})
 }
 
 function onGuestLeaveGame(data) {
   store.commit('setPlayingGameGuest', null);
   store.commit('setGameStatus', GameStatus.INITIAL);
+}
+
+function onGetPlayedGames(data) {
+  store.commit('setPlayedGames', data.played_games);
 }
 

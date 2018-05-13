@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-9">
           <div class="row text-center">
-            <h1 class="border-text">Room {{ playingGame.id }}</h1>
+            <h1>Room {{ playingGame.id }}</h1>
             <button type="button" class="btn btn-sm btn-danger ml-auto" @click="leaveGame">Leave game</button>
           </div>
           <div class="row margin-top-30 text-center">
@@ -62,10 +62,10 @@
                 <option :value="0">Normal mode</option>
                 <option :value="1">Attack mode</option>
               </select>
-              <h3 class="border-text" v-else>Game mode: {{ playingGameMode }}</h3>
+              <h3 v-else>Game mode: {{ playingGameMode }}</h3>
               <img src="../assets/img/vs.png" alt="vs" class="versus">
 
-              <h2 v-if="isMaster && !isSelectedMode" class="border-text margin-top-10">Please choose mode first!</h2>
+              <h2 v-if="isMaster && !isSelectedMode" class="margin-top-10">Please choose mode first!</h2>
 
               <div :class="{ 'start-button' : true, 'active' : canStart}"
                    v-if="isMaster && isSelectedMode"

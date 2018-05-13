@@ -221,7 +221,7 @@
         this.gameAnimation.load.atlas(rivalAtlas.name, rivalAtlas.sprite, rivalAtlas.spriteScript);
       },
       create() {
-        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 500, this.me.character.atlas.name, 0);
+        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 450, this.me.character.atlas.name, 0);
         this.myCharacterAnimation.scale.setTo(0.7, 0.7);
         this.me.character.animations.forEach(animation => {
           this.myCharacterAnimation.animations.add(
@@ -229,7 +229,7 @@
           );
         });
 
-        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 500, this.rival.character.atlas.name, 0);
+        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 450, this.rival.character.atlas.name, 0);
         this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
           this.rivalCharacterAnimation.animations.add(
