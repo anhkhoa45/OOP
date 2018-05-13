@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Game {
     public static int gameCount = 0;
-    public static final int defaultGameDuration = 3000; // unit: second
+    public static final int defaultGameDuration = 120; // unit: second
 
     private int id;
     private Character masterCharacter;
@@ -19,6 +19,8 @@ public class Game {
     private GameStatus status;
     private long timeStarted; // unit: milisecond
     private long timeEnd; // unit: milisecond
+    private Thread countDown;
+    private Thread updateInterval;
 
     public Game(User master) {
         this.id = gameCount++;
@@ -149,22 +151,52 @@ public class Game {
             this.timeStarted = System.currentTimeMillis();
             this.topic = TopicFactory.getRandomTopic();
 
-            new Thread(() -> {
+            this.countDown = new Thread(() -> {
                 try {
                     Thread.sleep(Game.defaultGameDuration * 1000);
                     if (this.status == GameStatus.STARTED) {
-                        this.status = GameStatus.GAME_OVER;
-                        this.timeEnd = System.currentTimeMillis();
+                        this.endGame();
                     }
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
-            }).start();
+            });
+
+            this.updateInterval = new Thread(() -> {
+                try {
+                    while(true){
+                        Thread.sleep(50);
+                        this.update();
+                    }
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+
+            this.countDown.start();
+            this.updateInterval.start();
 
             return true;
         } else {
             return false;
         }
+    }
+
+    public void update() {
+        if (this.mode == GameMode.ATTACK && this.status == GameStatus.STARTED) {
+            AttackCharacter tmp1 = (AttackCharacter) masterCharacter;
+            AttackCharacter tmp2 = (AttackCharacter) guestCharacter;
+            if (tmp1.isDead() || tmp2.isDead()) {
+                this.endGame();
+            }
+        }
+    }
+
+    public void endGame(){
+        this.setStatus(GameStatus.GAME_OVER);
+        this.setTimeEnd(System.currentTimeMillis());
+        this.updateInterval.interrupt();
+        this.countDown.interrupt();
     }
 
     public long getTimeLeft() {

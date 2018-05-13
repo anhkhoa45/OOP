@@ -480,6 +480,7 @@ body:after {
 }
 
 .attack-game-box {
+  position: relative;
   .blacked-out {
     z-index: 1;
     background: black;
@@ -487,11 +488,10 @@ body:after {
   }
 
   .play-area {
-
     .answer-box {
     	margin-top: 20px;
-      min-height: 200px;
-      max-height: 300px;
+      min-height: 450px;
+      max-height: 500px;
       overflow-y: auto;
 
       &.left-box {
@@ -534,8 +534,8 @@ body:after {
     transition: width .5s linear;
   }
 
-  #content {
-    position: fixed;
+  div[id^="content"] {
+    position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
