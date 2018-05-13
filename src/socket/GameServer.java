@@ -160,7 +160,6 @@ public class GameServer {
                 break;
             case GET_GAME_STATE:
                 onGetGameState(message, userSession);
-//                System.out.println("ACTION_GET_GAME_STATE");
                 break;
             case INVITE:
                 onInvite(message, userSession);
@@ -348,11 +347,13 @@ public class GameServer {
                     throw new RuntimeException("Permission denied!");
                 case ATTACK:
                     AttackCharacter tmp1 = (AttackCharacter) character;
-                    AttackCharacter tmp2 = (AttackCharacter) opponentCharacter;
-                    tmp1.power(tmp2);
-                    if (tmp1.isDead() || tmp2.isDead()) {
-                        game.setStatus(GAME_OVER);
-                        game.setTimeEnd(System.currentTimeMillis());
+                    if(!tmp1.isPowered()) {
+                        AttackCharacter tmp2 = (AttackCharacter) opponentCharacter;
+                        tmp1.power(tmp2);
+                        if (tmp1.isDead() || tmp2.isDead()) {
+                            game.setStatus(GAME_OVER);
+                            game.setTimeEnd(System.currentTimeMillis());
+                        }
                     }
                     break;
             }

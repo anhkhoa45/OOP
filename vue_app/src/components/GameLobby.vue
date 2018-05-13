@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div class="container margin-top-50">
+    <div class="container margin-top-100">
       <div class="row">
         <div class="col-md-4">
           <a href="#" class="push_button red" @click.prevent="createNewGame">CREATE GAME</a>

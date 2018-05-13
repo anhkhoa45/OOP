@@ -1,12 +1,11 @@
 <template>
   <div class="row">
-    <div class="blur-bg"></div>
     <div class="container">
-      <div class="row text-center margin-top-50">
-        <h1 class="border-text middle">Room {{ playingGame.id }}</h1>
+      <div class="row text-center">
+        <h1 class="text-left">Room {{ playingGame.id }}</h1>
         <button type="button" class="btn btn-sm btn-danger ml-auto" @click="leaveGame">Leave game</button>
       </div>
-      <h1 class="border-text middle"><strong>Choose your spokesman &#33;</strong></h1>
+      <h1 class="text-center">Choose your spokesman &#33;</h1>
       <div class="row">
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.KNIGHT.id)">
@@ -17,7 +16,7 @@
                 <h4>Health: 120</h4>
                 <h4>atk: 12</h4>
                 <h4>ss: WomboCombo</h4>
-                <h4>"Don't be shock, i'm hard as rock."</h4>
+                <h4>"Don't be shock, i'm as hard as rock."</h4>
               </div>
             </div>
           </div>
@@ -47,7 +46,7 @@
                 <h4>atk: 10</h4>
                 <h4>def: stun</h4>
                 <h4>ss: Freeze</h4>
-                <h4>"Cold and clever, there's no one better"</h4>
+                <h4>"Cold and clever, there's no one else better &#33;"</h4>
               </div>
             </div>
           </div>

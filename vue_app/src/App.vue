@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid">
     <component :is="currentComponent"></component>
-    <!--<router-view></router-view>-->
   </div>
 </template>
 

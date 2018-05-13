@@ -6,7 +6,6 @@ Vue.use(Vuex);
 import {get} from '../helper/request'
 import {onMessage} from '../helper/socket'
 import Action from '../helper/game_actions'
-import Character from "../classes/character/Character";
 
 const store = new Vuex.Store({
   state: {

@@ -1,7 +1,6 @@
 <template>
   <div class="row">
-    <div class="blur-bg"></div>
-    <div class="container margin-top-50">
+    <div class="container">
       <div v-if="isDeclined">
         <!-- Modal -->
         <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -27,14 +26,20 @@
       <div class="row">
         <div class="col-md-3 friend-list">
           <template v-if="isMaster">
-            <h2 class="border-text">Online users</h2>
+            <h2 class="margin-top-30">Online users</h2>
             <ul class="margin-top-50">
               <li v-for="user in onlineUsers">
-                <img :src="`./assets/img/avatar/${user.avatar}.png`" class="thumbnail">
-                <span class="white-text">{{user.name}}</span>
-                <a @click.prevent="invite(user.name)" class="action-button shadow animate green">
-                Invite
-                </a>
+                <div class="row">
+                  <div class="col-md-8">
+                    <img :src="`./assets/img/avatar/${user.avatar}.png`" class="thumbnail">
+                    <span>{{user.name}}</span>
+                  </div>
+                  <div class="col-md-4">
+                    <a @click.prevent="invite(user.name)" class="action-button shadow animate green">
+                    Invite
+                    </a>
+                  </div>
+                </div>
               </li>
             </ul>
           </template>
@@ -44,14 +49,12 @@
             <h1 class="border-text">Room {{ playingGame.id }}</h1>
             <button type="button" class="btn btn-sm btn-danger ml-auto" @click="leaveGame">Leave game</button>
           </div>
-          <div class="row">
+          <div class="row margin-top-30 text-center">
             <div class="col-md-4">
-              <div class="card">
                 <img :src="masterAvatar" alt="Avatar" class="ava">
-              </div>
-              <br><br><br>
-              <h2 class="border-text">{{ playingGame.master.name }}</h2>
-              <p class="border-text">Master</p>
+              <br><br>
+              <h2>{{ playingGame.master.name }}</h2>
+              <p>Master</p>
             </div>
             <div class="col-md-4">
               <select class="select-box" v-if="isMaster" v-model="mode">
@@ -59,10 +62,10 @@
                 <option :value="0">Normal mode</option>
                 <option :value="1">Attack mode</option>
               </select>
-              <h3 class="border-text margin-top-50" v-else>Game mode: {{ playingGameMode }}</h3>
+              <h3 class="border-text" v-else>Game mode: {{ playingGameMode }}</h3>
               <img src="../assets/img/vs.png" alt="vs" class="versus">
 
-              <h2 v-if="isMaster && !isSelectedMode" class="border-text margin-top-50">Please choose mode first!</h2>
+              <h2 v-if="isMaster && !isSelectedMode" class="border-text margin-top-10">Please choose mode first!</h2>
 
               <div :class="{ 'start-button' : true, 'active' : canStart}"
                    v-if="isMaster && isSelectedMode"
@@ -85,12 +88,10 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="card">
-                <img :src="guestAvatar" alt="Avatar" class="ava">
-              </div>
-              <br><br><br>
-              <h2 class="border-text">{{ playingGame.guest ? playingGame.guest.name : '' }}</h2>
-              <p class="border-text">Guest</p>
+                <img :src="guestAvatar" alt="Avatar" class="ava" style="margin-right: auto;">
+              <br><br>
+              <h2>{{ playingGame.guest ? playingGame.guest.name : '' }}</h2>
+              <p>Guest</p>
             </div>
           </div>
         </div>
