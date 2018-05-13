@@ -13,7 +13,7 @@
 		
     	<div class="col-md-3">
 	    	
-	    	<span>{{playingGame.master.name}}</span>
+	    	<h4>{{playingGame.master.name}}</h4>
 	    	<p v-for="answer in playingGame.master.character.answers">
 	    	 
 		        <span class="mr-10">{{ answer.word }}</span>
@@ -25,7 +25,7 @@
     	</div>
 
     	<div class="col-md-3">
-    		<span>{{playingGame.guest.name}}</span>
+    		<h4>{{playingGame.guest.name}}</h4>
 	    	<p v-for="answer in playingGame.guest.character.answers">
 	    	 
 		        <span class="mr-10">{{ answer.word }}</span>
