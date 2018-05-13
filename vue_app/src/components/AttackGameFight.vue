@@ -10,7 +10,7 @@
         </h3>
         <div class="health-bar" :style="{width: me.character.maxHealth}">
           <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
-            {{ me.character.health }}
+            <h5>{{ me.character.health }}</h5>
             <div class="hit"></div>
           </div>
         </div>
@@ -27,7 +27,7 @@
         </h3>
         <div class="health-bar" :style="{width: rival.character.maxHealth}">
           <div class="bar text-center" :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
-            {{ rival.character.health }}
+            <h5>{{ rival.character.health }}</h5>
           </div>
         </div>
       </div>
@@ -42,6 +42,7 @@
       <div class="col-md-6 text-center">
         <h2>Topic: {{ playingGame.topic }}</h2>
       </div>
+
       <div class="col-md-3 text-right">
         <p>
           <span class="text-primary">Score: {{ rivalTotalScore }}</span> -
@@ -220,7 +221,7 @@
         this.gameAnimation.load.atlas(rivalAtlas.name, rivalAtlas.sprite, rivalAtlas.spriteScript);
       },
       create() {
-        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 350, this.me.character.atlas.name, 0);
+        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 500, this.me.character.atlas.name, 0);
         this.myCharacterAnimation.scale.setTo(0.7, 0.7);
         this.me.character.animations.forEach(animation => {
           this.myCharacterAnimation.animations.add(
@@ -228,7 +229,7 @@
           );
         });
 
-        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 350, this.rival.character.atlas.name, 0);
+        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 500, this.rival.character.atlas.name, 0);
         this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
           this.rivalCharacterAnimation.animations.add(
