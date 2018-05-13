@@ -641,7 +641,8 @@ body:after {
   .reset {
     line-height: 40px;
     margin: 25px;
-    height: 120px;
+    height: 150px;
+    padding: 10px 0;
   }
 
   .scrollable {
@@ -663,5 +664,19 @@ body:after {
     font-size: 30px;
     float: left;
     margin-left: 25%;
+  }
+}
+
+.modal {
+  font-family: "Helvetica";
+  text-shadow: none;
+  color: black;
+
+  .modal-header {
+    justify-content: center;
+  }
+
+  .modal-footer {
+    justify-content: center;
   }
 }
