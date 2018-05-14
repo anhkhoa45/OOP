@@ -69,7 +69,7 @@
       </div>
       <div class="container">
         <div class="row">
-          <div class="col-sm-3 border-text margin-top-10">
+          <div class="col-sm-3 margin-top-10">
             <h4>MASTER</h4>
             <h4>{{ playingGame.master.name }}</h4>
             <h3>{{ masterCharacter }}</h3>
@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <h2 v-if="isMaster && !canStart" class="border-text margin-top-50">
+            <h2 v-if="isMaster && !canStart" class="margin-top-50 text-center">
               Waiting ...
             </h2>
             <div class="start-button active" @click.prevent="ready" v-if="isGuest && canReady">
@@ -92,11 +92,11 @@
                 </div>
               </div>
             </div>
-            <h2 v-if="isGuest && !canStart" class="border-text margin-top-50">
+            <h2 v-if="isGuest && !canStart" class="margin-top-50 text-center">
               Waiting ...
             </h2>
           </div>
-          <div class="col-sm-3 border-text margin-top-10">
+          <div class="col-sm-3 margin-top-10">
             <h4>GUEST</h4>
             <h4>{{ playingGame.guest.name }}</h4>
             <h3>{{ guestCharacter }}</h3>

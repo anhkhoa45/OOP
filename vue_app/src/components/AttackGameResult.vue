@@ -2,11 +2,11 @@
   <div>
     <div v-if="showCorrectWords">
       <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-           style="display: block; padding-right: 17px;">
+           style="display: block; padding-right: 17px; max-height: 500px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">List correct words</h5>
+              <h5 class="modal-title" id="exampleModalLabel">List of correct words</h5>
             </div>
             <div class="modal-body">
               <div class="row attack-game-box">
@@ -24,22 +24,26 @@
         </div>
       </div>
     </div>
+    <div v-if="isWin">
+      <!--  -->
+      <!--  -->
+      <!--  -->
+    </div>
     <h1>Game result</h1>
-    <div class="blur-bg"></div>
     <div class="row attack-game-box">
       <div class="col-md-6 offset-md-3">
-        <div class="row play-area margin-top-50">
+        <div class="row play-area margin-top-30">
           <div class="col-md-6 answer-box left-box">
             <h3>{{ me.name }}</h3>
             <div v-if="isAttackMode" class="health-bar" :style="{width: me.character.maxHealth}">
               <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
-                {{ me.character.health }}
+                <h5>{{ me.character.health }}</h5>
                 <div class="hit"></div>
               </div>
             </div>
 
             <p v-if="isAttackMode"><strong>Attack: </strong>{{ me.character.attack }}</p>
-            <p>Total score: {{myTotalScore}}</p>
+            <h5 style="text-decoration: underline;color: aqua;">Total score: {{myTotalScore}}</h5>
             <hr>
             <p v-for="answer in me.character.answers">
               <span class="mr-10">{{ answer.word }}</span>
@@ -52,12 +56,12 @@
             <div v-if="isAttackMode" class="health-bar" :style="{width: rival.character.maxHealth}">
               <div class="bar text-center"
                    :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
-                {{ rival.character.health }}
+                <h5>{{ rival.character.health }}</h5>
                 <div class="hit"></div>
               </div>
             </div>
             <p v-if="isAttackMode"><strong>Attack: </strong>{{ rival.character.attack }}</p>
-            <p>Total score: {{rivalTotalScore}}</p>
+            <h5 style="text-decoration: underline;color: aqua;">Total score: {{rivalTotalScore}}</h5>
             <hr>
             <p v-for="answer in rival.character.answers">
               <span class="mr-10">{{ answer.word }}</span>
