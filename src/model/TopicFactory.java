@@ -8,22 +8,22 @@ public class TopicFactory {
     public static List<Topic> getTopics(){
         if(topics == null){
             topics = new ArrayList<>();
-            HashMap<String, Integer> animalCorrectWords = new HashMap<>();
-            animalCorrectWords.put("cat", 1);
-            animalCorrectWords.put("dog", 1);
-            animalCorrectWords.put("rat", 1);
-            animalCorrectWords.put("mosquito", 3);
-            animalCorrectWords.put("horse", 2);
-            animalCorrectWords.put("bird", 1);
-            animalCorrectWords.put("crocodile", 3);
-            animalCorrectWords.put("snake", 1);
-            animalCorrectWords.put("buffalo", 1);
-            animalCorrectWords.put("fish", 1);
-            animalCorrectWords.put("lion", 3);
-            animalCorrectWords.put("elephant", 2);
-            animalCorrectWords.put("tiger", 1);
-            animalCorrectWords.put("panda", 3);
-            topics.add(new Topic("Animal", animalCorrectWords));
+//            HashMap<String, Integer> animalCorrectWords = new HashMap<>();
+//            animalCorrectWords.put("cat", 1);
+//            animalCorrectWords.put("dog", 1);
+//            animalCorrectWords.put("rat", 1);
+//            animalCorrectWords.put("mosquito", 3);
+//            animalCorrectWords.put("horse", 2);
+//            animalCorrectWords.put("bird", 1);
+//            animalCorrectWords.put("crocodile", 3);
+//            animalCorrectWords.put("snake", 1);
+//            animalCorrectWords.put("buffalo", 1);
+//            animalCorrectWords.put("fish", 1);
+//            animalCorrectWords.put("lion", 3);
+//            animalCorrectWords.put("elephant", 2);
+//            animalCorrectWords.put("tiger", 1);
+//            animalCorrectWords.put("panda", 3);
+//            topics.add(new Topic("Animal", animalCorrectWords));
 
             HashMap<String, Integer> databaseCorrectWords = new HashMap<>();
             databaseCorrectWords.put("整理する", 1);
