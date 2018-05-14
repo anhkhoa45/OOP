@@ -16,7 +16,7 @@
   import AttackGame from './components/AttackGame'
   import NormalGame from './components/NormalGame'
   import AttackGameFight from './components/AttackGameFight'
-  import AttackGameResult from './components/AttackGameResult'
+  import GameResult from './components/GameResult'
   import ListPlayedGame from './components/ListPlayedGame'
 
   export default {
@@ -39,7 +39,7 @@
     },
     components: {
       WelcomeScreen, GameLobby, WaitingGameList, ChooseMode, AttackGame,
-      NormalGame, AttackGameFight, AttackGameResult, ListPlayedGame
+      NormalGame, AttackGameFight, GameResult, ListPlayedGame
     }
   }
 </script>
