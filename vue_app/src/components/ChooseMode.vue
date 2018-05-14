@@ -62,7 +62,7 @@
                 <option :value="0">Normal mode</option>
                 <option :value="1">Attack mode</option>
               </select>
-              <h3 v-else>Game mode: {{ playingGameMode }}</h3>
+              <h3 v-else>Game mode: <strong>{{ playingGameMode }}</strong></h3>
               <img src="../assets/img/vs.png" alt="vs" class="versus">
 
               <h2 v-if="isMaster && !isSelectedMode" class="margin-top-10">Please choose mode first!</h2>

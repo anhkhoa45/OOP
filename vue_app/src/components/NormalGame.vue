@@ -2,22 +2,24 @@
   <div class="container">
     <div>
       <div class="col-md-12 text-center">
-        Time left: {{ playingGame.timeLeft }}
+        <h3>Time left: <span style="font-size: 42px;color: aqua;">{{ playingGame.timeLeft }}</span></h3>
       </div>
-      <p>Type in the words related to: {{playingGame.topic}}</p>
-      <p v-if="isMaster" v-for="answer in master.answers">
-        <span class="mr-10">{{ answer.word }}</span>
-        <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
-        <span v-else class="negative-state">{{ answer.score }}</span>
-      </p>
-      <p v-if="!isMaster" v-for="answer in guest.answers">
-        <span class="mr-10">{{ answer.word }}</span>
-        <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
-        <span v-else class="negative-state">{{ answer.score }}</span>
-      </p>
+			<p>Type in the words related to:<span style="font-size: 30px;text-decoration: underline;"> {{playingGame.topic}}</span></p> 
+			<div class="offset-md-1 col-md-8" style="max-height: 250px;overflow-y: auto;">     
+				<p v-if="isMaster" v-for="answer in master.answers">
+	        <span class="mr-10">{{ answer.word }}</span>
+	        <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
+	        <span v-else class="negative-state">{{ answer.score }}</span>
+	      </p>
+	      <p v-if="!isMaster" v-for="answer in guest.answers">
+	        <span class="mr-10">{{ answer.word }}</span>
+	        <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
+	        <span v-else class="negative-state">{{ answer.score }}</span>
+	      </p>
+      </div>
     </div>
     <div class="row margin-top-50">
-      <div class="col-md-9">
+      <div class="offset-md-1 col-md-8">
         <input class="form-control" type="text" placeholder="Your answer"
                v-model="answer" @keyup.enter="sendAnswer" :disabled="!canAnswer">
       </div>
