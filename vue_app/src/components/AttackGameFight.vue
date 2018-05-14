@@ -17,9 +17,6 @@
       </div>
       <div class="col-md-5">
         <h3 class="text-right">
-          <span v-if="rival.character.isPowered">
-            <strong class="text-danger">Powered &#33;</strong>
-          </span>
           {{ rival.character.name }} &#45; {{ rival.name }}
         </h3>
         <div class="health-bar" :style="{width: rival.character.maxHealth}">
@@ -30,25 +27,25 @@
       </div>
     </div>
     <div class="row margin-top-10">
-      <div class="col-md-4">
+      <div class="col-md-5">
         <p>
           <span class="text-danger">Attack: {{ me.character.attack }}</span> -
           <span class="text-primary">Score: {{ myTotalScore }}</span>
           <span v-if="me.character.isPowered">
-            <strong class="text-danger" style="font-size: 30px;float: right;">Powered &#33;</strong>
+            <strong class="text-danger" style="font-size: 42px;float: right;">Powered &#33;</strong>
           </span>
         </p>
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-2 text-center">
         <h2>Topic: {{ playingGame.topic }}</h2>
       </div>
 
-      <div class="col-md-4 text-right">
+      <div class="col-md-5 text-right">
         <p>
           <span class="text-primary">Score: {{ rivalTotalScore }}</span> -
           <span class="text-danger">Attack: {{ rival.character.attack }}</span>
           <span v-if="rival.character.isPowered">
-            <strong class="text-danger" style="font-size: 30px;float: left;">Powered &#33;</strong>
+            <strong class="text-danger" style="font-size: 42px;float: left;">Powered &#33;</strong>
           </span>
         </p>
       </div>
@@ -225,7 +222,7 @@
       },
       create() {
         this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 500, this.me.character.atlas.name, 0);
-        this.myCharacterAnimation.scale.setTo(1, 1);
+        this.myCharacterAnimation.scale.setTo(0.7, 0.7);
         this.me.character.animations.forEach(animation => {
           this.myCharacterAnimation.animations.add(
             animation.name, animation.frames, animation.interval, animation.repeat, false
@@ -234,7 +231,7 @@
 
 
         this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 500, this.rival.character.atlas.name, 0);
-        this.rivalCharacterAnimation.scale.setTo(1, 1);
+        this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
           this.rivalCharacterAnimation.animations.add(
             animation.name, animation.frames, animation.interval, animation.repeat, false

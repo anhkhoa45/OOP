@@ -264,7 +264,7 @@ public class TopicFactory {
             colorCorrectWords.put("青", 1);
             colorCorrectWords.put("緑", 1);
             colorCorrectWords.put("紫", 1);
-            colorCorrectWords.put("黄色     ", 1);
+            colorCorrectWords.put("黄色", 1);
             colorCorrectWords.put("茶色", 1);
             colorCorrectWords.put("金色", 1);
             colorCorrectWords.put("銀色", 1);
@@ -273,21 +273,21 @@ public class TopicFactory {
             colorCorrectWords.put("灰色", 1);
             colorCorrectWords.put("グレー", 1);
             colorCorrectWords.put("橙色", 1);
-            colorCorrectWords.put("水色     ", 2);
+            colorCorrectWords.put("水色", 2);
             colorCorrectWords.put("紺色", 2);
             colorCorrectWords.put("藍色", 2);
-            colorCorrectWords.put("藤色     ", 3);
+            colorCorrectWords.put("藤色", 3);
             colorCorrectWords.put("焦げ茶色", 3);
-            colorCorrectWords.put("黄土色    ", 1);
+            colorCorrectWords.put("黄土色", 1);
             colorCorrectWords.put("焼きそば", 1);
-            colorCorrectWords.put("黄緑     ", 1);
+            colorCorrectWords.put("黄緑", 1);
             colorCorrectWords.put("深緑", 1);
             colorCorrectWords.put("ダークグリーン", 1);
-            colorCorrectWords.put("ベージュ   ", 1);
+            colorCorrectWords.put("ベージュ", 1);
             colorCorrectWords.put("朱色", 3);
-            colorCorrectWords.put("銅色     ", 2);
-            colorCorrectWords.put("ライラック  ", 2);
-            colorCorrectWords.put("ターコイズ  ", 2);
+            colorCorrectWords.put("銅色", 2);
+            colorCorrectWords.put("ライラック", 2);
+            colorCorrectWords.put("ターコイズ", 2);
             topics.add(new Topic("色", colorCorrectWords));
 
             HashMap<String, Integer> natureCorrectWords = new HashMap<>();

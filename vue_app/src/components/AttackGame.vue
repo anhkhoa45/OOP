@@ -71,8 +71,8 @@
         <div class="row">
           <div class="col-sm-3 margin-top-10">
             <h4 class="text-center">MASTER</h4>
-            <h4>{{ playingGame.master.name }}</h4>
-            <h3>{{ masterCharacter }}</h3>
+            <h4 class="text-left">{{ playingGame.master.name }}</h4>
+            <h3 class="text-right">{{ masterCharacter }}</h3>
           </div>
           <div class="col-sm-6">
             <div class="start-button active" @click.prevent="start" v-if="isMaster && canStart">
@@ -98,8 +98,8 @@
           </div>
           <div class="col-sm-3 margin-top-10">
             <h4 class="text-center">GUEST</h4>
-            <h4>{{ playingGame.guest.name }}</h4>
-            <h3>{{ guestCharacter }}</h3>
+            <h4 class="text-right">{{ playingGame.guest.name }}</h4>
+            <h3 class="text-left">{{ guestCharacter }}</h3>
           </div>
         </div>
       </div>
