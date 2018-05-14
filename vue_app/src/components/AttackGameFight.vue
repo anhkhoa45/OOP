@@ -178,7 +178,7 @@
       'playingGame.status': function (newVal) {
         if (newVal === GameStatus.GAME_OVER) {
           setTimeout(() => {
-            this.$store.commit('setCurrentComponent', 'attack-game-result');
+            this.$store.commit('setCurrentComponent', 'game-result');
           }, 2000)
         }
       }
