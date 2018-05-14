@@ -12,6 +12,7 @@
               <div class="row attack-game-box">
                 <div class="col-md-12">
                   <div class="row play-area">
+                    <div class="col-md-12 text-center"><p>Topic: {{ showingGame.topic }}</p></div>
                     <div class="col-md-6 answer-box left-box text-left">
                       <h3>{{ showingGame.master.name }}</h3>
                       <hr>

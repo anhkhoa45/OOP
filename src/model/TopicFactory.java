@@ -92,7 +92,6 @@ public class TopicFactory {
             animalCorrectWords.put("蛍", 2);
             animalCorrectWords.put("蝶蝶", 2);
             animalCorrectWords.put("蜂", 3);
-            animalCorrectWords.put("蛍", 2);
             topics.add(new Topic("動物", animalCorrectWords));
             
             HashMap<String, Integer> jobCorrectWords = new HashMap<>();

@@ -1,8 +1,11 @@
 package model;
 
 import com.google.gson.JsonObject;
+import socket.GameAction;
+import socket.Message;
 
 import javax.websocket.Session;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +14,7 @@ public class User {
     private String password;
     private String avatar;
     private transient Session session;
+    private transient Thread pingInterval;
     private UserStatus status;
     private Set<Game> playedGames = new HashSet<>();
 
@@ -61,6 +65,27 @@ public class User {
         this.status = status;
     }
 
+    public void startPingInterval(){
+        this.pingInterval = new Thread(() -> {
+            try{
+                while(this.getSession().isOpen()){
+                    Thread.sleep(1000);
+                    this.getSession().getAsyncRemote().sendObject(
+                            new Message(200, GameAction.PING, null)
+                    );
+                }
+                this.setOfflineState();
+            } catch (Exception e){
+                this.setOfflineState();
+            }
+        });
+        pingInterval.start();
+    }
+
+    private void stopPingInterval(){
+        this.pingInterval.interrupt();
+    }
+
     public void setOnlineState() {
         this.status = UserStatus.ONLINE;
     }
@@ -70,8 +95,13 @@ public class User {
     }
 
     public void setOfflineState() {
-        this.session = null;
         this.status = UserStatus.OFFLINE;
+        try {
+            this.stopPingInterval();
+            this.getSession().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Set<Game> getPlayedGames() {

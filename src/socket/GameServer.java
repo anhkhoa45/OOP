@@ -62,6 +62,7 @@ public class GameServer {
             user.setOnlineState();
         }
 
+        user.startPingInterval();
         users.put(userSession.getId(), user);
 
         userSession.getAsyncRemote().sendObject(

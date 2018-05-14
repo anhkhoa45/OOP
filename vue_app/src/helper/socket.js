@@ -81,6 +81,8 @@ export function onMessage(event) {
       case Action.REVEAL_CORRECT_WORDS:
         onReveal(content);
         break;
+      case Action.PING:
+        break;
     }
   }
 }
@@ -229,6 +231,7 @@ function onLeaveGame(data) {
 function onGuestLeaveGame(data) {
   store.commit('setPlayingGameGuest', null);
   store.commit('setGameStatus', GameStatus.INITIAL);
+  store.commit('setCurrentComponent', 'choose-mode');
 }
 
 function onGetPlayedGames(data) {

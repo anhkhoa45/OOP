@@ -25,13 +25,13 @@
       </div>
     </div>
     <div v-if="showResult">
-      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-hidden="true"
            style="display: block; padding-right: 17px; max-height: 550px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div v-if="isWin">
+            <div v-if="myTotalScore > rivalTotalScore">
               <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Congatulations</h4>
+                <h4 class="modal-title" id="exampleModalLabel">Congratulations</h4>
               </div>
               <div class="modal-body">
                 <img src="../assets/img/win.gif" alt="you win" style="position: inherit;" width="465px">
@@ -39,13 +39,22 @@
               </div>
             </div>
 
-            <div v-if="!isWin">
+            <div v-if="myTotalScore < rivalTotalScore">
             	<div class="modal-header">
-	              <h5 class="modal-title" id="exampleModalLabel">Awww...</h5>
+	              <h5 class="modal-title">Awww...</h5>
 	            </div>
               <div class="modal-body">
                 <img src="../assets/img/lose.gif" alt="you lost" style="position: inherit;" width="465px">
                 <h3 class="text-center">You lost...</h3>
+              </div>
+            </div>
+
+            <div v-if="myTotalScore === rivalTotalScore">
+              <div class="modal-header">
+                <h5 class="modal-title">Mehhh...</h5>
+              </div>
+              <div class="modal-body">
+                <h3 class="text-center">Draw !</h3>
               </div>
             </div>
 
