@@ -217,7 +217,7 @@ function onGetGameState(data) {
   store.commit('updateGuestCharacterInfo', data.game.guest_character);
 
   if (store.state.playingGame.mode === Mode.NORMAL && store.state.playingGame.status === GameStatus.GAME_OVER) {
-    store.commit('setCurrentComponent', 'attack-game-result');
+    store.commit('setCurrentComponent', 'game-result');
   }
 }
 

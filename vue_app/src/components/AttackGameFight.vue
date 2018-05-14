@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-5">
         <h3>
-          {{ me.name }}
+          {{ me.name }} &#45; {{ me.character.name }}
           <span v-if="me.character.isPowered">
             <strong class="text-danger">Powered &#33;</strong>
           </span>
@@ -16,14 +16,14 @@
         </div>
       </div>
       <div class="col-md-2">
-        <h1 class="text-center margin-top-10" style="margin-bottom: 0">{{ playingGame.timeLeft }}</h1>
+        <h1 class="text-center" style="margin-bottom: 0;">{{ playingGame.timeLeft }}</h1>
       </div>
       <div class="col-md-5">
         <h3 class="text-right">
           <span v-if="rival.character.isPowered">
             <strong class="text-danger">Powered &#33;</strong>
           </span>
-          {{ rival.name }}
+          {{ rival.character.name }} &#45; {{ rival.name }}
         </h3>
         <div class="health-bar" :style="{width: rival.character.maxHealth}">
           <div class="bar text-center" :style="{width: rival.character.health / rival.character.maxHealth * 100 + '%'}">
@@ -72,7 +72,7 @@
             </p>
           </div>
         </div>
-        <div class="row margin-top-30">
+        <div class="row margin-top-10">
           <div class="col-md-7">
             <input class="form-control" type="text" placeholder="Your answer"
                    v-model="answer" @keyup.enter="sendAnswer" :disabled="!canAnswer">
@@ -178,7 +178,7 @@
       'playingGame.status': function (newVal) {
         if (newVal === GameStatus.GAME_OVER) {
           setTimeout(() => {
-            this.$store.commit('setCurrentComponent', 'attack-game-result');
+            this.$store.commit('setCurrentComponent', 'game-result');
           }, 2000)
         }
       }
