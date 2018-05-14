@@ -11,7 +11,7 @@ import ChooseMode from '../components/ChooseMode'
 import AttackGame from '../components/AttackGame'
 import NormalGame from '../components/NormalGame'
 import AttackGameFight from '../components/AttackGameFight'
-import AttackGameResult from '../components/AttackGameResult'
+import AttackGameResult from '../components/GameResult'
 
 Vue.use(VueRouter);
 

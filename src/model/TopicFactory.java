@@ -150,8 +150,6 @@ public class TopicFactory {
             infoSecurityCorrectWords.put("虹彩認証", 3);
             infoSecurityCorrectWords.put("暗証番号", 2);
             infoSecurityCorrectWords.put("ファイアウォール", 1);
-            infoSecurityCorrectWords.put("ウイルス対策ソフト", 3);
-            infoSecurityCorrectWords.put("セキュリティホール", 1);
             infoSecurityCorrectWords.put("セキュリティパッチ", 1);
             infoSecurityCorrectWords.put("デジタルタトゥー", 1);
             infoSecurityCorrectWords.put("ウイルス対策ソフト", 3);

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="showCorrectWords">
-      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="cwModalLabel" aria-hidden="true"
            style="display: block; padding-right: 17px; max-height: 500px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">List of correct words</h5>
+              <h5 class="modal-title" id="cwModalLabel">List of correct words</h5>
             </div>
             <div class="modal-body">
               <div class="row attack-game-box">
@@ -31,7 +31,7 @@
           <div class="modal-content">
             <div v-if="isWin">
             	<div class="modal-header">
-	              <h5 class="modal-title" id="exampleModalLabel">Congatulations</h5>
+	              <h5 class="modal-title" id="exampleModalLabel">Congratulations</h5>
 	            </div>
 	            <div class="modal-body">
 	              You win!!!!

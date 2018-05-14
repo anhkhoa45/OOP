@@ -55,7 +55,7 @@
                :class="{push_button: true, blue: game.mode === 'NORMAL', red: game.mode === 'ATTACK', reset:true}">
               <h4><b>Room {{ game.id }}</b></h4>
               <p>Mode: {{ game.mode }}</p>
-              <p>Topic: {{ game.topic.length > 8 ? game.topic.split(8) + '...' : game.topic}}</p>
+              <p><small>Topic: {{ game.topic.length > 6 ? game.topic.substring(0,6) + '...' : game.topic}}</small></p>
             </a>
           </div>
         </div>
