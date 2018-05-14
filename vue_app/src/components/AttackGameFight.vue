@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-md-2">
-        <h1 class="text-center margin-top-10" style="margin-bottom: 0">{{ playingGame.timeLeft }}</h1>
+        <h1 class="text-center" style="margin-bottom: 0;">{{ playingGame.timeLeft }}</h1>
       </div>
       <div class="col-md-5">
         <h3 class="text-right">
@@ -72,7 +72,7 @@
             </p>
           </div>
         </div>
-        <div class="row margin-top-30">
+        <div class="row margin-top-10">
           <div class="col-md-7">
             <input class="form-control" type="text" placeholder="Your answer"
                    v-model="answer" @keyup.enter="sendAnswer" :disabled="!canAnswer">

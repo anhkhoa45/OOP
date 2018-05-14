@@ -30,21 +30,23 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div v-if="isWin">
-            	<div class="modal-header">
-	              <h5 class="modal-title" id="exampleModalLabel">Congatulations</h5>
-	            </div>
-	            <div class="modal-body">
-	              You win!!!!
-	            </div>
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Congatulations</h4>
+              </div>
+              <div class="modal-body">
+                <img src="../assets/img/win.gif" alt="you win" style="position: inherit;" width="465px">
+                <h3 class="text-center"><strong>YOU WON &#33;&#33;&#33;</strong></h3>
+              </div>
             </div>
 
             <div v-if="!isWin">
             	<div class="modal-header">
 	              <h5 class="modal-title" id="exampleModalLabel">Oops!!!</h5>
 	            </div>
-	            <div class="modal-body">
-	              You lose!
-	            </div>
+              <div class="modal-body">
+                <img src="../assets/img/lose.gif" alt="you lost" style="position: inherit;" width="465px">
+                <h3 class="text-center">You lost...</h3>
+              </div>
             </div>
 
             <div class="modal-footer">
@@ -57,7 +59,7 @@
     <h1>Game result</h1>
     <div class="row attack-game-box">
       <div class="col-md-6 offset-md-3">
-        <div class="row play-area margin-top-30">
+        <div class="row play-area">
           <div class="col-md-6 answer-box left-box">
             <h3>{{ me.name }}</h3>
             <div v-if="isAttackMode" class="health-bar" :style="{width: me.character.maxHealth}">

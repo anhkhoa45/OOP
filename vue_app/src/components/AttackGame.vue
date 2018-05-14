@@ -2,11 +2,11 @@
   <div class="row">
     <div class="container">
       <div class="row text-center">
-        <h1 class="text-left">Room {{ playingGame.id }}</h1>
+        <h2 class="text-left">Room {{ playingGame.id }}</h2>
         <button type="button" class="btn btn-sm btn-danger ml-auto" @click="leaveGame">Leave game</button>
       </div>
-      <h1 class="text-center">Choose your spokesman &#33;</h1>
-      <div class="row">
+      <h3 class="text-center">Choose your spokesman &#33;</h3>
+      <div class="row margin-top-30">
         <div class="col-sm-3">
           <div class="card" @click.prevent="setCharacter(characters.KNIGHT.id)">
             <img src="../assets/img/knight.png" alt="Knight" class="image knightbg">
@@ -29,9 +29,9 @@
                 <h3>Hot girl</h3>
                 <h4>Health: 100</h4>
                 <h4>atk: 6</h4>
-                <h4>def: anger</h4>
-                <h4>ss: burn</h4>
-                <h4>"Hit me twice, you&#39;ll pay the price &#33;"</h4>
+                <h4>def: evade life-steal</h4>
+                <h4>ss: Night shade</h4>
+                <h4>pretty and nice, steal your soul in the night&#63;</h4>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
                 <h4>atk: 10</h4>
                 <h4>def: stun</h4>
                 <h4>ss: Freeze</h4>
-                <h4>"Cold and clever, there's no one else better &#33;"</h4>
+                <h4>"Cold and clever, put you in the freezer &#33;"</h4>
               </div>
             </div>
           </div>
@@ -59,9 +59,9 @@
                 <h3>archer</h3>
                 <h4>Health: 100</h4>
                 <h4>atk: 6</h4>
-                <h4>def: life drain</h4>
-                <h4>ss: Night shade</h4>
-                <h4>What do you mean&#63; You can't see the screen&#63;</h4>
+                <h4>def: anger</h4>
+                <h4>ss: burn</h4>
+                <h4>"Hit me twice, you&#39;ll pay the price &#33;"</h4>
               </div>
             </div>
           </div>
