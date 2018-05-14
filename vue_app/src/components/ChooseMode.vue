@@ -210,11 +210,13 @@
         action: Action.GET_ONLINE_USERS,
       }));
 
-      intervalObj = setInterval(() => {
-        this.socketClient.send(JSON.stringify({
-          action: Action.GET_ONLINE_USERS,
-        }));
-      }, 5000);
+      if(this.isMaster){
+        intervalObj = setInterval(() => {
+          this.socketClient.send(JSON.stringify({
+            action: Action.GET_ONLINE_USERS,
+          }));
+        }, 5000);
+      }
     },
     beforeDestroy() {
       clearInterval(intervalObj);
