@@ -215,7 +215,7 @@
           this.socketClient.send(JSON.stringify({
             action: Action.GET_ONLINE_USERS,
           }));
-        }, 5000);
+        }, 2000);
       }
     },
     beforeDestroy() {

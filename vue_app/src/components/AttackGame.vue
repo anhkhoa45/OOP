@@ -111,6 +111,7 @@
   import {mapState} from 'vuex'
   import Characters from '../helper/game_characters'
   import Action from '../helper/game_actions'
+  import GameStatus from '../helper/game_status'
 
   export default {
     data() {
@@ -137,7 +138,8 @@
         return (this.playingGame.guest != null) && (this.$store.state.user.name === this.playingGame.guest.name);
       },
       canStart() {
-        return this.playingGame.guest != null
+        return this.playingGame.status === GameStatus.GUEST_READY
+          && this.playingGame.guest != null
           && this.playingGame.guest.character != null
           && this.playingGame.master.character != null;
       },
