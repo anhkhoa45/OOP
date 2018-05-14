@@ -35,8 +35,12 @@ public class GameServer {
 
         for (User u : users.values()) {
             if (u.getName().equals(userName)) {
-                error(userSession, "User is playing!");
-                return;
+                if(u.getSession().isOpen()){
+                    error(userSession, "User is playing!");
+                    return;
+                } else {
+                    users.remove(u.getSession().getId());
+                }
             }
         }
 
@@ -73,8 +77,9 @@ public class GameServer {
 
     @OnError
     public void onError(Session userSession, Throwable throwable) {
-        System.out.println("Connection error. Id: " + userSession.getId());
+        userOffline(userSession);
         error(userSession, "Server internal error");
+        System.out.println("Connection error. Id: " + userSession.getId());
         throwable.printStackTrace();
     }
 
@@ -261,21 +266,24 @@ public class GameServer {
         try {
             int gameId = message.getContent().get("game_id").getAsInt();
             Game game = games.get(gameId);
-            game.setGuestUser(user);
+            if(game.isWaiting()){
+                game.setGuestUser(user);
 
-            JsonObject gameJson = game.getStateAsJson();
-            gameJson.add("master", game.getMasterUser().getStateAsJson());
-            gameJson.add("guest", game.getGuestUser().getStateAsJson());
-            content.add("game", gameJson);
+                JsonObject gameJson = game.getStateAsJson();
+                gameJson.add("master", game.getMasterUser().getStateAsJson());
+                gameJson.add("guest", game.getGuestUser().getStateAsJson());
+                content.add("game", gameJson);
 
-            response.setStatus(200);
-            response.setContent(content);
+                response.setStatus(200);
+                response.setContent(content);
 
-            game.getMasterUser().getSession().getAsyncRemote().sendObject(
-                    new Message(200, GameAction.GUEST_JOIN_GAME, content)
-            );
+                game.getMasterUser().getSession().getAsyncRemote().sendObject(
+                        new Message(200, GameAction.GUEST_JOIN_GAME, content)
+                );
+            } else {
+                throw new Exception("Room is full");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
             content.addProperty("message", e.getMessage());
             response.setContent(content);
             response.setStatus(500);
