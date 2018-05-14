@@ -2,7 +2,7 @@
   <div>
     <div v-if="showCorrectWords">
       <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="cwModalLabel" aria-hidden="true"
-           style="display: block; padding-right: 17px; max-height: 500px;overflow-y: auto">
+           style="display: block; padding-right: 17px; max-height: 550px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -25,26 +25,37 @@
       </div>
     </div>
     <div v-if="showResult">
-      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-           style="display: block; padding-right: 17px; max-height: 500px;overflow-y: auto">
+      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-hidden="true"
+           style="display: block; padding-right: 17px; max-height: 550px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div v-if="isWin">
-            	<div class="modal-header">
-	              <h5 class="modal-title" id="exampleModalLabel">Congratulations</h5>
-	            </div>
-	            <div class="modal-body">
-	              You win!!!!
-	            </div>
+            <div v-if="myTotalScore > rivalTotalScore">
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Congratulations</h4>
+              </div>
+              <div class="modal-body">
+                <img src="../assets/img/win.gif" alt="you win" style="position: inherit;" width="465px">
+                <h3 class="text-center"><strong>YOU WON &#33;&#33;&#33;</strong></h3>
+              </div>
             </div>
 
-            <div v-if="!isWin">
+            <div v-if="myTotalScore < rivalTotalScore">
             	<div class="modal-header">
-	              <h5 class="modal-title" id="exampleModalLabel">Oops!!!</h5>
+	              <h5 class="modal-title">Awww...</h5>
 	            </div>
-	            <div class="modal-body">
-	              You lose!
-	            </div>
+              <div class="modal-body">
+                <img src="../assets/img/lose.gif" alt="you lost" style="position: inherit;" width="465px">
+                <h3 class="text-center">You lost...</h3>
+              </div>
+            </div>
+
+            <div v-if="myTotalScore === rivalTotalScore">
+              <div class="modal-header">
+                <h5 class="modal-title">Mehhh...</h5>
+              </div>
+              <div class="modal-body">
+                <h3 class="text-center">Draw !</h3>
+              </div>
             </div>
 
             <div class="modal-footer">
@@ -57,7 +68,7 @@
     <h1>Game result</h1>
     <div class="row attack-game-box">
       <div class="col-md-6 offset-md-3">
-        <div class="row play-area margin-top-30">
+        <div class="row play-area">
           <div class="col-md-6 answer-box left-box">
             <h3>{{ me.name }}</h3>
             <div v-if="isAttackMode" class="health-bar" :style="{width: me.character.maxHealth}">
