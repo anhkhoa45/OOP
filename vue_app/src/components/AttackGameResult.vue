@@ -24,10 +24,35 @@
         </div>
       </div>
     </div>
-    <div v-if="isWin">
-      <!--  -->
-      <!--  -->
-      <!--  -->
+    <div v-if="showResult">
+      <div class="modal fade show game-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+           style="display: block; padding-right: 17px; max-height: 500px;overflow-y: auto">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div v-if="isWin">
+            	<div class="modal-header">
+	              <h5 class="modal-title" id="exampleModalLabel">Congatulations</h5>
+	            </div>
+	            <div class="modal-body">
+	              You win!!!!
+	            </div>
+            </div>
+
+            <div v-if="!isWin">
+            	<div class="modal-header">
+	              <h5 class="modal-title" id="exampleModalLabel">Oops!!!</h5>
+	            </div>
+	            <div class="modal-body">
+	              You lose!
+	            </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" @click.prevent="showResult = false">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <h1>Game result</h1>
     <div class="row attack-game-box">
@@ -91,7 +116,8 @@
   export default {
     data() {
       return {
-        showCorrectWords: false
+        showCorrectWords: false,
+        showResult: true,
       }
     },
     computed: {
