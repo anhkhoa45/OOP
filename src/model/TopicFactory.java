@@ -204,7 +204,7 @@ public class TopicFactory {
             fastfoodCorrectWords.put("焼きそば", 1);
             fastfoodCorrectWords.put("スープ", 1);
             fastfoodCorrectWords.put("天ぷら", 3);
-            topics.add(new Topic("牛丼", fastfoodCorrectWords));
+            topics.add(new Topic("ファストフード", fastfoodCorrectWords));
 
             HashMap<String, Integer> provinceCorrectWords = new HashMap<>();
             provinceCorrectWords.put("あいち", 2);
@@ -327,7 +327,6 @@ public class TopicFactory {
             natureCorrectWords.put("島", 1);
             natureCorrectWords.put("水", 1);
             natureCorrectWords.put("海", 1);
-            natureCorrectWords.put("山", 1);
             natureCorrectWords.put("川", 3);
             natureCorrectWords.put("河", 2);
             natureCorrectWords.put("波", 2);

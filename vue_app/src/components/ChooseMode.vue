@@ -26,9 +26,16 @@
       <div class="row">
         <div class="col-md-3 friend-list">
           <template v-if="isMaster">
+            <div class="col-md-12">
             <h2 class="margin-top-30">Online users</h2>
+            </div>
+            <div class="input-group col-md-12">
+              <input placeholder="Search user" class="form-control form-control-sm py-2 border-right-0 border" type="search"
+                     v-model="searchUser">
+            </div>
+            <div class="col-md-12">
             <ul class="margin-top-50">
-              <li v-for="user in onlineUsers">
+              <li v-for="user in filteredUsers">
                 <div class="row">
                   <div class="col-md-8">
                     <img :src="`./assets/img/avatar/${user.avatar}.png`" class="thumbnail">
@@ -42,6 +49,7 @@
                 </div>
               </li>
             </ul>
+            </div>
           </template>
         </div>
         <div class="col-md-9">
@@ -114,6 +122,7 @@
         category: 0,
         mode: -1,
         gameModes: Mode,
+        searchUser: ''
       }
     },
     computed: {
@@ -151,6 +160,9 @@
       canReady() {
         return this.isSelectedMode;
       },
+      filteredUsers(){
+        return this.onlineUsers.filter(user => user.name.toLowerCase().startsWith(this.searchUser.toLowerCase()));
+      }
     },
     watch: {
       mode() {
@@ -215,7 +227,7 @@
           this.socketClient.send(JSON.stringify({
             action: Action.GET_ONLINE_USERS,
           }));
-        }, 5000);
+        }, 2000);
       }
     },
     beforeDestroy() {
