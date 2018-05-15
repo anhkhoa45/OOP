@@ -176,6 +176,18 @@ public class TopicFactory {
             fruitCorrectWords.put("クランベリー", 1);
             fruitCorrectWords.put("柿", 1);
             fruitCorrectWords.put("金柑", 1);
+            fruitCorrectWords.put("いちご", 1);
+            fruitCorrectWords.put("びわ", 1);
+            fruitCorrectWords.put("さくらんぼ", 1);
+            fruitCorrectWords.put("すいか", 1);
+            fruitCorrectWords.put("みかん", 1);
+            fruitCorrectWords.put("もも", 1);
+            fruitCorrectWords.put("ぶどう", 1);
+            fruitCorrectWords.put("りんご", 1);
+            fruitCorrectWords.put("トマト", 1);
+            fruitCorrectWords.put("アプル", 1);
+            fruitCorrectWords.put("ザクロ", 3);
+            fruitCorrectWords.put("マンゴ", 1);
             topics.add(new Topic("果物", fruitCorrectWords));
 
             HashMap<String, Integer> fastfoodCorrectWords = new HashMap<>();

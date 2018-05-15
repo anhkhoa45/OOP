@@ -658,11 +658,11 @@ public class GameServer {
                 case INITIAL:
                 case GUEST_READY:
                     if (gameGuest != null) {
-                        game.removeGuest();
                         gameGuest.getSession().getAsyncRemote().sendObject(
                                 new Message(200, GameAction.LEAVE_GAME, null)
                         );
                         gameGuest.setOnlineState();
+                        game.removeGuest();
                     }
                     games.remove(game.getId());
                     break;
@@ -675,15 +675,16 @@ public class GameServer {
             user.getSession().getAsyncRemote().sendObject(
                     new Message(200, GameAction.LEAVE_GAME, null)
             );
+            System.out.print("MASTER_LEAVE_GAME - Game: " + game.getId() + " User: " + user.getSession().getId());
         } else if (gameGuest.equals(user)) {
             switch (game.getStatus()) {
                 case INITIAL:
                 case GUEST_READY:
                     game.setStatus(GameStatus.INITIAL);
-                    game.removeGuest();
                     game.getMasterUser().getSession().getAsyncRemote().sendObject(
                             new Message(200, GameAction.GUEST_LEAVE_GAME, null)
                     );
+                    game.removeGuest();
                     break;
                 case STARTED:
                 case GAME_OVER:
@@ -694,6 +695,7 @@ public class GameServer {
             user.getSession().getAsyncRemote().sendObject(
                     new Message(200, GameAction.LEAVE_GAME, null)
             );
+            System.out.print("GUEST_LEAVE_GAME - Game: " + game.getId() + " User: " + user.getSession().getId());
         } else {
             throw new RuntimeException("Permission denied!");
         }

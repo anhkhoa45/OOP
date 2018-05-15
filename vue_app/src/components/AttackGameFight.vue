@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="row margin-top-10">
-      <div class="col-md-5">
+      <div class="col-md-3">
         <p>
           <span class="text-danger">Attack: {{ me.character.attack }}</span> -
           <span class="text-primary">Score: {{ myTotalScore }}</span>
@@ -36,11 +36,11 @@
           </span>
         </p>
       </div>
-      <div class="col-md-2 text-center">
+      <div class="col-md-6 text-center">
         <h2>Topic: {{ playingGame.topic }}</h2>
       </div>
 
-      <div class="col-md-5 text-right">
+      <div class="col-md-3 text-right">
         <p>
           <span class="text-primary">Score: {{ rivalTotalScore }}</span> -
           <span class="text-danger">Attack: {{ rival.character.attack }}</span>

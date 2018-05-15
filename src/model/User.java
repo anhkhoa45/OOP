@@ -65,25 +65,21 @@ public class User {
         this.status = status;
     }
 
-    public void startPingInterval(){
+    public void startPingInterval() {
         this.pingInterval = new Thread(() -> {
-            try{
-                while(this.getSession().isOpen()){
+            try {
+                while (this.getSession().isOpen()) {
                     Thread.sleep(1000);
                     this.getSession().getAsyncRemote().sendObject(
                             new Message(200, GameAction.PING, null)
                     );
                 }
                 this.setOfflineState();
-            } catch (Exception e){
+            } catch (Exception e) {
                 this.setOfflineState();
             }
         });
         pingInterval.start();
-    }
-
-    private void stopPingInterval(){
-        this.pingInterval.interrupt();
     }
 
     public void setOnlineState() {
@@ -97,8 +93,8 @@ public class User {
     public void setOfflineState() {
         this.status = UserStatus.OFFLINE;
         try {
-            this.stopPingInterval();
             this.getSession().close();
+            this.pingInterval.interrupt();
         } catch (IOException e) {
             e.printStackTrace();
         }
