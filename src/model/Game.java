@@ -154,11 +154,9 @@ public class Game {
             this.countDown = new Thread(() -> {
                 try {
                     Thread.sleep(Game.defaultGameDuration * 1000);
-                    if (this.status == GameStatus.STARTED) {
-                        this.endGame();
-                    }
+                    this.endGame();
                 } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
+                    this.endGame();
                 }
             });
 
@@ -169,7 +167,7 @@ public class Game {
                         this.update();
                     }
                 } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
+                    this.endGame();
                 }
             });
 
