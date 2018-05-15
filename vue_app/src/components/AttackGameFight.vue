@@ -4,9 +4,6 @@
       <div class="col-md-5">
         <h3>
           {{ me.name }} &#45; {{ me.character.name }}
-          <span v-if="me.character.isPowered">
-            <strong class="text-danger">Powered &#33;</strong>
-          </span>
         </h3>
         <div class="health-bar" :style="{width: me.character.maxHealth}">
           <div class="bar text-center" :style="{width: me.character.health / me.character.maxHealth * 100 + '%'}">
@@ -20,9 +17,6 @@
       </div>
       <div class="col-md-5">
         <h3 class="text-right">
-          <span v-if="rival.character.isPowered">
-            <strong class="text-danger">Powered &#33;</strong>
-          </span>
           {{ rival.character.name }} &#45; {{ rival.name }}
         </h3>
         <div class="health-bar" :style="{width: rival.character.maxHealth}">
@@ -33,20 +27,26 @@
       </div>
     </div>
     <div class="row margin-top-10">
-      <div class="col-md-3">
+      <div class="col-md-5">
         <p>
           <span class="text-danger">Attack: {{ me.character.attack }}</span> -
           <span class="text-primary">Score: {{ myTotalScore }}</span>
+          <span v-if="me.character.isPowered">
+            <strong class="text-danger" style="font-size: 42px;float: right;">Powered &#33;</strong>
+          </span>
         </p>
       </div>
-      <div class="col-md-6 text-center">
+      <div class="col-md-2 text-center">
         <h2>Topic: {{ playingGame.topic }}</h2>
       </div>
 
-      <div class="col-md-3 text-right">
+      <div class="col-md-5 text-right">
         <p>
           <span class="text-primary">Score: {{ rivalTotalScore }}</span> -
           <span class="text-danger">Attack: {{ rival.character.attack }}</span>
+          <span v-if="rival.character.isPowered">
+            <strong class="text-danger" style="font-size: 42px;float: left;">Powered &#33;</strong>
+          </span>
         </p>
       </div>
     </div>
@@ -221,7 +221,7 @@
         this.gameAnimation.load.atlas(rivalAtlas.name, rivalAtlas.sprite, rivalAtlas.spriteScript);
       },
       create() {
-        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 450, this.me.character.atlas.name, 0);
+        this.myCharacterAnimation = this.gameAnimationState.add.sprite(0, this.gameAnimation.height - 500, this.me.character.atlas.name, 0);
         this.myCharacterAnimation.scale.setTo(0.7, 0.7);
         this.me.character.animations.forEach(animation => {
           this.myCharacterAnimation.animations.add(
@@ -230,7 +230,7 @@
         });
 
 
-        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 450, this.rival.character.atlas.name, 0);
+        this.rivalCharacterAnimation = this.gameAnimationState.add.sprite(this.gameAnimation.width, this.gameAnimation.height - 500, this.rival.character.atlas.name, 0);
         this.rivalCharacterAnimation.scale.setTo(-0.7, 0.7);
         this.rival.character.animations.forEach(animation => {
           this.rivalCharacterAnimation.animations.add(
