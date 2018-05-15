@@ -72,7 +72,7 @@
                   <h4>atk: 6</h4>
                   <h4>def: evade life-steal</h4>
                   <h4>ss: Night shade</h4>
-                  <h4>pretty and nice, steal your soul in the night&#63;</h4>
+                  <h4>"Pretty and nice, devil by night"</h4>
                 </div>
               </div>
             </div>

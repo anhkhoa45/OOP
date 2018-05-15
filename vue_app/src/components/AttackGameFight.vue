@@ -51,8 +51,8 @@
       </div>
     </div>
     <div class="row">
-      <div v-if="me.character.isBlackout" class="col-md-6 blacked-out">
-        <h1 class="text-center margin-top-50">Censored!</h1>
+      <div v-if="me.character.isBlackout" class="col-md-6 offset-md-3">
+        <img src="../assets/img/black.gif" alt="blacked-out" style="position: absolute; z-index: 1;" width="100%">
       </div>
       <div class="w-100"></div>
       <div class="col-md-6 offset-md-3 play-area text-left">
