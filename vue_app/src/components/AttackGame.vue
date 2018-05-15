@@ -2,7 +2,7 @@
   <div>
     <div v-if="showHelp">
       <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-           style="display: block; padding-right: 17px;">
+           style="display: block; padding-right: 17px; max-height: 550px;overflow-y: auto">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
