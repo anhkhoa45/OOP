@@ -54,7 +54,8 @@
                 <h5 class="modal-title">Mehhh...</h5>
               </div>
               <div class="modal-body">
-                <h3 class="text-center">Draw !</h3>
+                <img src="../assets/img/tie.gif" alt="you lost" style="position: inherit;" width="465px">
+                <h3 class="text-center">...a Draw &#63;&#63;</h3>
               </div>
             </div>
 
