@@ -56,22 +56,6 @@
       </div>
       <div class="w-100"></div>
       <div class="col-md-6 offset-md-3 play-area text-left">
-        <div class="row">
-          <div class="col-md-6 answer-box left-box">
-            <p v-for="answer in me.character.answers">
-              <span class="mr-10">{{ answer.word }}</span>
-              <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
-              <span v-else class="negative-state">{{ answer.score }}</span>
-            </p>
-          </div>
-          <div class="col-md-6 answer-box">
-            <p v-for="answer in rival.character.answers">
-              <span class="mr-10">{{ answer.word }}</span>
-              <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
-              <span v-else class="negative-state">{{ answer.score }}</span>
-            </p>
-          </div>
-        </div>
         <div class="row margin-top-10">
           <div class="col-md-7">
             <input class="form-control" type="text" placeholder="Your answer"
@@ -88,6 +72,22 @@
                     @click="power" :disabled="!canPower">
               Power &#33;&#33;&#33;
             </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 answer-box left-box">
+            <p v-for="answer in me.character.answers">
+              <span class="mr-10">{{ answer.word }}</span>
+              <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
+              <span v-else class="negative-state">{{ answer.score }}</span>
+            </p>
+          </div>
+          <div class="col-md-6 answer-box">
+            <p v-for="answer in rival.character.answers">
+              <span class="mr-10">{{ answer.word }}</span>
+              <span v-if="answer.score > 0" class="positive-state">{{ answer.score }}</span>
+              <span v-else class="negative-state">{{ answer.score }}</span>
+            </p>
           </div>
         </div>
       </div>
